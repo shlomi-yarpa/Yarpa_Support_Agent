@@ -10,6 +10,7 @@ using System.Text.Json;
 using Yarpa.Agent;
 using Yarpa.Agent.Collectors;
 using Yarpa.Agent.Collectors.Collectors;
+using Yarpa.Contracts.Sections;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -35,11 +36,50 @@ try
             services.AddSingleton<SnapshotSender>();
             services.AddSingleton<CollectionOrchestrator>();
 
+            // ── Collector options ────────────────────────────────────────────────
+            var yarpaDetectionOpts = context.Configuration
+                .GetSection(YarpaDetectionOptions.SectionName)
+                .Get<YarpaDetectionOptions>() ?? new YarpaDetectionOptions();
+
+            var collectorsConfig = context.Configuration.GetSection("Collectors");
+
+            var servicesWatchlist = collectorsConfig
+                .GetSection("ServicesWatchlist")
+                .Get<List<string>>();
+
+            var softwareFilters = collectorsConfig
+                .GetSection("SoftwareFilters")
+                .Get<List<string>>();
+
+            var eventLogDays = collectorsConfig.GetValue<int>("EventLogWindowDays");
+            var eventLogMax = collectorsConfig.GetValue<int>("EventLogMaxEvents");
+            var eventLogSources = collectorsConfig
+                .GetSection("EventLogSources")
+                .Get<List<string>>();
+
             // Register collectors — add/remove via DI only, no orchestrator changes needed
             services.AddTransient<ICollector, SystemInfoCollector>();
             services.AddTransient<ICollector, OperatingSystemCollector>();
             services.AddTransient<ICollector, HardwareCollector>();
             services.AddTransient<ICollector, DiskCollector>();
+            services.AddTransient<ICollector, NetworkCollector>();
+            services.AddTransient<ICollector, PrintersCollector>();
+            services.AddTransient<ICollector, UsbDevicesCollector>();
+            services.AddTransient<ICollector, ComPortsCollector>();
+            services.AddTransient<ICollector>(_ =>
+                new PaymentTerminalsCollector());
+            services.AddTransient<ICollector>(_ =>
+                new WindowsServicesCollector(servicesWatchlist?.AsReadOnly()));
+            services.AddTransient<ICollector, SqlServerCollector>();
+            services.AddTransient<ICollector>(_ =>
+                new InstalledSoftwareCollector(softwareFilters?.AsReadOnly()));
+            services.AddTransient<ICollector>(_ =>
+                new EventLogCollector(
+                    windowDays: eventLogDays > 0 ? eventLogDays : 7,
+                    maxEvents: eventLogMax > 0 ? eventLogMax : 200,
+                    logNames: eventLogSources?.AsReadOnly()));
+            services.AddTransient<ICollector>(_ =>
+                new YarpaVersionCollector(yarpaDetectionOpts));
 
             // Named HttpClient "YarpaApi" with Polly retry (exponential backoff)
             AgentOptions agentOptions = context.Configuration

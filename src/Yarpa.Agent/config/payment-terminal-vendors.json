@@ -1,0 +1,40 @@
+{
+  "vendors": [
+    {
+      "vendor": "Ingenico",
+      "entries": [
+        { "vid": "0B00", "pid": null, "model": null },
+        { "vid": "079B", "pid": "0028", "model": "iCT220" },
+        { "vid": "079B", "pid": "0051", "model": "iCT250" },
+        { "vid": "079B", "pid": "0057", "model": "iWL220" },
+        { "vid": "079B", "pid": "0070", "model": "iUN900" },
+        { "vid": "079B", "pid": "0072", "model": "Desk/3500" }
+      ]
+    },
+    {
+      "vendor": "Verifone",
+      "entries": [
+        { "vid": "11CA", "pid": null, "model": null },
+        { "vid": "11CA", "pid": "0300", "model": "VX520" },
+        { "vid": "11CA", "pid": "0210", "model": "VX805" },
+        { "vid": "11CA", "pid": "0220", "model": "VX820" }
+      ]
+    },
+    {
+      "vendor": "PAX",
+      "entries": [
+        { "vid": "0C46", "pid": null, "model": null },
+        { "vid": "0C46", "pid": "0003", "model": "S800" },
+        { "vid": "0C46", "pid": "0004", "model": "S90" }
+      ]
+    },
+    {
+      "vendor": "Castles",
+      "entries": [
+        { "vid": "1BEC", "pid": null, "model": null },
+        { "vid": "1BEC", "pid": "0A01", "model": "VEGA3000" },
+        { "vid": "1BEC", "pid": "0A02", "model": "VEGA3000M" }
+      ]
+    }
+  ]
+}
