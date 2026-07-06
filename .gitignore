@@ -1,0 +1,53 @@
+# Build results
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+[Ll]og/
+[Ll]ogs/
+
+# .NET
+project.lock.json
+project.fragment.lock.json
+artifacts/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.userprefs
+
+# Rider / Visual Studio / VS Code
+.vs/
+.vscode/
+.idea/
+*.rsuser
+
+# Test / coverage results
+[Tt]est[Rr]esult*/
+[Cc]overage*/
+*.coverage
+*.coverd
+*.trx
+
+# NuGet
+*.nupkg
+*.snupkg
+.nuget/
+**/packages/*
+!**/packages/build/
+
+# Secrets and local configuration (see security rules in CLAUDE.md).
+# appsettings.json holds placeholders only and IS committed. Real API keys,
+# connection strings and other secrets go in the local/environment files below,
+# which must never be committed.
+appsettings.Development.json
+appsettings.Production.json
+appsettings.Local.json
+appsettings.*.local.json
+secrets.json
+*.secrets.json
+
+# OS files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
