@@ -1,13 +1,14 @@
 using System.Net;
-using Microsoft.AspNetCore.Mvc.Testing;
+using Yarpa.Api.Tests.Infrastructure;
 
 namespace Yarpa.Api.Tests;
 
-public class HealthEndpointTests : IClassFixture<WebApplicationFactory<Program>>
+[Collection("API Integration Tests")]
+public class HealthEndpointTests
 {
-    private readonly WebApplicationFactory<Program> _factory;
+    private readonly TestApiFactory _factory;
 
-    public HealthEndpointTests(WebApplicationFactory<Program> factory)
+    public HealthEndpointTests(TestApiFactory factory)
     {
         _factory = factory;
     }

@@ -1,4 +1,11 @@
+using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
+using Yarpa.Api.Data;
+using Yarpa.Api.Middleware;
+using Yarpa.Api.Services;
+using Yarpa.Api.Validation;
+using Yarpa.Contracts;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -12,12 +19,49 @@ try
         .ReadFrom.Configuration(context.Configuration)
         .ReadFrom.Services(services));
 
+    // ── EF Core ──────────────────────────────────────────────────────────────
+    builder.Services.AddDbContext<YarpaDbContext>(opts =>
+        opts.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+
+    // ── MVC ──────────────────────────────────────────────────────────────────
+    builder.Services.AddControllers()
+        .AddJsonOptions(opts =>
+        {
+            // Keep camelCase names; per-type converters (e.g. CamelCaseJsonStringEnumConverter
+            // on CollectorStatus) are applied at the type level and remain in effect.
+            opts.JsonSerializerOptions.PropertyNamingPolicy =
+                System.Text.Json.JsonNamingPolicy.CamelCase;
+            opts.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+        });
+
+    // ── FluentValidation ─────────────────────────────────────────────────────
+    builder.Services.AddScoped<IValidator<DiagnosticsSnapshot>, DiagnosticsSnapshotValidator>();
+
+    // ── Application services ──────────────────────────────────────────────────
+    builder.Services.AddScoped<IClientResolver, ClientResolver>();
+    builder.Services.AddScoped<ISnapshotStore, SnapshotStore>();
+
     WebApplication app = builder.Build();
 
     app.UseSerilogRequestLogging();
 
-    // Liveness probe. The snapshots controller and API-key middleware are added in stage 1.
+    // ── Liveness probe (no auth required) ────────────────────────────────────
     app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
+
+    // ── ApiKey authentication middleware ──────────────────────────────────────
+    app.UseMiddleware<ApiKeyMiddleware>();
+
+    app.MapControllers();
+
+    // ── Apply migrations on startup (dev/local convenience) ──────────────────
+    // Skipped for InMemory (tests) or non-Development environments.
+    if (app.Environment.IsDevelopment())
+    {
+        using IServiceScope scope = app.Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<YarpaDbContext>();
+        if (db.Database.IsRelational())
+            await db.Database.MigrateAsync();
+    }
 
     app.Run();
     return 0;
@@ -32,7 +76,5 @@ finally
     Log.CloseAndFlush();
 }
 
-/// <summary>Exposed so the WebApplicationFactory-based integration tests can bootstrap the API.</summary>
-public partial class Program
-{
-}
+/// <summary>Exposed so WebApplicationFactory-based integration tests can bootstrap the API.</summary>
+public partial class Program { }

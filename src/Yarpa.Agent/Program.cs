@@ -3,64 +3,135 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Polly;
+using Polly.Extensions.Http;
 using Serilog;
+using System.Text.Json;
+using Yarpa.Agent;
+using Yarpa.Agent.Collectors;
+using Yarpa.Agent.Collectors.Collectors;
 
-namespace Yarpa.Agent;
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .CreateBootstrapLogger();
 
-/// <summary>
-/// Console entry point for the Yarpa Support Agent. Stage 0 wires up the Generic Host,
-/// configuration and Serilog, logs that the agent started and exits successfully.
-/// Collection and sending are implemented in later stages.
-/// </summary>
-public static class Program
+try
 {
-    public static async Task<int> Main(string[] args)
-    {
-        Log.Logger = new LoggerConfiguration()
-            .WriteTo.Console()
-            .CreateBootstrapLogger();
+    CliArgs cli = CliArgs.Parse(args);
 
-        try
+    using IHost host = Host.CreateDefaultBuilder(args)
+        .UseContentRoot(AppContext.BaseDirectory)
+        .UseSerilog((context, services, configuration) => configuration
+            .ReadFrom.Configuration(context.Configuration)
+            .ReadFrom.Services(services))
+        .ConfigureServices((context, services) =>
         {
-            using IHost host = Host.CreateDefaultBuilder(args)
-                .UseContentRoot(AppContext.BaseDirectory)
-                .UseSerilog((context, services, configuration) => configuration
-                    .ReadFrom.Configuration(context.Configuration)
-                    .ReadFrom.Services(services))
-                .ConfigureServices((context, services) =>
+            services.AddOptions<AgentOptions>()
+                .Bind(context.Configuration.GetSection(AgentOptions.SectionName));
+
+            services.AddSingleton(cli);
+            services.AddSingleton<MachineIdentity>();
+            services.AddSingleton<OfflineQueue>();
+            services.AddSingleton<SnapshotSender>();
+            services.AddSingleton<CollectionOrchestrator>();
+
+            // Register collectors — add/remove via DI only, no orchestrator changes needed
+            services.AddTransient<ICollector, SystemInfoCollector>();
+            services.AddTransient<ICollector, OperatingSystemCollector>();
+            services.AddTransient<ICollector, HardwareCollector>();
+            services.AddTransient<ICollector, DiskCollector>();
+
+            // Named HttpClient "YarpaApi" with Polly retry (exponential backoff)
+            AgentOptions agentOptions = context.Configuration
+                .GetSection(AgentOptions.SectionName)
+                .Get<AgentOptions>() ?? new AgentOptions();
+
+            services
+                .AddHttpClient(SnapshotSender.HttpClientName, client =>
                 {
-                    services.AddOptions<AgentOptions>()
-                        .Bind(context.Configuration.GetSection(AgentOptions.SectionName));
+                    if (!string.IsNullOrWhiteSpace(agentOptions.ApiBaseUrl))
+                        client.BaseAddress = new Uri(agentOptions.ApiBaseUrl);
 
-                    // Collectors, orchestrator and snapshot sender are registered in stage 1.
+                    client.DefaultRequestHeaders.Add("X-Api-Key", agentOptions.ApiKey);
+                    client.Timeout = TimeSpan.FromSeconds(30);
                 })
-                .Build();
+                .AddPolicyHandler(BuildRetryPolicy(agentOptions));
+        })
+        .Build();
 
-            await host.StartAsync();
+    await host.StartAsync();
 
-            ILogger<AgentApp> logger = host.Services.GetRequiredService<ILogger<AgentApp>>();
-            AgentOptions options = host.Services.GetRequiredService<IOptions<AgentOptions>>().Value;
+    var logger = host.Services.GetRequiredService<ILogger<AgentApp>>();
+    var orchestrator = host.Services.GetRequiredService<CollectionOrchestrator>();
+    var sender = host.Services.GetRequiredService<SnapshotSender>();
+    var options = host.Services.GetRequiredService<IOptions<AgentOptions>>().Value;
 
-            logger.LogInformation(
-                "agent started (apiBaseUrl={ApiBaseUrl})",
-                string.IsNullOrWhiteSpace(options.ApiBaseUrl) ? "<unset>" : options.ApiBaseUrl);
+    using var cts = new CancellationTokenSource();
+    Console.CancelKeyPress += (_, e) =>
+    {
+        e.Cancel = true;
+        cts.Cancel();
+    };
 
-            await host.StopAsync();
-            return 0;
-        }
-        catch (Exception ex)
-        {
-            Log.Fatal(ex, "agent terminated unexpectedly");
-            return 1;
-        }
-        finally
-        {
-            await Log.CloseAndFlushAsync();
-        }
+    logger.LogInformation(
+        "Yarpa Agent starting (mode={Mode}, apiBaseUrl={ApiBaseUrl})",
+        cli.DryRun ? "dry-run" : cli.OutputPath != null ? "output" : "once",
+        string.IsNullOrWhiteSpace(options.ApiBaseUrl) ? "<unset>" : options.ApiBaseUrl);
+
+    // First: attempt to drain any snapshots waiting in the offline queue
+    if (!cli.DryRun && cli.OutputPath == null)
+        await sender.DrainOfflineQueueAsync(cts.Token);
+
+    // Collect a fresh snapshot
+    var snapshot = await orchestrator.CollectAsync(cts.Token);
+
+    if (cli.DryRun)
+    {
+        string json = JsonSerializer.Serialize(snapshot, new JsonSerializerOptions { WriteIndented = true });
+        logger.LogInformation("dry-run snapshot:\n{Json}", json);
     }
+    else if (cli.OutputPath != null)
+    {
+        string json = JsonSerializer.Serialize(snapshot, new JsonSerializerOptions { WriteIndented = true });
+        await File.WriteAllTextAsync(cli.OutputPath, json, cts.Token);
+        logger.LogInformation("snapshot written to {OutputPath}", cli.OutputPath);
+    }
+    else
+    {
+        await sender.SendAsync(snapshot, cts.Token);
+    }
+
+    await host.StopAsync();
+    return 0;
+}
+catch (Exception ex)
+{
+    Log.Fatal(ex, "agent terminated unexpectedly");
+    return 1;
+}
+finally
+{
+    await Log.CloseAndFlushAsync();
+}
+
+static IAsyncPolicy<HttpResponseMessage> BuildRetryPolicy(AgentOptions options)
+{
+    int retryCount = options.RetryCount > 0 ? options.RetryCount : 3;
+    int baseDelay = options.RetryBaseDelaySeconds > 0 ? options.RetryBaseDelaySeconds : 2;
+
+    return HttpPolicyExtensions
+        .HandleTransientHttpError()
+        .WaitAndRetryAsync(
+            retryCount,
+            attempt => TimeSpan.FromSeconds(Math.Pow(baseDelay, attempt)),
+            onRetry: (outcome, timeSpan, attempt, _) =>
+            {
+                Log.Warning(
+                    "retry {Attempt}/{Max} after {Delay:F1}s (reason: {Reason})",
+                    attempt, retryCount, timeSpan.TotalSeconds,
+                    outcome.Exception?.Message ?? outcome.Result?.StatusCode.ToString());
+            });
 }
 
 /// <summary>Marker type used as the logging category for the Agent application.</summary>
-public sealed class AgentApp
-{
-}
+public sealed class AgentApp { }
