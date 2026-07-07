@@ -344,7 +344,7 @@ public sealed class MachinesController : ControllerBase
             if (root.TryGetProperty("sections", out var sections)
                 && sections.TryGetProperty(name, out var sec)
                 && sec.TryGetProperty("status", out var st)
-                && st.GetString() == "ok"
+                && st.GetString() is "ok" or "partial"
                 && sec.TryGetProperty("data", out var data))
                 return data;
             return null;
@@ -487,23 +487,123 @@ public sealed class MachinesController : ControllerBase
             }
         }
 
+        // System info (domain, uptime)
+        SystemInfoSummary? sysInfo = null;
+        if (GetSection("system") is { } sysEl)
+        {
+            sysInfo = new SystemInfoSummary
+            {
+                UserName      = TryGetString(sysEl, "userName"),
+                Domain        = TryGetString(sysEl, "domainOrWorkgroup"),
+                UptimeSeconds = sysEl.TryGetProperty("uptimeSeconds", out var up)
+                                && up.TryGetInt64(out long upVal) ? upVal : null
+            };
+        }
+
+        // Network (adapters, IP, MAC, gateway, DNS)
+        NetworkSummary? network = null;
+        if (GetSection("network") is { } netEl
+            && netEl.TryGetProperty("adapters", out var adaptersEl)
+            && adaptersEl.ValueKind == JsonValueKind.Array)
+        {
+            var adapters = new List<NetworkAdapterSummary>();
+            foreach (JsonElement a in adaptersEl.EnumerateArray())
+            {
+                var dns = new List<string>();
+                if (a.TryGetProperty("dns", out var dnsArr) && dnsArr.ValueKind == JsonValueKind.Array)
+                    foreach (JsonElement d in dnsArr.EnumerateArray())
+                        if (d.GetString() is { } dnsEntry) dns.Add(dnsEntry);
+
+                adapters.Add(new NetworkAdapterSummary
+                {
+                    Name    = TryGetString(a, "name"),
+                    Mac     = TryGetString(a, "mac"),
+                    IPv4    = TryGetString(a, "ipv4"),
+                    Gateway = TryGetString(a, "gateway"),
+                    Dns     = dns.Count > 0 ? dns.ToArray() : null
+                });
+            }
+            network = new NetworkSummary { Adapters = adapters };
+        }
+
+        // COM ports
+        List<ComPortSummary>? comPorts = null;
+        if (GetSection("comPorts") is { } comEl && comEl.ValueKind == JsonValueKind.Array)
+        {
+            comPorts = new List<ComPortSummary>();
+            foreach (JsonElement c in comEl.EnumerateArray())
+            {
+                comPorts.Add(new ComPortSummary
+                {
+                    Port       = TryGetString(c, "port"),
+                    DeviceName = TryGetString(c, "deviceName")
+                });
+            }
+        }
+
+        // Recent event log entries (max 10, errors and warnings first)
+        List<EventLogEntrySummary>? eventLogs = null;
+        if (GetSection("eventLogs") is { } evEl && evEl.ValueKind == JsonValueKind.Array)
+        {
+            eventLogs = new List<EventLogEntrySummary>();
+            int taken = 0;
+            foreach (JsonElement e in evEl.EnumerateArray())
+            {
+                if (taken >= 10) break;
+                eventLogs.Add(new EventLogEntrySummary
+                {
+                    Log     = TryGetString(e, "log"),
+                    Source  = TryGetString(e, "source"),
+                    EventId = e.TryGetProperty("eventId", out var eid) && eid.TryGetInt32(out int eidVal) ? eidVal : null,
+                    Level   = TryGetString(e, "level"),
+                    TimeUtc = e.TryGetProperty("timeUtc", out var tProp)
+                              && tProp.TryGetDateTimeOffset(out DateTimeOffset dto)
+                              ? dto.UtcDateTime : null,
+                    Message = TryGetString(e, "message")
+                });
+                taken++;
+            }
+        }
+
+        // Installed software
+        List<InstalledSoftwareItemSummary>? software = null;
+        if (GetSection("installedSoftware") is { } swEl && swEl.ValueKind == JsonValueKind.Array)
+        {
+            software = new List<InstalledSoftwareItemSummary>();
+            foreach (JsonElement s in swEl.EnumerateArray())
+            {
+                software.Add(new InstalledSoftwareItemSummary
+                {
+                    Name        = TryGetString(s, "name"),
+                    Version     = TryGetString(s, "version"),
+                    Publisher   = TryGetString(s, "publisher"),
+                    InstallDate = TryGetString(s, "installDate")
+                });
+            }
+        }
+
         return new MachineSummaryDto
         {
-            MachineId      = machine.MachineId,
-            ComputerName   = machine.ComputerName,
-            FirstSeenUtc   = machine.FirstSeenUtc,
-            LastSeenUtc    = machine.LastSeenUtc,
-            LastSnapshotId = snapshot.SnapshotId,
-            CollectedAtUtc = snapshot.CollectedAtUtc,
-            Os             = os,
-            YarpaVersion   = yarpa,
-            Hardware       = hardware,
-            Disks          = disks,
-            SqlServer      = sql,
-            PaymentTerminals = terminals,
-            Printers       = printers,
-            UsbDevices     = usbDevices,
-            OpenAlertCount = openAlertCount
+            MachineId         = machine.MachineId,
+            ComputerName      = machine.ComputerName,
+            FirstSeenUtc      = machine.FirstSeenUtc,
+            LastSeenUtc       = machine.LastSeenUtc,
+            LastSnapshotId    = snapshot.SnapshotId,
+            CollectedAtUtc    = snapshot.CollectedAtUtc,
+            Os                = os,
+            YarpaVersion      = yarpa,
+            Hardware          = hardware,
+            Disks             = disks,
+            SqlServer         = sql,
+            PaymentTerminals  = terminals,
+            Printers          = printers,
+            UsbDevices        = usbDevices,
+            SystemInfo        = sysInfo,
+            Network           = network,
+            ComPorts          = comPorts,
+            RecentEventLogs   = eventLogs,
+            InstalledSoftware = software,
+            OpenAlertCount    = openAlertCount
         };
     }
 
@@ -543,14 +643,19 @@ public sealed class MachineSummaryDto
     public DateTime? CollectedAtUtc { get; init; }
     public int       OpenAlertCount { get; init; }
 
-    public OsSummary?             Os               { get; init; }
-    public YarpaVersionSummary?   YarpaVersion     { get; init; }
-    public HardwareSummary?       Hardware         { get; init; }
-    public List<DiskSummary>?     Disks            { get; init; }
-    public SqlServerSummary?      SqlServer        { get; init; }
-    public List<PaymentTerminalSummary>? PaymentTerminals { get; init; }
-    public List<PrinterSummary>?  Printers         { get; init; }
-    public List<UsbDeviceSummary>? UsbDevices      { get; init; }
+    public OsSummary?                        Os                { get; init; }
+    public YarpaVersionSummary?              YarpaVersion      { get; init; }
+    public HardwareSummary?                  Hardware          { get; init; }
+    public List<DiskSummary>?                Disks             { get; init; }
+    public SqlServerSummary?                 SqlServer         { get; init; }
+    public List<PaymentTerminalSummary>?     PaymentTerminals  { get; init; }
+    public List<PrinterSummary>?             Printers          { get; init; }
+    public List<UsbDeviceSummary>?           UsbDevices        { get; init; }
+    public SystemInfoSummary?                SystemInfo        { get; init; }
+    public NetworkSummary?                   Network           { get; init; }
+    public List<ComPortSummary>?             ComPorts          { get; init; }
+    public List<EventLogEntrySummary>?       RecentEventLogs   { get; init; }
+    public List<InstalledSoftwareItemSummary>? InstalledSoftware { get; init; }
 }
 
 public sealed class OsSummary
@@ -624,6 +729,51 @@ public sealed class UsbDeviceSummary
     public string? Pid          { get; init; }
     public string? DeviceClass  { get; init; }
     public string? Manufacturer { get; init; }
+}
+
+public sealed class SystemInfoSummary
+{
+    public string? UserName      { get; init; }
+    public string? Domain        { get; init; }
+    public long?   UptimeSeconds { get; init; }
+}
+
+public sealed class NetworkSummary
+{
+    public List<NetworkAdapterSummary> Adapters { get; init; } = new();
+}
+
+public sealed class NetworkAdapterSummary
+{
+    public string?   Name    { get; init; }
+    public string?   Mac     { get; init; }
+    public string?   IPv4    { get; init; }
+    public string?   Gateway { get; init; }
+    public string[]? Dns     { get; init; }
+}
+
+public sealed class ComPortSummary
+{
+    public string? Port       { get; init; }
+    public string? DeviceName { get; init; }
+}
+
+public sealed class EventLogEntrySummary
+{
+    public string?   Log     { get; init; }
+    public string?   Source  { get; init; }
+    public int?      EventId { get; init; }
+    public string?   Level   { get; init; }
+    public DateTime? TimeUtc { get; init; }
+    public string?   Message { get; init; }
+}
+
+public sealed class InstalledSoftwareItemSummary
+{
+    public string? Name        { get; init; }
+    public string? Version     { get; init; }
+    public string? Publisher   { get; init; }
+    public string? InstallDate { get; init; }
 }
 
 // Snapshots list

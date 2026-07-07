@@ -37,10 +37,13 @@ public partial class MachineDetail
     private bool   _rawSnapshotLoading;
     private string? _rawSnapshot;
 
+    private bool _softwareExpanded;
+
     // ── Computed CSS class strings (avoids nested quotes in template) ──────────
-    internal string SummaryTabCss    => _activeTab == "summary"  ? "nav-link active" : "nav-link";
-    internal string TimelineTabCss   => _activeTab == "timeline" ? "nav-link active" : "nav-link";
-    internal string AlertsTabCss     => _activeTab == "alerts"   ? "nav-link active" : "nav-link";
+    internal string SummaryTabCss    => _activeTab == "summary"   ? "nav-link active" : "nav-link";
+    internal string TimelineTabCss   => _activeTab == "timeline"  ? "nav-link active" : "nav-link";
+    internal string AlertsTabCss     => _activeTab == "alerts"    ? "nav-link active" : "nav-link";
+    internal string EventLogsTabCss  => _activeTab == "eventlogs" ? "nav-link active" : "nav-link";
 
     internal string OpenBtnCss       => _alertState == "open"     ? "btn btn-sm btn-primary" : "btn btn-sm btn-outline-secondary";
     internal string ResolvedBtnCss   => _alertState == "resolved" ? "btn btn-sm btn-primary" : "btn btn-sm btn-outline-secondary";
@@ -153,6 +156,8 @@ public partial class MachineDetail
         _rawSnapshot        = null;
     }
 
+    internal void ToggleSoftware() => _softwareExpanded = !_softwareExpanded;
+
     // ── Display helpers ───────────────────────────────────────────────────────
     internal static string FormatRam(long? mb)
     {
@@ -162,6 +167,14 @@ public partial class MachineDetail
 
     internal static string FormatGb(double? gb)
         => gb.HasValue ? $"{gb.Value:F1} GB" : "—";
+
+    internal static string FormatUptime(long seconds)
+    {
+        var ts = TimeSpan.FromSeconds(seconds);
+        if (ts.TotalDays >= 1)
+            return $"{(int)ts.TotalDays} ימים, {ts.Hours:D2}:{ts.Minutes:D2}";
+        return $"{ts.Hours:D2}:{ts.Minutes:D2}:{ts.Seconds:D2}";
+    }
 
     internal static string DiskBarColor(double freePercent)
     {
@@ -173,8 +186,17 @@ public partial class MachineDetail
     internal static string DiskUsedWidthStyle(double freePercent)
         => $"width: {(100.0 - freePercent):F1}%";
 
-    internal static string Truncate(string? v)
-        => v is { Length: > 120 } ? v[..120] + "…" : (v ?? string.Empty);
+    internal static string EventLogLevelCss(string? level) => level?.ToLowerInvariant() switch
+    {
+        "error"       => "badge bg-danger",
+        "critical"    => "badge bg-danger",
+        "warning"     => "badge bg-warning text-dark",
+        "information" => "badge bg-info text-dark",
+        _             => "badge bg-secondary"
+    };
+
+    internal static string Truncate(string? v, int maxLen = 120)
+        => v is not null && v.Length > maxLen ? v[..maxLen] + "…" : (v ?? string.Empty);
 
     internal static string ChangeTypeLabel(string t) => t switch
     {

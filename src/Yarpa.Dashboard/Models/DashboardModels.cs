@@ -34,14 +34,19 @@ public sealed class MachineSummary
     [JsonPropertyName("collectedAtUtc")]   public DateTime? CollectedAtUtc { get; init; }
     [JsonPropertyName("openAlertCount")]   public int      OpenAlertCount { get; init; }
 
-    [JsonPropertyName("os")]               public OsSummary?            Os               { get; init; }
-    [JsonPropertyName("yarpaVersion")]     public YarpaVersionSummary?  YarpaVersion     { get; init; }
-    [JsonPropertyName("hardware")]         public HardwareSummary?      Hardware         { get; init; }
-    [JsonPropertyName("disks")]            public List<DiskSummary>?    Disks            { get; init; }
-    [JsonPropertyName("sqlServer")]        public SqlServerSummary?     SqlServer        { get; init; }
-    [JsonPropertyName("paymentTerminals")] public List<PaymentTerminalSummary>? PaymentTerminals { get; init; }
-    [JsonPropertyName("printers")]         public List<PrinterSummary>? Printers         { get; init; }
-    [JsonPropertyName("usbDevices")]       public List<UsbDeviceSummary>? UsbDevices     { get; init; }
+    [JsonPropertyName("os")]               public OsSummary?                          Os                { get; init; }
+    [JsonPropertyName("yarpaVersion")]     public YarpaVersionSummary?                YarpaVersion      { get; init; }
+    [JsonPropertyName("hardware")]         public HardwareSummary?                    Hardware          { get; init; }
+    [JsonPropertyName("disks")]            public List<DiskSummary>?                  Disks             { get; init; }
+    [JsonPropertyName("sqlServer")]        public SqlServerSummary?                   SqlServer         { get; init; }
+    [JsonPropertyName("paymentTerminals")] public List<PaymentTerminalSummary>?       PaymentTerminals  { get; init; }
+    [JsonPropertyName("printers")]         public List<PrinterSummary>?               Printers          { get; init; }
+    [JsonPropertyName("usbDevices")]       public List<UsbDeviceSummary>?             UsbDevices        { get; init; }
+    [JsonPropertyName("systemInfo")]       public SystemInfoSummary?                  SystemInfo        { get; init; }
+    [JsonPropertyName("network")]          public NetworkSummary?                     Network           { get; init; }
+    [JsonPropertyName("comPorts")]         public List<ComPortSummary>?               ComPorts          { get; init; }
+    [JsonPropertyName("recentEventLogs")]  public List<EventLogEntrySummary>?         RecentEventLogs   { get; init; }
+    [JsonPropertyName("installedSoftware")]public List<InstalledSoftwareItemSummary>? InstalledSoftware { get; init; }
 }
 
 public sealed class OsSummary
@@ -115,6 +120,51 @@ public sealed class UsbDeviceSummary
     [JsonPropertyName("pid")]          public string? Pid          { get; init; }
     [JsonPropertyName("deviceClass")]  public string? DeviceClass  { get; init; }
     [JsonPropertyName("manufacturer")] public string? Manufacturer { get; init; }
+}
+
+public sealed class SystemInfoSummary
+{
+    [JsonPropertyName("userName")]      public string? UserName      { get; init; }
+    [JsonPropertyName("domain")]        public string? Domain        { get; init; }
+    [JsonPropertyName("uptimeSeconds")] public long?   UptimeSeconds { get; init; }
+}
+
+public sealed class NetworkSummary
+{
+    [JsonPropertyName("adapters")] public List<NetworkAdapterSummary> Adapters { get; init; } = new();
+}
+
+public sealed class NetworkAdapterSummary
+{
+    [JsonPropertyName("name")]    public string?   Name    { get; init; }
+    [JsonPropertyName("mac")]     public string?   Mac     { get; init; }
+    [JsonPropertyName("ipv4")]    public string?   IPv4    { get; init; }
+    [JsonPropertyName("gateway")] public string?   Gateway { get; init; }
+    [JsonPropertyName("dns")]     public string[]? Dns     { get; init; }
+}
+
+public sealed class ComPortSummary
+{
+    [JsonPropertyName("port")]       public string? Port       { get; init; }
+    [JsonPropertyName("deviceName")] public string? DeviceName { get; init; }
+}
+
+public sealed class EventLogEntrySummary
+{
+    [JsonPropertyName("log")]     public string?   Log     { get; init; }
+    [JsonPropertyName("source")]  public string?   Source  { get; init; }
+    [JsonPropertyName("eventId")] public int?      EventId { get; init; }
+    [JsonPropertyName("level")]   public string?   Level   { get; init; }
+    [JsonPropertyName("timeUtc")] public DateTime? TimeUtc { get; init; }
+    [JsonPropertyName("message")] public string?   Message { get; init; }
+}
+
+public sealed class InstalledSoftwareItemSummary
+{
+    [JsonPropertyName("name")]        public string? Name        { get; init; }
+    [JsonPropertyName("version")]     public string? Version     { get; init; }
+    [JsonPropertyName("publisher")]   public string? Publisher   { get; init; }
+    [JsonPropertyName("installDate")] public string? InstallDate { get; init; }
 }
 
 // ── Snapshots list ────────────────────────────────────────────────────────────

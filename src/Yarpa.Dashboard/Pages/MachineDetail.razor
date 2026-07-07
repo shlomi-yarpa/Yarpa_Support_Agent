@@ -49,6 +49,15 @@
                 }
             </button>
         </li>
+        <li class="nav-item">
+            <button class="@EventLogsTabCss" @onclick='() => SetTab("eventlogs")'>
+                <i class="bi bi-journal-text me-1"></i>Event Log
+                @if (_summary?.RecentEventLogs != null && _summary.RecentEventLogs.Count > 0)
+                {
+                    <span class="badge bg-warning text-dark rounded-pill ms-1">@_summary.RecentEventLogs.Count</span>
+                }
+            </button>
+        </li>
     </ul>
 
     <!-- Error banner -->
@@ -311,6 +320,129 @@
                         </div>
                     </div>
 
+                    <!-- Network -->
+                    <div class="col-md-6 col-xl-4">
+                        <div class="card summary-card h-100">
+                            <div class="card-header bg-primary text-white">
+                                <i class="bi bi-ethernet me-2"></i>רשת
+                            </div>
+                            <div class="card-body">
+                                @if (_summary.Network != null && _summary.Network.Adapters.Count > 0)
+                                {
+                                    @foreach (var adapter in _summary.Network.Adapters)
+                                    {
+                                        <div class="mb-3">
+                                            <div class="fw-semibold small mb-1">@(adapter.Name ?? "כרטיס רשת")</div>
+                                            <SummaryRow Label="IP"      Value="@adapter.IPv4" Bold="true" />
+                                            <SummaryRow Label="MAC"     Value="@adapter.Mac" />
+                                            <SummaryRow Label="Gateway" Value="@adapter.Gateway" />
+                                            @if (adapter.Dns != null && adapter.Dns.Length > 0)
+                                            {
+                                                <SummaryRow Label="DNS" Value="@string.Join(", ", adapter.Dns)" />
+                                            }
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="text-muted small">מידע לא זמין</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- System info (domain, uptime) -->
+                    <div class="col-md-6 col-xl-4">
+                        <div class="card summary-card h-100">
+                            <div class="card-header bg-secondary text-white">
+                                <i class="bi bi-building me-2"></i>מידע מערכת
+                            </div>
+                            <div class="card-body">
+                                @if (_summary.SystemInfo != null)
+                                {
+                                    <SummaryRow Label="משתמש"  Value="@_summary.SystemInfo.UserName" />
+                                    <SummaryRow Label="Domain" Value="@_summary.SystemInfo.Domain" Bold="true" />
+                                    @if (_summary.SystemInfo.UptimeSeconds.HasValue)
+                                    {
+                                        <SummaryRow Label="Uptime" Value="@FormatUptime(_summary.SystemInfo.UptimeSeconds.Value)" />
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="text-muted small">מידע לא זמין</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- COM Ports -->
+                    <div class="col-md-6 col-xl-4">
+                        <div class="card summary-card h-100">
+                            <div class="card-header bg-light border-bottom">
+                                <i class="bi bi-plug me-2"></i>פורטים טוריים (COM)
+                            </div>
+                            <div class="card-body">
+                                @if (_summary.ComPorts != null && _summary.ComPorts.Count > 0)
+                                {
+                                    @foreach (var cp in _summary.ComPorts)
+                                    {
+                                        <div class="d-flex align-items-center gap-2 mb-1 small">
+                                            <span class="badge bg-secondary">@(cp.Port ?? "COM")</span>
+                                            <span class="text-muted">@(cp.DeviceName ?? "—")</span>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="text-muted small">לא נמצאו פורטים טוריים</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Installed Software (collapsible) -->
+                    <div class="col-12">
+                        <div class="card summary-card">
+                            <div class="card-header bg-light border-bottom d-flex align-items-center justify-content-between"
+                                 style="cursor:pointer" @onclick="ToggleSoftware">
+                                <span>
+                                    <i class="bi bi-box-seam me-2"></i>תוכנות מותקנות
+                                    @if (_summary.InstalledSoftware != null)
+                                    {
+                                        <span class="badge bg-secondary rounded-pill ms-1">@_summary.InstalledSoftware.Count</span>
+                                    }
+                                </span>
+                                <i class="@(_softwareExpanded ? "bi bi-chevron-up" : "bi bi-chevron-down")"></i>
+                            </div>
+                            @if (_softwareExpanded && _summary.InstalledSoftware != null && _summary.InstalledSoftware.Count > 0)
+                            {
+                                <div class="card-body p-0">
+                                    <table class="table table-sm table-hover mb-0">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>שם</th>
+                                                <th>גרסה</th>
+                                                <th>מפרסם</th>
+                                                <th>תאריך התקנה</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var sw in _summary.InstalledSoftware)
+                                            {
+                                                <tr>
+                                                    <td class="small">@(sw.Name ?? "—")</td>
+                                                    <td class="small text-muted font-monospace">@(sw.Version ?? "—")</td>
+                                                    <td class="small text-muted">@(sw.Publisher ?? "—")</td>
+                                                    <td class="small text-muted">@(sw.InstallDate ?? "—")</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
                     <!-- Last update bar -->
                     <div class="col-12">
                         <div class="card border-0 bg-white">
@@ -419,6 +551,61 @@
                         </div>
                     </div>
                 }
+            }
+        }
+
+        <!-- ── EVENT LOGS TAB ── -->
+        @if (_activeTab == "eventlogs")
+        {
+            @if (_summary?.RecentEventLogs == null || _summary.RecentEventLogs.Count == 0)
+            {
+                <div class="text-center py-5 text-muted">
+                    <i class="bi bi-journal-check fs-1 d-block mb-2 text-success"></i>
+                    לא נמצאו רשומות Event Log עבור Snapshot זה.
+                </div>
+            }
+            else
+            {
+                <div class="mb-3 d-flex align-items-center justify-content-between">
+                    <span class="text-muted small">
+                        מציג @_summary.RecentEventLogs.Count רשומות אחרונות מה-Snapshot
+                    </span>
+                </div>
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-0">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>רמה</th>
+                                    <th>מקור</th>
+                                    <th>Event ID</th>
+                                    <th>זמן</th>
+                                    <th>הודעה</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var entry in _summary.RecentEventLogs)
+                                {
+                                    <tr>
+                                        <td>
+                                            <span class="@EventLogLevelCss(entry.Level)">
+                                                @(entry.Level ?? "—")
+                                            </span>
+                                        </td>
+                                        <td class="small fw-semibold">@(entry.Source ?? "—")</td>
+                                        <td class="small text-muted font-monospace">@(entry.EventId?.ToString() ?? "—")</td>
+                                        <td class="small text-muted text-nowrap">
+                                            @(entry.TimeUtc.HasValue ? entry.TimeUtc.Value.ToString("dd/MM/yyyy HH:mm") : "—")
+                                        </td>
+                                        <td class="small" style="max-width:400px">
+                                            <span title="@entry.Message">@Truncate(entry.Message, 120)</span>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             }
         }
 
