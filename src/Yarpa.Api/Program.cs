@@ -4,6 +4,8 @@ using Serilog;
 using Yarpa.Api.Data;
 using Yarpa.Api.Middleware;
 using Yarpa.Api.Services;
+using Yarpa.Api.Services.Alerts;
+using Yarpa.Api.Services.Alerts.Rules;
 using Yarpa.Api.Validation;
 using Yarpa.Contracts;
 
@@ -37,14 +39,30 @@ try
     // ── FluentValidation ─────────────────────────────────────────────────────
     builder.Services.AddScoped<IValidator<DiagnosticsSnapshot>, DiagnosticsSnapshotValidator>();
 
-    // ── Comparison options (configurable thresholds) ──────────────────────────
+    // ── Comparison + Alert options (configurable thresholds) ──────────────────
     builder.Services.Configure<ComparisonOptions>(
         builder.Configuration.GetSection("Comparison"));
+    builder.Services.Configure<AlertOptions>(
+        builder.Configuration.GetSection("Alerts"));
 
     // ── Application services ──────────────────────────────────────────────────
     builder.Services.AddScoped<IClientResolver, ClientResolver>();
     builder.Services.AddScoped<ISnapshotComparer, SnapshotComparer>();
     builder.Services.AddScoped<ISnapshotStore, SnapshotStore>();
+
+    // ── Alert engine + modular rules (order defines evaluation order) ──────────
+    builder.Services.AddScoped<IAlertRule, ServiceDownRule>();
+    builder.Services.AddScoped<IAlertRule, SqlNotRunningRule>();
+    builder.Services.AddScoped<IAlertRule, DiskAlmostFullRule>();
+    builder.Services.AddScoped<IAlertRule, PaymentTerminalMissingRule>();
+    builder.Services.AddScoped<IAlertRule, OldSoftwareVersionRule>();
+    builder.Services.AddScoped<IAlertRule, CollectorErrorRule>();
+    builder.Services.AddScoped<IAlertEngine, AlertEngine>();
+    builder.Services.AddScoped<INoRecentContactChecker, NoRecentContactChecker>();
+
+    // ── Periodic no-recent-contact scan (skipped under the Testing environment) ─
+    if (!builder.Environment.IsEnvironment("Testing"))
+        builder.Services.AddHostedService<NoRecentContactHostedService>();
 
     WebApplication app = builder.Build();
 

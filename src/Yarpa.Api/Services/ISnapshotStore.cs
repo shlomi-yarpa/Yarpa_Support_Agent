@@ -9,10 +9,10 @@ public sealed class SnapshotStoreResult
     public Guid SnapshotId { get; init; }
     public string MachineId { get; init; } = string.Empty;
 
-    /// <summary>Number of detected changes (always 0 in Stage 1; populated in Stage 3).</summary>
+    /// <summary>Number of detected changes produced by this snapshot.</summary>
     public int Changes { get; init; }
 
-    /// <summary>Number of active alerts (always 0 in Stage 1; populated in Stage 4).</summary>
+    /// <summary>Number of alerts currently open for the machine after processing this snapshot.</summary>
     public int Alerts { get; init; }
 
     /// <summary>True when this snapshot was newly stored; false when it already existed (idempotent re-send).</summary>

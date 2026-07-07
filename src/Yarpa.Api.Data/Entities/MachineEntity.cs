@@ -25,4 +25,5 @@ public sealed class MachineEntity
     public CustomerEntity Customer { get; set; } = null!;
     public ICollection<SnapshotEntity> Snapshots { get; set; } = new List<SnapshotEntity>();
     public ICollection<ChangeEntity> Changes { get; set; } = new List<ChangeEntity>();
+    public ICollection<AlertEntity> Alerts { get; set; } = new List<AlertEntity>();
 }

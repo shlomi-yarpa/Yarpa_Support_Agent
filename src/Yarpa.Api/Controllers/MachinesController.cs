@@ -76,6 +76,80 @@ public sealed class MachinesController : ControllerBase
 
         return Ok(dto);
     }
+
+    /// <summary>
+    /// Returns a paged list of alerts for a machine, ordered by severity (critical first)
+    /// then newest-first. GET /api/v1/machines/{machineId}/alerts?state=open&amp;page=1&amp;pageSize=50
+    /// The state filter accepts "open" (default), "resolved", or "all".
+    /// </summary>
+    [HttpGet("{machineId}/alerts")]
+    [ProducesResponseType(typeof(AlertsPageDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetAlerts(
+        string machineId,
+        [FromQuery] string state = "open",
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 50,
+        CancellationToken ct = default)
+    {
+        if (page < 1) page = 1;
+        if (pageSize is < 1 or > 200) pageSize = 50;
+
+        string normalizedState = (state ?? "open").Trim().ToLowerInvariant();
+
+        var customer = (CustomerEntity)HttpContext.Items["Customer"]!;
+
+        bool machineExists = await _db.Machines
+            .AnyAsync(m => m.MachineId == machineId && m.CustomerId == customer.CustomerId, ct);
+
+        if (!machineExists)
+            return NotFound(new { error = $"machine '{machineId}' not found" });
+
+        IQueryable<AlertEntity> query = _db.Alerts.Where(a => a.MachineId == machineId);
+
+        query = normalizedState switch
+        {
+            "open"     => query.Where(a => a.State == AlertState.Open),
+            "resolved" => query.Where(a => a.State == AlertState.Resolved),
+            _          => query // "all" / anything else → no state filter
+        };
+
+        int totalCount = await query.CountAsync(ct);
+
+        // Severity rank: critical (0) → warning (1) → info (2) → other (3); then newest first.
+        List<AlertEntity> items = await query
+            .OrderBy(a => a.Severity == AlertSeverity.Critical ? 0
+                        : a.Severity == AlertSeverity.Warning ? 1
+                        : a.Severity == AlertSeverity.Info ? 2 : 3)
+            .ThenByDescending(a => a.CreatedAtUtc)
+            .ThenByDescending(a => a.AlertId)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(ct);
+
+        var dto = new AlertsPageDto
+        {
+            MachineId  = machineId,
+            State      = normalizedState,
+            TotalCount = totalCount,
+            Page       = page,
+            PageSize   = pageSize,
+            Items      = items.ConvertAll(a => new AlertDto
+            {
+                AlertId          = a.AlertId,
+                AlertType        = a.AlertType,
+                Severity         = a.Severity,
+                Message          = a.Message,
+                State            = a.State,
+                CreatedAtUtc     = a.CreatedAtUtc,
+                ResolvedAtUtc    = a.ResolvedAtUtc,
+                SourceSnapshotId = a.SourceSnapshotId,
+                SourceChangeId   = a.SourceChangeId
+            })
+        };
+
+        return Ok(dto);
+    }
 }
 
 // ── Response DTOs ─────────────────────────────────────────────────────────────
@@ -98,4 +172,27 @@ public sealed class ChangeDto
     public string?  NewValue      { get; init; }
     public DateTime DetectedAtUtc { get; init; }
     public Guid     SnapshotId    { get; init; }
+}
+
+public sealed class AlertsPageDto
+{
+    public string MachineId  { get; init; } = string.Empty;
+    public string State      { get; init; } = string.Empty;
+    public int    TotalCount { get; init; }
+    public int    Page       { get; init; }
+    public int    PageSize   { get; init; }
+    public List<AlertDto> Items { get; init; } = new();
+}
+
+public sealed class AlertDto
+{
+    public long      AlertId          { get; init; }
+    public string    AlertType        { get; init; } = string.Empty;
+    public string    Severity         { get; init; } = string.Empty;
+    public string    Message          { get; init; } = string.Empty;
+    public string    State            { get; init; } = string.Empty;
+    public DateTime  CreatedAtUtc     { get; init; }
+    public DateTime? ResolvedAtUtc    { get; init; }
+    public Guid?     SourceSnapshotId { get; init; }
+    public long?     SourceChangeId   { get; init; }
 }

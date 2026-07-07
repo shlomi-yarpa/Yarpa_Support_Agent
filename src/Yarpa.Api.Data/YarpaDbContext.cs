@@ -35,6 +35,7 @@ public class YarpaDbContext : DbContext
     public DbSet<MachineEntity> Machines => Set<MachineEntity>();
     public DbSet<SnapshotEntity> Snapshots => Set<SnapshotEntity>();
     public DbSet<ChangeEntity> Changes => Set<ChangeEntity>();
+    public DbSet<AlertEntity> Alerts => Set<AlertEntity>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -129,6 +130,40 @@ public class YarpaDbContext : DbContext
             e.HasOne(c => c.Snapshot)
              .WithMany(s => s.Changes)
              .HasForeignKey(c => c.SnapshotId)
+             .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        // ── AlertEntity ──────────────────────────────────────────────────────
+        modelBuilder.Entity<AlertEntity>(e =>
+        {
+            e.ToTable("Alerts");
+            e.HasKey(a => a.AlertId);
+            e.Property(a => a.MachineId).HasMaxLength(128).IsRequired();
+            e.Property(a => a.AlertType).HasMaxLength(64).IsRequired();
+            e.Property(a => a.Severity).HasMaxLength(20).IsRequired();
+            e.Property(a => a.Message).HasColumnType("nvarchar(max)").IsRequired();
+            e.Property(a => a.State).HasMaxLength(20).IsRequired();
+            e.Property(a => a.CreatedAtUtc).IsRequired();
+            e.Property(a => a.ResolvedAtUtc).IsRequired(false);
+            e.Property(a => a.SourceSnapshotId).IsRequired(false);
+            e.Property(a => a.SourceChangeId).IsRequired(false);
+
+            // Fast lookup of open alerts per machine/type (dedup + resolution reconciliation)
+            e.HasIndex(a => new { a.MachineId, a.AlertType, a.State });
+
+            e.HasOne(a => a.Machine)
+             .WithMany(m => m.Alerts)
+             .HasForeignKey(a => a.MachineId)
+             .OnDelete(DeleteBehavior.Restrict);
+
+            e.HasOne(a => a.SourceSnapshot)
+             .WithMany()
+             .HasForeignKey(a => a.SourceSnapshotId)
+             .OnDelete(DeleteBehavior.Restrict);
+
+            e.HasOne(a => a.SourceChange)
+             .WithMany()
+             .HasForeignKey(a => a.SourceChangeId)
              .OnDelete(DeleteBehavior.Restrict);
         });
 

@@ -161,10 +161,30 @@ GET /api/v1/machines/{machineId}/summary      # תמונת מצב עדכנית (
 GET /api/v1/machines/{machineId}/snapshots    # רשימת snapshots (paged)
 GET /api/v1/snapshots/{snapshotId}            # Snapshot מלא (JSON גולמי)
 GET /api/v1/machines/{machineId}/changes      # Timeline של שינויים (paged)
-GET /api/v1/machines/{machineId}/alerts?state=open
+GET /api/v1/machines/{machineId}/alerts?state=open&page=1&pageSize=50
 ```
 
 כל ה-endpoints לקריאה מחזירים 401 ללא הרשאה מתאימה, ו-404 אם המזהה לא קיים.
+
+#### GET `/api/v1/machines/{machineId}/alerts`
+
+פרמטרים ב-query:
+- `state` – `open` (ברירת מחדל) / `resolved` / `all`.
+- `page` (ברירת מחדל 1), `pageSize` (ברירת מחדל 50, מקסימום 200).
+
+התוצאה ממוינת לפי חומרה (`critical` → `warning` → `info`) ואז מהחדש לישן.
+מבנה התגובה: `{ machineId, state, totalCount, page, pageSize, items: [ { alertId, alertType,
+severity, message, state, createdAtUtc, resolvedAtUtc, sourceSnapshotId, sourceChangeId } ] }`.
+
+### 2.3 Endpoint פנימי לתחזוקה (Alerts)
+
+```
+POST /api/v1/internal/alerts/scan-no-recent-contact
+```
+
+מפעיל את בדיקת ה-NoRecentContact על כל המחשבים (מסמן מחשבים שלא נראו מעל הסף וסוגר התראות
+שחזרו לקשר). הבדיקה רצה גם אוטומטית כ-hosted background service תקופתי. דורש `X-Api-Key` תקין.
+תגובה: `{ raisedCount, resolvedCount, scannedMachines }`.
 
 ## 3. סכמת מסד הנתונים (SQL Server, append-only)
 
@@ -221,14 +241,27 @@ erDiagram
 - `DetectedAtUtc`
 
 **Alerts**
-- `AlertId` (PK)
+- `AlertId` (PK, identity)
 - `MachineId` (FK)
-- `AlertType` (ServiceDown / DiskAlmostFull / PaymentTerminalMissing / ...)
+- `AlertType` (ServiceDown / DiskAlmostFull / PaymentTerminalMissing / SqlNotRunning /
+  OldSoftwareVersion / NoRecentContact / CollectorError)
 - `Severity` (info / warning / critical)
 - `Message` (עברית)
 - `State` (open / resolved)
-- `CreatedAtUtc`, `ResolvedAtUtc`
-- `SourceSnapshotId` (FK), `SourceChangeId` (FK, nullable)
+- `CreatedAtUtc`, `ResolvedAtUtc` (nullable)
+- `SourceSnapshotId` (FK ל-Snapshots, nullable – null עבור NoRecentContact),
+  `SourceChangeId` (FK ל-Changes, nullable)
+- אינדקס על (`MachineId`, `AlertType`, `State`) לצורך dedup וסגירה אוטומטית.
+
+לוגיקת מצב ההתראות (מנוע ה-Alerts בשרת):
+- לכל היותר התראה אחת פתוחה מכל `AlertType` לכל מחשב. אם התנאי חוזר ל-Snapshot הבא —
+  ההתראה הפתוחה נשארת פתוחה (לא נוצרת כפילות).
+- כאשר Snapshot חדש מראה שהתנאי חלף, ההתראה נסגרת (`State = resolved`, `ResolvedAtUtc`).
+- section עם `status = error` אינו מסיק תנאי אמת (למשל SqlNotRunning) — למעט `CollectorError`
+  שההתראה שלו *היא* עצם כשל האיסוף בסקשן קריטי.
+- הספים קונפיגורביליים ב-`appsettings.json` תחת הסקשן `Alerts`: `MinFreeDiskPercent`,
+  `MinFreeDiskGb`, `MinSupportedYarpaVersion`, `NoRecentContactDays`,
+  `NoRecentContactScanIntervalMinutes`, `MonitoredServiceNames`, `CriticalSections`.
 
 ### עקרונות DB
 

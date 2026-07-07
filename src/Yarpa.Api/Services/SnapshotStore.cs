@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using System.Text.Json;
 using Yarpa.Api.Data;
 using Yarpa.Api.Data.Entities;
+using Yarpa.Api.Services.Alerts;
 using Yarpa.Contracts;
 
 namespace Yarpa.Api.Services;
@@ -10,22 +11,25 @@ namespace Yarpa.Api.Services;
 /// <summary>
 /// Stores a snapshot append-only and extracts decoded columns for fast querying.
 /// A snapshot that already exists (same SnapshotId) is silently ignored (idempotency).
-/// After storing a new snapshot the comparer runs and detected changes are persisted
-/// in the same database transaction.
+/// After storing a new snapshot the comparer runs, then the alert engine evaluates the
+/// snapshot and detected changes; changes and alerts are persisted in the same transaction.
 /// </summary>
 public sealed class SnapshotStore : ISnapshotStore
 {
     private readonly YarpaDbContext _db;
     private readonly ISnapshotComparer _comparer;
+    private readonly IAlertEngine _alertEngine;
     private readonly ILogger<SnapshotStore> _logger;
 
     public SnapshotStore(
         YarpaDbContext db,
         ISnapshotComparer comparer,
+        IAlertEngine alertEngine,
         ILogger<SnapshotStore> logger)
     {
         _db = db;
         _comparer = comparer;
+        _alertEngine = alertEngine;
         _logger = logger;
     }
 
@@ -45,15 +49,19 @@ public sealed class SnapshotStore : ISnapshotStore
                 "snapshot {SnapshotId} already stored; skipping (idempotent re-send)",
                 snapshot.SnapshotId);
 
-            // Return existing change count for this snapshot so callers get accurate data
+            // Return existing change/alert counts for this machine so callers get accurate data
             int existingChanges = await _db.Changes
                 .CountAsync(c => c.SnapshotId == snapshot.SnapshotId, ct);
+
+            int existingOpenAlerts = await _db.Alerts
+                .CountAsync(a => a.MachineId == machine.MachineId && a.State == AlertState.Open, ct);
 
             return new SnapshotStoreResult
             {
                 SnapshotId = snapshot.SnapshotId,
                 MachineId = machine.MachineId,
                 Changes = existingChanges,
+                Alerts = existingOpenAlerts,
                 IsNew = false
             };
         }
@@ -108,17 +116,21 @@ public sealed class SnapshotStore : ISnapshotStore
                 machine.ComputerName = name;
         }
 
+        // ── Run alert engine (raises/resolves alerts; staged on the same context) ──
+        AlertEngineResult alertResult = await _alertEngine.EvaluateAsync(snapshot, machine, changes, ct);
+
         await _db.SaveChangesAsync(ct);
 
         _logger.LogInformation(
-            "stored snapshot {SnapshotId} for machine {MachineId} with {Changes} change(s)",
-            snapshot.SnapshotId, machine.MachineId, changes.Count);
+            "stored snapshot {SnapshotId} for machine {MachineId} with {Changes} change(s) and {OpenAlerts} open alert(s)",
+            snapshot.SnapshotId, machine.MachineId, changes.Count, alertResult.OpenAlertCount);
 
         return new SnapshotStoreResult
         {
             SnapshotId = snapshot.SnapshotId,
             MachineId = machine.MachineId,
             Changes = changes.Count,
+            Alerts = alertResult.OpenAlertCount,
             IsNew = true
         };
     }
