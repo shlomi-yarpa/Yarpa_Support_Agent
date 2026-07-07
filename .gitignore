@@ -5,6 +5,9 @@
 [Ll]og/
 [Ll]ogs/
 
+# Published Agent artifacts (self-contained single-file output)
+dist/
+
 # .NET
 project.lock.json
 project.fragment.lock.json

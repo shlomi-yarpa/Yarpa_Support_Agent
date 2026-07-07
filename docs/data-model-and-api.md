@@ -151,7 +151,8 @@ Body:    DiagnosticsSnapshot (JSON)
 - `200 OK` – התקבל אך זהה ל-`snapshotId` קיים (idempotent, לא נשמר שוב).
 - `400 Bad Request` – JSON לא תקין / חסרים שדות חובה.
 - `401 Unauthorized` – API Key לא תקין.
-- `413 Payload Too Large` – חריגה מגודל מרבי.
+- `413 Payload Too Large` – חריגה מגודל מרבי (`Security.MaxRequestBodyBytes`, ברירת מחדל 5MB).
+- `429 Too Many Requests` – חריגה מ-rate limit לכל API Key (`Security.RateLimit`).
 
 ### 2.2 Endpoints לקריאה (עבור ה-CRM Dashboard)
 
@@ -185,6 +186,25 @@ POST /api/v1/internal/alerts/scan-no-recent-contact
 מפעיל את בדיקת ה-NoRecentContact על כל המחשבים (מסמן מחשבים שלא נראו מעל הסף וסוגר התראות
 שחזרו לקשר). הבדיקה רצה גם אוטומטית כ-hosted background service תקופתי. דורש `X-Api-Key` תקין.
 תגובה: `{ raisedCount, resolvedCount, scannedMachines }`.
+
+```
+POST /api/v1/internal/retention/run
+```
+
+מפעיל ידנית את job ה-retention (גיזום snapshots גולמיים ישנים לפי מדיניות `Retention`).
+רץ גם אוטומטית כ-hosted background service תקופתי (כשמאופשר). דורש `X-Api-Key` תקין.
+תגובה: `{ enabled, cutoffUtc, olderThanCutoff, protected, deleted }`.
+
+### 2.4 Endpoints תפעוליים (ניטור — ללא אימות)
+
+```
+GET /health         # liveness: { "status": "ok" }
+GET /health/ready   # readiness: בדיקת חיבור DB; 200 מוכן / 503 לא-מוכן
+GET /metrics        # מונים בסיסיים: snapshotsReceived/Accepted/Duplicate/Rejected/Failed + uptime
+```
+
+שלושת ה-endpoints הללו אינם דורשים `X-Api-Key` (אין בהם מידע לקוח) כדי לאפשר probes
+של load balancers ומערכות ניטור. כל שאר ה-endpoints דורשים `X-Api-Key`.
 
 ## 3. סכמת מסד הנתונים (SQL Server, append-only)
 
@@ -269,4 +289,7 @@ erDiagram
 
 - **Append-only**: `Snapshots` לא מתעדכן ולא נמחק. `Machines.LastSnapshotId` מצביע על האחרון.
 - **Idempotency**: `SnapshotId` הוא PK; שליחה כפולה נדחית ברמת ה-DB / נבדקת מראש.
-- **Retention**: מדיניות שמירת snapshots ישנים תיקבע בהמשך (אין דריסה, אך ניתן לארכב).
+- **Retention**: מדיניות קונפיגורבילית (`Retention` ב-`appsettings.json`, כבויה כברירת מחדל)
+  גוזמת snapshots גולמיים ישנים כ-background job מבוקר. לעולם אינה מוחקת את ה-snapshot האחרון
+  של מחשב, snapshots שאליהם מפנים `Change`/`Alert`, את N האחרונים לכל מחשב, או רשומות
+  `Changes`/`Alerts` היסטוריות. פירוט ב-[operations.md](operations.md §4).

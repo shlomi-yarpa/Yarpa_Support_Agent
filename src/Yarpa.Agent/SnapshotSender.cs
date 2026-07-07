@@ -74,8 +74,16 @@ public sealed class SnapshotSender
             await _offlineQueue.EnqueueAsync(snapshot, ct);
             return false;
         }
-        catch (Exception ex) when (ex is not OperationCanceledException)
+        catch (OperationCanceledException) when (ct.IsCancellationRequested)
         {
+            // Genuine shutdown/cancellation requested by the caller — let it propagate.
+            throw;
+        }
+        catch (Exception ex)
+        {
+            // Any other failure (including HttpClient.Timeout, which surfaces as a
+            // TaskCanceledException without our token being cancelled) is transient:
+            // queue the snapshot so it is never lost and retry on the next run.
             _logger.LogError(ex,
                 "failed to send snapshot {SnapshotId} after all retries; saving to offline queue",
                 snapshot.SnapshotId);
@@ -121,7 +129,12 @@ public sealed class SnapshotSender
                         (int)response.StatusCode);
                 }
             }
-            catch (Exception ex) when (ex is not OperationCanceledException)
+            catch (OperationCanceledException) when (ct.IsCancellationRequested)
+            {
+                // Genuine shutdown/cancellation — stop draining and let it propagate.
+                throw;
+            }
+            catch (Exception ex)
             {
                 _logger.LogWarning(ex,
                     "queued snapshot at {FilePath} could not be sent; will retry on next run",

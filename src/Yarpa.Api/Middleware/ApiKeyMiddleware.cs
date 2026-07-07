@@ -5,8 +5,9 @@ using Yarpa.Api.Data.Entities;
 namespace Yarpa.Api.Middleware;
 
 /// <summary>
-/// Validates the <c>X-Api-Key</c> request header on every call (except /health).
-/// A matching, active API key is required; on success the resolved
+/// Validates the <c>X-Api-Key</c> request header on every call, except the unauthenticated
+/// operational probes (<c>/health</c>, <c>/health/ready</c>, <c>/metrics</c>) which expose no
+/// customer data. A matching, active API key is required; on success the resolved
 /// <see cref="CustomerEntity"/> is stored in <c>HttpContext.Items["Customer"]</c>
 /// for downstream controllers.
 /// </summary>
@@ -22,8 +23,9 @@ public sealed class ApiKeyMiddleware
 
     public async Task InvokeAsync(HttpContext context, YarpaDbContext db)
     {
-        // Skip authentication for the liveness probe
-        if (context.Request.Path.StartsWithSegments("/health"))
+        // Skip authentication for the operational probes (liveness/readiness/metrics)
+        if (context.Request.Path.StartsWithSegments("/health")
+            || context.Request.Path.StartsWithSegments("/metrics"))
         {
             await _next(context);
             return;

@@ -1,6 +1,7 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Serilog.Context;
 using System.Text.Json;
 using Yarpa.Api.Data;
 
@@ -19,10 +20,12 @@ namespace Yarpa.Api.Controllers;
 public sealed class SnapshotsController : ControllerBase
 {
     private readonly YarpaDbContext _db;
+    private readonly SnapshotMetrics _metrics;
 
-    public SnapshotsController(YarpaDbContext db)
+    public SnapshotsController(YarpaDbContext db, SnapshotMetrics metrics)
     {
         _db = db;
+        _metrics = metrics;
     }
 
     /// <summary>
@@ -69,6 +72,8 @@ public sealed class SnapshotsController : ControllerBase
         [FromServices] ISnapshotStore snapshotStore,
         CancellationToken ct)
     {
+        _metrics.IncrementReceived();
+
         // Keep the raw JSON for verbatim storage
         string rawJson = body.GetRawText();
 
@@ -80,44 +85,59 @@ public sealed class SnapshotsController : ControllerBase
         }
         catch (JsonException ex)
         {
+            _metrics.IncrementRejected();
             return BadRequest(new { error = $"JSON לא תקין: {ex.Message}" });
         }
 
         if (snapshot == null)
-            return BadRequest(new { error = "גוף הבקשה ריק" });
-
-        var validation = await validator.ValidateAsync(snapshot, ct);
-        if (!validation.IsValid)
         {
-            return BadRequest(new
-            {
-                error = "שגיאת ולידציה",
-                details = validation.Errors.Select(e => e.ErrorMessage)
-            });
+            _metrics.IncrementRejected();
+            return BadRequest(new { error = "גוף הבקשה ריק" });
         }
 
-        // Resolve (or register) the machine under the authenticated customer
-        var customer = (CustomerEntity)HttpContext.Items["Customer"]!;
-
-        string computerName = TryGetComputerName(snapshot);
-        MachineEntity machine = await clientResolver.ResolveOrRegisterAsync(
-            snapshot.MachineId, computerName, customer, ct);
-
-        // Persist (idempotency handled inside the store)
-        SnapshotStoreResult result = await snapshotStore.StoreAsync(
-            snapshot, rawJson, machine, ct);
-
-        var responseBody = new
+        // Correlate every downstream log line to this snapshot and machine.
+        using (LogContext.PushProperty("SnapshotId", snapshot.SnapshotId))
+        using (LogContext.PushProperty("MachineId", snapshot.MachineId))
         {
-            snapshotId = result.SnapshotId,
-            machineId = result.MachineId,
-            changes = result.Changes,
-            alerts = result.Alerts
-        };
+            var validation = await validator.ValidateAsync(snapshot, ct);
+            if (!validation.IsValid)
+            {
+                _metrics.IncrementRejected();
+                return BadRequest(new
+                {
+                    error = "שגיאת ולידציה",
+                    details = validation.Errors.Select(e => e.ErrorMessage)
+                });
+            }
 
-        return result.IsNew
-            ? Accepted(responseBody)
-            : Ok(responseBody);
+            // Resolve (or register) the machine under the authenticated customer
+            var customer = (CustomerEntity)HttpContext.Items["Customer"]!;
+
+            string computerName = TryGetComputerName(snapshot);
+            MachineEntity machine = await clientResolver.ResolveOrRegisterAsync(
+                snapshot.MachineId, computerName, customer, ct);
+
+            // Persist (idempotency handled inside the store)
+            SnapshotStoreResult result = await snapshotStore.StoreAsync(
+                snapshot, rawJson, machine, ct);
+
+            if (result.IsNew)
+                _metrics.IncrementAccepted();
+            else
+                _metrics.IncrementDuplicate();
+
+            var responseBody = new
+            {
+                snapshotId = result.SnapshotId,
+                machineId = result.MachineId,
+                changes = result.Changes,
+                alerts = result.Alerts
+            };
+
+            return result.IsNew
+                ? Accepted(responseBody)
+                : Ok(responseBody);
+        }
     }
 
     private static string TryGetComputerName(DiagnosticsSnapshot snapshot)

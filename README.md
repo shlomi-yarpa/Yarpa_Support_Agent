@@ -60,6 +60,7 @@ Yarpa_Support_Agent/
 - [docs/specification.md](docs/specification.md) – אפיון מדויק ודרישות.
 - [docs/collectors.md](docs/collectors.md) – פירוט כל רכיב איסוף.
 - [docs/data-model-and-api.md](docs/data-model-and-api.md) – מודל נתונים, API ו-DB.
+- [docs/operations.md](docs/operations.md) – תפעול, הפצה, שירות, retention, אבטחה, עומס.
 - [docs/roadmap.md](docs/roadmap.md) – מפת דרכים ושלבי פיתוח.
 - [CLAUDE.md](CLAUDE.md) – הנחיות עבודה לסוכן קוד (stack, קונבנציות, פקודות).
 
@@ -72,4 +73,17 @@ Yarpa_Support_Agent/
 
 ## סטטוס נוכחי
 
-שלב תכנון ואפיון. הקוד (`src/`, `tests/`) ייווצר בהתאם ל-[docs/roadmap.md](docs/roadmap.md).
+שלבים 0–6 הושלמו: איסוף מלא, שליחה עמידה, אחסון append-only, השוואה ושינויים, התראות,
+CRM Dashboard, והקשחה ותפעול (אריזה self-contained, Windows Service, retention, ניטור,
+אבטחה, בדיקות עומס). ראה [docs/operations.md](docs/operations.md) להרצה, הפצה ותפעול.
+שלב 7 (אינטגרציה ל-CRM) עתידי/אופציונלי.
+
+### הרצה מהירה
+
+```bash
+dotnet build
+dotnet test
+dotnet run --project src/Yarpa.Api          # REST API
+dotnet run --project src/Yarpa.Agent -- --once   # איסוף ושליחה חד-פעמיים
+./scripts/publish-agent.ps1                  # אריזת ה-Agent ל-single-file exe
+```

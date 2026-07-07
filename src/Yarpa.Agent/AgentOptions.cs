@@ -26,4 +26,20 @@ public sealed class AgentOptions
     /// Defaults to %LocalAppData%\Yarpa\OfflineQueue when empty.
     /// </summary>
     public string OfflineQueuePath { get; init; } = string.Empty;
+
+    /// <summary>Windows Service scheduling options (used only in --service mode).</summary>
+    public ServiceOptions Service { get; init; } = new();
+}
+
+/// <summary>
+/// Scheduling configuration for the Agent when it runs as a long-lived Windows Service.
+/// Ignored by the one-shot CLI modes (--once / --dry-run / --output).
+/// </summary>
+public sealed class ServiceOptions
+{
+    /// <summary>Interval in hours between collection cycles (default 6).</summary>
+    public double IntervalHours { get; init; } = 6;
+
+    /// <summary>Collect once immediately when the service starts (default true).</summary>
+    public bool RunImmediatelyOnStart { get; init; } = true;
 }

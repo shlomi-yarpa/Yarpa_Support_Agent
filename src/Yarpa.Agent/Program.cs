@@ -6,11 +6,17 @@ using Microsoft.Extensions.Options;
 using Polly;
 using Polly.Extensions.Http;
 using Serilog;
+using Serilog.Context;
 using System.Text.Json;
 using Yarpa.Agent;
 using Yarpa.Agent.Collectors;
 using Yarpa.Agent.Collectors.Collectors;
 using Yarpa.Contracts.Sections;
+
+// Anchor relative paths (Serilog file sink, offline queue) to the install directory.
+// Windows Services start with %WINDIR%\System32 as the working directory, which would
+// otherwise place logs there. Doing this before host build keeps all modes consistent.
+Directory.SetCurrentDirectory(AppContext.BaseDirectory);
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -22,6 +28,9 @@ try
 
     using IHost host = Host.CreateDefaultBuilder(args)
         .UseContentRoot(AppContext.BaseDirectory)
+        // Enables running under the Windows Service Control Manager. No-op when the
+        // process is launched interactively, so the CLI modes are unaffected.
+        .UseWindowsService(o => o.ServiceName = "YarpaSupportAgent")
         .UseSerilog((context, services, configuration) => configuration
             .ReadFrom.Configuration(context.Configuration)
             .ReadFrom.Services(services))
@@ -96,15 +105,33 @@ try
                     client.Timeout = TimeSpan.FromSeconds(30);
                 })
                 .AddPolicyHandler(BuildRetryPolicy(agentOptions));
+
+            // Windows Service mode: register the scheduled background worker. The
+            // one-shot CLI modes never register it and keep their original flow.
+            if (cli.Service)
+                services.AddHostedService<SnapshotWorker>();
         })
         .Build();
 
+    var options = host.Services.GetRequiredService<IOptions<AgentOptions>>().Value;
+
+    // ── Service mode: hand control to the host; SnapshotWorker drives the schedule ──
+    if (cli.Service)
+    {
+        Log.Information(
+            "Yarpa Agent starting (mode=service, apiBaseUrl={ApiBaseUrl})",
+            string.IsNullOrWhiteSpace(options.ApiBaseUrl) ? "<unset>" : options.ApiBaseUrl);
+
+        await host.RunAsync();
+        return 0;
+    }
+
+    // ── One-shot modes (once / dry-run / output) ──────────────────────────────
     await host.StartAsync();
 
     var logger = host.Services.GetRequiredService<ILogger<AgentApp>>();
     var orchestrator = host.Services.GetRequiredService<CollectionOrchestrator>();
     var sender = host.Services.GetRequiredService<SnapshotSender>();
-    var options = host.Services.GetRequiredService<IOptions<AgentOptions>>().Value;
 
     using var cts = new CancellationTokenSource();
     Console.CancelKeyPress += (_, e) =>
@@ -138,7 +165,11 @@ try
     }
     else
     {
-        await sender.SendAsync(snapshot, cts.Token);
+        using (LogContext.PushProperty("SnapshotId", snapshot.SnapshotId))
+        using (LogContext.PushProperty("MachineId", snapshot.MachineId))
+        {
+            await sender.SendAsync(snapshot, cts.Token);
+        }
     }
 
     await host.StopAsync();

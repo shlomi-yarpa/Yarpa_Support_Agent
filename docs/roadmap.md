@@ -61,14 +61,15 @@
 
 תוצר: איש התמיכה רואה תמונת מצב מלאה תוך שניות.
 
-## שלב 6 – הקשחה ותפעול
+## שלב 6 – הקשחה ותפעול ✅ הושלם
 
-- אריזה/הפצה של ה-Agent (self-contained exe / installer).
-- הרצה כ-Windows Service (scheduling תקופתי).
-- הרשאות, retention, ניטור ותצפיתיות.
-- בדיקות עומס ואבטחה.
+- אריזה/הפצה של ה-Agent (self-contained single-file exe עם אייקון; `scripts/publish-agent.ps1`).
+- הרצה כ-Windows Service (`--service` + `SnapshotWorker`, scheduling תקופתי; `scripts/install-service.ps1`).
+- הרשאות (איסוף מרבי ללא admin, `partial` היכן שנחסם), retention קונפיגורבילי (append-only-safe),
+  ניטור ותצפיתיות (Serilog עם correlation ל-snapshotId/machineId, `/health`, `/health/ready`, `/metrics`).
+- בדיקות עומס (POST /snapshots מקבילי) ואבטחה (X-Api-Key, HTTPS, 413 payload, 429 rate-limit).
 
-תוצר: מערכת מוכנה לפרודקשן.
+תוצר: מערכת מוכנה לפרודקשן. פירוט תפעולי מלא ב-[operations.md](operations.md).
 
 ## שלב 7 – אינטגרציה ל-CRM (עתידי / אופציונלי)
 

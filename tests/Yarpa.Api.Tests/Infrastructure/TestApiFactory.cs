@@ -57,6 +57,11 @@ public sealed class TestApiFactory : WebApplicationFactory<Program>
 
     private static void SeedTestData(YarpaDbContext db)
     {
+        // Idempotent: a derived host (WithWebHostBuilder) shares the same in-memory
+        // database, so re-seeding must not add duplicate keys.
+        if (db.Customers.Any(c => c.CustomerId == TestCustomerId))
+            return;
+
         db.Customers.Add(new CustomerEntity
         {
             CustomerId = TestCustomerId,

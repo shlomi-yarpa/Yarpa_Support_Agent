@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="8.0.1" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
     <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="8.0.11" />
     <PackageReference Include="Serilog.Extensions.Hosting" Version="10.0.0" />
@@ -21,9 +22,28 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <RootNamespace>Yarpa.Agent</RootNamespace>
+    <AssemblyName>Yarpa.Agent</AssemblyName>
+    <Product>Yarpa Support Agent</Product>
+    <Company>Yarpa</Company>
+    <Authors>Yarpa</Authors>
+    <Description>Collects technical diagnostics from a Windows client and sends them to the Yarpa Support API.</Description>
     <Version>1.0.0</Version>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
     <ApplicationIcon>..\..\assets\yarpa-agent-icon.ico</ApplicationIcon>
+    <!-- Ship only English satellite resources to keep the self-contained bundle lean. -->
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+  </PropertyGroup>
+
+  <!-- Defaults applied by the win-x64 publish profile / scripts/publish-agent.ps1.
+       Only take effect when publishing self-contained for a runtime identifier;
+       a plain `dotnet build` is unaffected. -->
+  <PropertyGroup Condition="'$(SelfContained)' == 'true'">
+    <PublishSingleFile>true</PublishSingleFile>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
   </PropertyGroup>
 
   <ItemGroup>
