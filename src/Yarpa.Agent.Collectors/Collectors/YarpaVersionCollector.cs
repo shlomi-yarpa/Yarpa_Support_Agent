@@ -113,13 +113,21 @@ public sealed class YarpaVersionCollector : ICollector
                 if (!File.Exists(path)) continue;
 
                 var fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(path);
-                string? version = fvi.ProductVersion ?? fvi.FileVersion;
-                if (string.IsNullOrEmpty(version)) continue;
+
+                // Build 4-part numeric version from the raw file version resource,
+                // matching the behavior of the Delphi GetVer() function:
+                //   dwFileVersionMS shr 16  → FileMajorPart
+                //   dwFileVersionMS and $FFFF → FileMinorPart
+                //   dwFileVersionLS shr 16  → FileBuildPart
+                //   dwFileVersionLS and $FFFF → FilePrivatePart
+                string numericVersion = $"{fvi.FileMajorPart}.{fvi.FileMinorPart}.{fvi.FileBuildPart}.{fvi.FilePrivatePart}";
+                bool hasVersion = fvi.FileMajorPart > 0 || fvi.FileMinorPart > 0 || fvi.FileBuildPart > 0;
+                if (!hasVersion) continue;
 
                 result = new YarpaVersionData
                 {
                     Product = string.IsNullOrEmpty(fvi.ProductName) ? "Yarpa" : fvi.ProductName,
-                    Version = version,
+                    Version = numericVersion,
                     DetectedBy = "fileVersion",
                     InstallPath = Path.GetDirectoryName(path)
                 };
@@ -226,6 +234,18 @@ public sealed class YarpaDetectionOptions
     /// <summary>Executable or DLL paths to check for FileVersionInfo.</summary>
     public IReadOnlyList<string> ExecutablePaths { get; init; } =
     [
+        // Primary Yarpa ERP executable (piryon2.exe) — common deployment paths
+        @"D:\psoftw\piryon2.exe",
+        @"C:\psoftw\piryon2.exe",
+        @"D:\psoft\piryon2.exe",
+        @"C:\psoft\piryon2.exe",
+        // Variant names used in some installations
+        @"D:\psoftw\piryon3.exe",
+        @"D:\psoftw\piryon5.exe",
+        @"D:\psoftw\piryonS.exe",
+        @"C:\psoftw\piryon3.exe",
+        @"C:\psoftw\piryon5.exe",
+        // Legacy / generic fallback paths
         @"%ProgramFiles%\Yarpa\YarpaERP.exe",
         @"%ProgramFiles(x86)%\Yarpa\YarpaERP.exe",
         @"%ProgramFiles%\Yarpa\Yarpa.exe",
