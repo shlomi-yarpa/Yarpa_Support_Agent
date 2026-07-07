@@ -67,7 +67,9 @@
 - **DiskAlmostFull** – מקום פנוי בדיסק מתחת לסף (למשל < 10% או < 5GB).
 - **PaymentTerminalMissing** – מסוף סליקה שהיה קיים ונעלם.
 - **SqlNotRunning** – SQL Server מותקן אך השירות אינו פעיל.
-- **OldSoftwareVersion** – גרסת תוכנת Yarpa ישנה מהמינימום הנתמך.
+- **OldSoftwareVersion** – גרסת תוכנת Yarpa (Piryon) ישנה. כל הגרסאות נתמכות, אך
+  build מתחת ל-`10300` מסומן כישן (חומרה `warning` / הדגשה בצבע ב-Summary).
+  ההשוואה לפי מספר ה-build (המקטע האחרון בגרסה, למשל `1.0.898.10235` → `10235`). הסף קונפיגורבילי.
 - **NoRecentContact** – לא התקבל Snapshot מהמחשב מעל X ימים.
 - **CollectorError** – section קריטי נכשל באיסוף.
 
@@ -109,7 +111,14 @@
 
 ## 8. הנחות ופתוחים
 
-- מיפוי VID/PID של יצרני סליקה (Ingenico/Verifone/PAX/Castles) יתוחזק כטבלת התאמה
-  בשרת/ב-Agent; ראה [collectors.md](collectors.md).
-- זיהוי גרסת Yarpa: מנגנון הזיהוי (Registry / קובץ גרסה / DLL version) ייקבע ב-[collectors.md](collectors.md).
-- ספי ה-Alerts (דיסק, גרסת מינימום, ימי אי-תקשורת) יהיו קונפיגורביליים בשרת.
+נסגר (לפי מידע מהשטח):
+- זיהוי גרסת Yarpa (מוצר Piryon): מבוסס-קובץ — תיקיית `psoftw` + `piryons.ini` (שורת `pexe=`).
+  ראה [collectors.md](collectors.md).
+- סף גרסה ישנה: build מתחת ל-`10300` (קונפיגורבילי).
+- מסופי סליקה: זיהוי לפי USB VID/PID בלבד. פרמטר `SV13` של Piryon יושב ב-SQL ואינו בשימוש
+  (ה-Agent לא מתחבר ל-SQL).
+
+עדיין פתוח:
+- ערכי VID/PID בפועל למסופים (Verifone VX805 / Dangot PP791 / A10 / PAX35) ולקורא הברקוד
+  (Datalogic 2100) — עד לקבלתם, זיהוי המסופים עלול להיות חלקי.
+- ספי ה-Alerts הנוספים (דיסק, ימי אי-תקשורת) קונפיגורביליים בשרת.

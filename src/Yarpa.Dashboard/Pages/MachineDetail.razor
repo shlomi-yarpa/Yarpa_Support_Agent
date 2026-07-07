@@ -328,6 +328,44 @@
                         </div>
                     </div>
 
+                    <!-- Scanners / barcode readers -->
+                    <div class="col-md-6 col-xl-4">
+                        <div class="card summary-card h-100">
+                            <div class="card-header bg-light border-bottom">
+                                <i class="bi bi-upc-scan me-2"></i>סורקים / קוראי ברקוד
+                            </div>
+                            <div class="card-body">
+                                @if (_summary.Scanners != null && _summary.Scanners.Count > 0)
+                                {
+                                    @foreach (var s in _summary.Scanners)
+                                    {
+                                        <div class="mb-2 p-2 bg-light rounded small">
+                                            <div>
+                                                <i class="bi bi-upc-scan text-success me-1"></i>
+                                                <strong>@(s.Name ?? "סורק")</strong>
+                                            </div>
+                                            @if (!string.IsNullOrEmpty(s.Manufacturer))
+                                            {
+                                                <div class="text-muted">יצרן: @s.Manufacturer</div>
+                                            }
+                                            @if (!string.IsNullOrEmpty(s.Vid))
+                                            {
+                                                <div class="text-muted">VID: @s.Vid  PID: @s.Pid</div>
+                                            }
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="d-flex align-items-center gap-2 text-muted small">
+                                        <i class="bi bi-dash-circle"></i>
+                                        לא זוהה סורק / קורא ברקוד
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Network -->
                     <div class="col-md-6 col-xl-4">
                         <div class="card summary-card h-100">

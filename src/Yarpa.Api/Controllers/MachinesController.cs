@@ -484,19 +484,33 @@ public sealed class MachinesController : ControllerBase
 
         // USB devices (scanners / barcode readers and other peripherals)
         List<UsbDeviceSummary>? usbDevices = null;
+        List<ScannerSummary>? scanners = null;
         if (GetSection("usbDevices") is { } usbEl && usbEl.ValueKind == JsonValueKind.Array)
         {
             usbDevices = new List<UsbDeviceSummary>();
             foreach (JsonElement u in usbEl.EnumerateArray())
             {
-                usbDevices.Add(new UsbDeviceSummary
+                var device = new UsbDeviceSummary
                 {
                     Name         = TryGetString(u, "name"),
                     Vid          = TryGetString(u, "vid"),
                     Pid          = TryGetString(u, "pid"),
                     DeviceClass  = TryGetString(u, "deviceClass"),
                     Manufacturer = TryGetString(u, "manufacturer")
-                });
+                };
+                usbDevices.Add(device);
+
+                if (IsScanner(device.Name, device.Manufacturer))
+                {
+                    scanners ??= new List<ScannerSummary>();
+                    scanners.Add(new ScannerSummary
+                    {
+                        Name         = device.Name,
+                        Manufacturer = device.Manufacturer,
+                        Vid          = device.Vid,
+                        Pid          = device.Pid
+                    });
+                }
             }
         }
 
@@ -611,6 +625,7 @@ public sealed class MachinesController : ControllerBase
             PaymentTerminals  = terminals,
             Printers          = printers,
             UsbDevices        = usbDevices,
+            Scanners          = scanners,
             SystemInfo        = sysInfo,
             Network           = network,
             ComPorts          = comPorts,
@@ -622,6 +637,26 @@ public sealed class MachinesController : ControllerBase
 
     private static string? TryGetString(JsonElement el, string prop)
         => el.TryGetProperty(prop, out var p) ? p.GetString() : null;
+
+    /// <summary>
+    /// Keywords used to classify a USB device as a barcode scanner / reader. Field devices in
+    /// use include the Datalogic 2100 reader. Matching is case-insensitive on name/manufacturer.
+    /// </summary>
+    private static readonly string[] ScannerKeywords =
+        { "datalogic", "barcode", "scanner", "imager", "gryphon", "quickscan", "symbol", "honeywell", "zebra scanner" };
+
+    private static bool IsScanner(string? name, string? manufacturer)
+    {
+        string haystack = $"{name} {manufacturer}";
+        if (string.IsNullOrWhiteSpace(haystack))
+            return false;
+
+        foreach (string kw in ScannerKeywords)
+            if (haystack.Contains(kw, StringComparison.OrdinalIgnoreCase))
+                return true;
+
+        return false;
+    }
 }
 
 // ── Response DTOs ─────────────────────────────────────────────────────────────
@@ -664,6 +699,7 @@ public sealed class MachineSummaryDto
     public List<PaymentTerminalSummary>?     PaymentTerminals  { get; init; }
     public List<PrinterSummary>?             Printers          { get; init; }
     public List<UsbDeviceSummary>?           UsbDevices        { get; init; }
+    public List<ScannerSummary>?             Scanners          { get; init; }
     public SystemInfoSummary?                SystemInfo        { get; init; }
     public NetworkSummary?                   Network           { get; init; }
     public List<ComPortSummary>?             ComPorts          { get; init; }
@@ -745,6 +781,14 @@ public sealed class UsbDeviceSummary
     public string? Pid          { get; init; }
     public string? DeviceClass  { get; init; }
     public string? Manufacturer { get; init; }
+}
+
+public sealed class ScannerSummary
+{
+    public string? Name         { get; init; }
+    public string? Manufacturer { get; init; }
+    public string? Vid          { get; init; }
+    public string? Pid          { get; init; }
 }
 
 public sealed class SystemInfoSummary

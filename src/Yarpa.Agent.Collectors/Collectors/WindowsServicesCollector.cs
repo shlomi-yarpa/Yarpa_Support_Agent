@@ -25,7 +25,10 @@ public sealed class WindowsServicesCollector : ICollector
         "SQLTELEMETRY", // SQL telemetry
         "W3SVC",        // IIS World Wide Web Publishing
         "WAS",          // IIS Windows Activation Service
-        "Yarpa*"        // any Yarpa service
+        "Yarpa*",       // any Yarpa service
+        "Meusensrv*",   // Clalit "Meuhedet" unified HMO interface (Meusensrv.exe)
+        "PirRepl*",     // Piryon replication with the network hub (PirReplMercaz2SnifService.exe)
+        "Dangot*"       // Dangot A10 credit clearing service (DangotService)
     ];
 
     public WindowsServicesCollector(IReadOnlyList<string>? watchlist = null)
@@ -59,25 +62,77 @@ public sealed class WindowsServicesCollector : ICollector
         var services = new List<ServiceInfo>();
 
         using var searcher = new ManagementObjectSearcher(
-            "SELECT Name, DisplayName, State, StartMode FROM Win32_Service");
+            "SELECT Name, DisplayName, State, StartMode, PathName FROM Win32_Service");
 
         foreach (ManagementObject obj in searcher.Get())
         {
             string name = obj["Name"]?.ToString() ?? string.Empty;
             if (string.IsNullOrWhiteSpace(name)) continue;
 
-            if (!MatchesWatchlist(name, watchlist)) continue;
+            string? exeName = ExtractExeName(obj["PathName"]?.ToString());
+
+            // A service is monitored when either its service name or its backing EXE name
+            // matches the watchlist (Yarpa services are keyed by EXE name in the field).
+            if (!MatchesWatchlist(name, watchlist) &&
+                !(exeName != null && MatchesWatchlist(exeName, watchlist)) &&
+                !(exeName != null && MatchesWatchlist(Path.GetFileNameWithoutExtension(exeName), watchlist)))
+                continue;
 
             services.Add(new ServiceInfo
             {
                 Name = name,
                 DisplayName = obj["DisplayName"]?.ToString() ?? string.Empty,
                 State = obj["State"]?.ToString() ?? string.Empty,
-                StartMode = obj["StartMode"]?.ToString() ?? string.Empty
+                StartMode = obj["StartMode"]?.ToString() ?? string.Empty,
+                ExeName = exeName
             });
         }
 
         return services.OrderBy(s => s.Name, StringComparer.OrdinalIgnoreCase).ToList();
+    }
+
+    /// <summary>
+    /// Extracts the executable file name from a Win32_Service PathName, stripping surrounding
+    /// quotes and command-line arguments. E.g. "\"C:\\Yarpa\\Meusensrv.exe\" -service" ⇒ "Meusensrv.exe".
+    /// Returns null when no path is available.
+    /// </summary>
+    internal static string? ExtractExeName(string? pathName)
+    {
+        if (string.IsNullOrWhiteSpace(pathName))
+            return null;
+
+        string path = pathName.Trim();
+
+        // Quoted path: take the content between the first pair of quotes.
+        if (path.StartsWith('"'))
+        {
+            int closing = path.IndexOf('"', 1);
+            if (closing > 1)
+                path = path[1..closing];
+        }
+        else
+        {
+            // Unquoted: the executable ends at ".exe" (path may contain no spaces before it).
+            int exeIdx = path.IndexOf(".exe", StringComparison.OrdinalIgnoreCase);
+            if (exeIdx >= 0)
+                path = path[..(exeIdx + ".exe".Length)];
+            else
+            {
+                // No .exe found: cut at the first space to drop arguments.
+                int space = path.IndexOf(' ');
+                if (space > 0) path = path[..space];
+            }
+        }
+
+        try
+        {
+            string fileName = Path.GetFileName(path);
+            return string.IsNullOrWhiteSpace(fileName) ? null : fileName;
+        }
+        catch
+        {
+            return null;
+        }
     }
 
     /// <summary>

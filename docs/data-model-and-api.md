@@ -94,7 +94,7 @@
     "services": {
       "status": "ok",
       "data": [
-        { "name": "MSSQLSERVER", "displayName": "SQL Server", "state": "Running", "startMode": "Auto" }
+        { "name": "MSSQLSERVER", "displayName": "SQL Server", "state": "Running", "startMode": "Auto", "exeName": "sqlservr.exe" }
       ]
     },
     "sqlServer": {
@@ -120,7 +120,7 @@
     },
     "yarpaVersion": {
       "status": "ok",
-      "data": { "product": "Yarpa ERP", "version": "8.4.2", "detectedBy": "registry" }
+      "data": { "product": "Piryon", "version": "1.0.898.10235", "build": 10235, "detectedBy": "iniFile" }
     }
   }
 }
@@ -204,6 +204,7 @@ erDiagram
 **Customers**
 - `CustomerId` (PK, int/guid)
 - `Name`
+- `ExternalCustomerCode` (קוד הלקוח במערכת ה-CRM הקיימת — מפתח הקישור לאינטגרציה)
 - `CreatedAtUtc`
 
 **ApiKeys**
@@ -260,8 +261,9 @@ erDiagram
 - section עם `status = error` אינו מסיק תנאי אמת (למשל SqlNotRunning) — למעט `CollectorError`
   שההתראה שלו *היא* עצם כשל האיסוף בסקשן קריטי.
 - הספים קונפיגורביליים ב-`appsettings.json` תחת הסקשן `Alerts`: `MinFreeDiskPercent`,
-  `MinFreeDiskGb`, `MinSupportedYarpaVersion`, `NoRecentContactDays`,
-  `NoRecentContactScanIntervalMinutes`, `MonitoredServiceNames`, `CriticalSections`.
+  `MinFreeDiskGb`, `MinSupportedYarpaBuild` (ברירת מחדל `10300`; השוואה לפי מספר ה-build,
+  המקטע האחרון בגרסה), `NoRecentContactDays`, `NoRecentContactScanIntervalMinutes`,
+  `MonitoredServiceNames` (התאמה לפי שם השירות או שם ה-EXE), `CriticalSections`.
 
 ### עקרונות DB
 

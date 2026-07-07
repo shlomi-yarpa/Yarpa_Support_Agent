@@ -5,9 +5,13 @@ using Yarpa.Contracts;
 namespace Yarpa.Api.Services.Alerts.Rules;
 
 /// <summary>
-/// Raises <see cref="AlertType.OldSoftwareVersion"/> when the reported Yarpa version is older
-/// than <see cref="AlertOptions.MinSupportedYarpaVersion"/>. Resolves when the version is at or
-/// above the minimum. Leaves state untouched when no parseable version is available (unknown).
+/// Raises <see cref="AlertType.OldSoftwareVersion"/> when the reported Yarpa (Piryon) build is
+/// below <see cref="AlertOptions.MinSupportedYarpaBuild"/>. All versions are supported, so this
+/// is a Warning (advisory) only. Resolves when the build is at or above the threshold. Leaves
+/// state untouched when no parseable build is available (unknown) or the section errored.
+///
+/// The build is the last dotted segment of the version (e.g. "1.0.898.10235" ⇒ 10235); if the
+/// snapshot already carries an explicit numeric "build" field it is preferred.
 /// </summary>
 public sealed class OldSoftwareVersionRule : IAlertRule
 {
@@ -22,43 +26,46 @@ public sealed class OldSoftwareVersionRule : IAlertRule
             || yv.ValueKind != JsonValueKind.Object)
             return AlertRuleResult.Leave(AlertType);
 
-        string versionText = SectionReader.Str(yv, "version");
-        if (string.IsNullOrWhiteSpace(versionText) || !TryParseVersion(versionText, out Version current))
+        int? build = ResolveBuild(yv);
+        if (build is null)
             return AlertRuleResult.Leave(AlertType);
 
-        if (!TryParseVersion(context.Options.MinSupportedYarpaVersion, out Version minimum))
-            return AlertRuleResult.Leave(AlertType);
-
-        if (current >= minimum)
+        if (build.Value >= context.Options.MinSupportedYarpaBuild)
             return AlertRuleResult.Clear(AlertType);
 
+        string versionText = SectionReader.Str(yv, "version");
+        string versionLabel = string.IsNullOrWhiteSpace(versionText) ? build.Value.ToString() : versionText;
         string message =
-            $"גרסת תוכנת Yarpa ({versionText}) ישנה מהמינימום הנתמך ({context.Options.MinSupportedYarpaVersion}).";
+            $"גרסת תוכנת Piryon (build {build.Value}, {versionLabel}) ישנה מהמינימום המומלץ (build {context.Options.MinSupportedYarpaBuild}).";
         return AlertRuleResult.Raise(AlertType, AlertSeverity.Warning, message);
     }
 
     /// <summary>
-    /// Parses a dotted version string, normalising a bare "8" or "8.4" so that
-    /// <see cref="System.Version"/> can compare it (it requires at least major.minor).
+    /// Resolves the build number: prefers an explicit numeric "build" field, otherwise parses
+    /// the last dotted segment of the "version" string. Returns null when neither is available.
     /// </summary>
-    private static bool TryParseVersion(string text, out Version version)
+    private static int? ResolveBuild(JsonElement yv)
     {
-        version = new Version(0, 0);
-        string trimmed = text.Trim();
-        if (trimmed.Length == 0)
-            return false;
+        if (yv.TryGetProperty("build", out JsonElement buildEl))
+        {
+            if (buildEl.ValueKind == JsonValueKind.Number && buildEl.TryGetInt32(out int b))
+                return b;
+            if (buildEl.ValueKind == JsonValueKind.String
+                && int.TryParse(buildEl.GetString(), out int bs))
+                return bs;
+        }
 
-        // Keep only leading numeric-dotted portion (drop suffixes like "-beta").
-        int end = 0;
-        while (end < trimmed.Length && (char.IsDigit(trimmed[end]) || trimmed[end] == '.'))
-            end++;
-        trimmed = trimmed[..end].Trim('.');
-        if (trimmed.Length == 0)
-            return false;
+        string versionText = SectionReader.Str(yv, "version");
+        return ParseBuildFromVersion(versionText);
+    }
 
-        if (!trimmed.Contains('.'))
-            trimmed += ".0";
+    /// <summary>Returns the last dotted numeric segment of a version string, or null.</summary>
+    private static int? ParseBuildFromVersion(string version)
+    {
+        if (string.IsNullOrWhiteSpace(version))
+            return null;
 
-        return Version.TryParse(trimmed, out version!);
+        string last = version.Trim().Split('.').Last();
+        return int.TryParse(last, out int b) ? b : null;
     }
 }

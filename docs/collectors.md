@@ -63,16 +63,24 @@ public sealed class CollectorResult
 ### 7. UsbDevicesCollector (`usbDevices`)
 - כל ההתקנים המחוברים: שם, VID/PID, יצרן, סוג (Printer / HID / Camera / USB-Serial וכו').
 - מקור: WMI `Win32_PnPEntity`, Registry `HKLM\SYSTEM\CurrentControlSet\Enum\USB`.
+- קוראי ברקוד / סורקים ידועים (לסיווג ייעודי עתידי ב-Summary): `Datalogic 2100`.
+  חיבור אפשרי: USB-HID / USB-Serial / COM.
 
 ### 8. ComPortsCollector (`comPorts`)
 - כל פורטי ה-COM: מספר פורט, שם ההתקן המשויך.
 - מקור: WMI `Win32_SerialPort` / `Win32_PnPEntity` (class Ports), Registry `HARDWARE\DEVICEMAP\SERIALCOMM`.
 
 ### 9. PaymentTerminalsCollector (`paymentTerminals`)
-- זיהוי מסופי סליקה לפי USB VID/PID והצלבה מול טבלת יצרנים.
-- לכל מסוף: דגם, Vendor, COM Port, USB VID/PID.
-- יצרנים לזיהוי: Ingenico, Verifone, PAX, Castles, וכל יצרן נוסף בטבלה.
-- מקור: הצלבת פלט `usbDevices` + `comPorts` מול טבלת VID/PID.
+
+זיהוי מסוף הסליקה **לפי USB VID/PID בלבד** בשלב זה — הצלבת `usbDevices` + `comPorts`
+מול טבלת VID/PID. חיבור אפשרי: COM או USB.
+
+לכל מסוף: דגם, Vendor, COM Port (אם רלוונטי), USB VID/PID.
+
+דגמים בשימוש אצל הלקוחות (לפי מידע מהשטח): Verifone VX805, Dangot PP791, A10, PAX35.
+
+פתוח לבירור: ערכי ה-VID/PID בפועל לכל דגם (Hardware Ids מ-Device Manager) — עד שיתקבלו,
+הזיהוי יתבסס על טבלת VID/PID גנרית וייתכן זיהוי חלקי.
 
 מיפוי VID/PID (ראשוני, מורחב לפי הצורך):
 
@@ -83,10 +91,17 @@ PAX       -> VID 0C46 / לפי דגם
 Castles   -> VID 1BEC
 ```
 
-הערה: הטבלה תתוחזק במקום אחד (config) וניתנת לעדכון ללא שינוי קוד.
+הערה: טבלת ה-VID/PID תתוחזק במקום אחד (config) וניתנת לעדכון ללא שינוי קוד.
+
+> הערה ארכיטקטונית: בתוכנת Piryon סוג המסוף מוגדר בפרמטר `SV13` השמור ב-SQL של Piryon.
+> ה-Agent **אינו מתחבר ל-SQL** (עיקרון יסוד של המערכת), לכן מקור זה אינו בשימוש בשלב זה.
 
 ### 10. WindowsServicesCollector (`services`)
 - כל שירותי Yarpa, SQL Server, IIS (אם קיים), ושירותים חשובים נוספים לפי רשימת מעקב.
+- שירותי Yarpa ידועים (מותקנים לרוב, לא תמיד ולא חובה — לזהות לפי שם השירות / שם ה-EXE):
+  - `Meusensrv.exe` – ממשק קופת חולים מאוחדת
+  - `PirReplMercaz2SnifService.exe` – רפליקציה מול מרכז רשת
+  - `DangotService` – סליקת אשראי דגם A10
 - לכל שירות: שם, DisplayName, סטטוס (Running/Stopped), StartMode.
 - מקור: WMI `Win32_Service`, `ServiceController`.
 
@@ -105,12 +120,22 @@ Castles   -> VID 1BEC
 - מקור: `EventLog` / `EventLogReader`.
 
 ### 14. YarpaVersionCollector (`yarpaVersion`)
-- זיהוי אוטומטי של גרסת תוכנת Yarpa המותקנת.
-- אסטרטגיית זיהוי (לפי סדר עדיפות, ייקבע סופית מול צוות Yarpa):
-  1. Registry ייעודי של Yarpa (אם קיים).
-  2. גרסת ה-executable/DLL הראשי (`FileVersionInfo`).
-  3. קובץ גרסה/config בתיקיית ההתקנה.
-- מקור: Registry + File System.
+זיהוי אוטומטי של גרסת תוכנת Yarpa (מוצר **Piryon**). זיהוי מבוסס-קובץ בלבד —
+אין רישום ב-Registry ואין הופעה ב"הוספה והסרה של תוכניות".
+
+מנגנון הזיהוי (לפי מידע מהשטח):
+1. איתור תיקיית `psoftw` בשורש אחד הכוננים הקבועים (למשל `C:\psoftw`, `D:\psoftw`).
+2. קריאת הקובץ `psoftw\piryons.ini`.
+3. פענוח השורה `pexe=` שממנה נגזרת הגרסה. דוגמה:
+   ```
+   pexe=\psoftw\piryon2.exe.1.0.898.10235
+   ```
+   → גרסה מלאה `1.0.898.10235`, מספר גרסה (build) `10235`.
+4. fallback: `FileVersionInfo` של `psoftw\piryons.exe` או `piryon2.exe`.
+
+פלט: `product = "Piryon"`, `version` (הערך שנגזר), `detectedBy = "iniFile" / "fileVersion" / "notFound"`.
+
+מקור: File System (חיפוש תיקייה + קריאת `piryons.ini`), `FileVersionInfo`.
 
 ## סיכום מקורות מידע
 

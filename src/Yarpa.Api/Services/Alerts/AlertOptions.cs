@@ -20,10 +20,12 @@ public sealed class AlertOptions
     public double MinFreeDiskGb { get; set; } = 5.0;
 
     /// <summary>
-    /// Minimum supported Yarpa software version. A reported version older than this raises
-    /// OldSoftwareVersion. Parsed with <see cref="System.Version"/>. Default: "8.0.0".
+    /// Minimum supported Yarpa (Piryon) build number. A reported build below this raises
+    /// OldSoftwareVersion (severity Warning — all versions are supported, this is advisory only).
+    /// The build is the last dotted segment of the version (e.g. "1.0.898.10235" ⇒ 10235).
+    /// Default: 10300.
     /// </summary>
-    public string MinSupportedYarpaVersion { get; set; } = "8.0.0";
+    public int MinSupportedYarpaBuild { get; set; } = 10300;
 
     /// <summary>
     /// Number of days without a received snapshot after which NoRecentContact is raised.
@@ -37,11 +39,14 @@ public sealed class AlertOptions
     public int NoRecentContactScanIntervalMinutes { get; set; } = 60;
 
     /// <summary>
-    /// Service names (case-insensitive substring match) that are considered monitored
-    /// for the ServiceDown rule. Default: SQL Server + Yarpa services.
+    /// Service identifiers (case-insensitive substring match against the service name OR its
+    /// backing EXE name) considered monitored for the ServiceDown rule. Default: SQL Server and
+    /// the optional Yarpa services (Meusensrv, PirReplMercaz2SnifService, DangotService).
+    /// These Yarpa services are optional: they only trigger an alert when installed but stopped —
+    /// a machine without them simply reports no such service, so nothing fires.
     /// </summary>
     public string[] MonitoredServiceNames { get; set; } =
-        { "MSSQLSERVER", "SQLSERVERAGENT", "Yarpa" };
+        { "MSSQLSERVER", "SQLSERVERAGENT", "Yarpa", "Meusensrv", "PirReplMercaz2SnifService", "DangotService" };
 
     /// <summary>
     /// Sections that are considered critical for the CollectorError rule. A section listed

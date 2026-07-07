@@ -235,32 +235,73 @@ public class AlertRulesTests
     // ── OldSoftwareVersion ──────────────────────────────────────────────────────
 
     [Fact]
-    public void OldSoftwareVersion_BelowMinimum_Raises()
+    public void OldSoftwareVersion_BuildBelowThreshold_RaisesWarning()
     {
-        var snap = Build("m1", ("yarpaVersion", "ok", new { product = "Yarpa ERP", version = "7.9.5", detectedBy = "registry" }));
+        // version 1.0.898.10235 → build 10235 < 10300 ⇒ warning
+        var snap = Build("m1", ("yarpaVersion", "ok",
+            new { product = "Piryon", version = "1.0.898.10235", build = 10235, detectedBy = "iniFile" }));
 
-        var options = new AlertOptions { MinSupportedYarpaVersion = "8.0.0" };
+        var options = new AlertOptions { MinSupportedYarpaBuild = 10300 };
         AlertRuleResult result = new OldSoftwareVersionRule().Evaluate(Ctx(snap, options));
 
         Assert.Equal(AlertRuleOutcome.Raise, result.Outcome);
         Assert.Equal(AlertSeverity.Warning, result.Severity);
+        Assert.Equal(AlertType.OldSoftwareVersion, result.AlertType);
+        Assert.Contains("10235", result.Message);
     }
 
     [Fact]
-    public void OldSoftwareVersion_AtOrAboveMinimum_Clears()
+    public void OldSoftwareVersion_BuildAtOrAboveThreshold_Clears()
     {
-        var snap = Build("m1", ("yarpaVersion", "ok", new { product = "Yarpa ERP", version = "8.4.2", detectedBy = "registry" }));
+        var snap = Build("m1", ("yarpaVersion", "ok",
+            new { product = "Piryon", version = "1.0.898.10300", build = 10300, detectedBy = "iniFile" }));
 
-        var options = new AlertOptions { MinSupportedYarpaVersion = "8.0.0" };
+        var options = new AlertOptions { MinSupportedYarpaBuild = 10300 };
         AlertRuleResult result = new OldSoftwareVersionRule().Evaluate(Ctx(snap, options));
 
         Assert.Equal(AlertRuleOutcome.Clear, result.Outcome);
     }
 
     [Fact]
+    public void OldSoftwareVersion_BuildParsedFromVersionWhenFieldMissing_Raises()
+    {
+        // No explicit "build" field: the last dotted segment (10250) must be parsed and compared.
+        var snap = Build("m1", ("yarpaVersion", "ok",
+            new { product = "Piryon", version = "1.0.898.10250", detectedBy = "iniFile" }));
+
+        var options = new AlertOptions { MinSupportedYarpaBuild = 10300 };
+        AlertRuleResult result = new OldSoftwareVersionRule().Evaluate(Ctx(snap, options));
+
+        Assert.Equal(AlertRuleOutcome.Raise, result.Outcome);
+    }
+
+    [Fact]
+    public void OldSoftwareVersion_CustomThreshold_Respected()
+    {
+        var snap = Build("m1", ("yarpaVersion", "ok",
+            new { product = "Piryon", version = "1.0.898.10500", build = 10500, detectedBy = "iniFile" }));
+
+        var options = new AlertOptions { MinSupportedYarpaBuild = 11000 };
+        AlertRuleResult result = new OldSoftwareVersionRule().Evaluate(Ctx(snap, options));
+
+        Assert.Equal(AlertRuleOutcome.Raise, result.Outcome);
+    }
+
+    [Fact]
     public void OldSoftwareVersion_UnknownVersion_Leaves()
     {
-        var snap = Build("m1", ("yarpaVersion", "ok", new { product = "Yarpa ERP", version = (string?)null, detectedBy = "registry" }));
+        var snap = Build("m1", ("yarpaVersion", "ok",
+            new { product = "Piryon", version = (string?)null, detectedBy = "notFound" }));
+
+        AlertRuleResult result = new OldSoftwareVersionRule().Evaluate(Ctx(snap));
+
+        Assert.Equal(AlertRuleOutcome.Leave, result.Outcome);
+    }
+
+    [Fact]
+    public void OldSoftwareVersion_SectionError_Leaves()
+    {
+        var snap = Build("m1", ("yarpaVersion", "error", null));
 
         AlertRuleResult result = new OldSoftwareVersionRule().Evaluate(Ctx(snap));
 

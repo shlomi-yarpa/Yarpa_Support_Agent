@@ -12,7 +12,15 @@ public sealed class YarpaVersionData
     public string? Version { get; init; }
 
     /// <summary>
-    /// How the version was detected: "registry", "fileVersion", "configFile", or "notFound".
+    /// Numeric build number — the last dotted segment of <see cref="Version"/>
+    /// (e.g. version "1.0.898.10235" ⇒ build 10235). Used by the OldSoftwareVersion alert.
+    /// </summary>
+    [JsonPropertyName("build")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public int? Build { get; init; }
+
+    /// <summary>
+    /// How the version was detected: "iniFile", "fileVersion", or "notFound".
     /// </summary>
     [JsonPropertyName("detectedBy")]
     public string DetectedBy { get; init; } = string.Empty;

@@ -1,24 +1,34 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Text.Json;
-using Microsoft.Win32;
+using System.Text.RegularExpressions;
 using Yarpa.Contracts.Sections;
 
 namespace Yarpa.Agent.Collectors.Collectors;
 
 /// <summary>
-/// Detects the installed Yarpa application version using a configurable detection strategy:
-///   1. Registry: checks a list of registry key paths for a "DisplayVersion" or "Version" value.
-///   2. FileVersionInfo: checks a list of executable/DLL paths for file version information.
-///   3. ConfigFile: checks a list of text/JSON files that may contain a version string.
+/// Detects the installed Yarpa (Piryon) application version. Piryon has no registry entry
+/// and does not appear in "Add/Remove Programs", so detection is file-system based:
+///   1. Locate the "psoftw" folder in the root of a fixed drive (C:\psoftw, D:\psoftw, ...).
+///   2. Read "psoftw\piryons.ini" and parse the "pexe=" line
+///      (e.g. pexe=\psoftw\piryon2.exe.1.0.898.10235 ⇒ version "1.0.898.10235", build 10235).
+///   3. Fallback: FileVersionInfo of "psoftw\piryons.exe" or "psoftw\piryon2.exe".
 ///
-/// Detection paths are configurable without code changes via appsettings.json
-/// (YarpaDetection section). When exact Yarpa registry/file paths are unknown,
-/// the result is returned as detectedBy="notFound" – no fake values are fabricated.
+/// Folder name, ini file name and executable candidates are configurable via appsettings.json
+/// (YarpaDetection section). When nothing is found, the result is status Ok with
+/// detectedBy="notFound" — no values are fabricated.
 /// </summary>
 public sealed class YarpaVersionCollector : ICollector
 {
+    private const string ProductName = "Piryon";
+
     private readonly YarpaDetectionOptions _options;
+
+    /// <summary>
+    /// Matches a trailing dotted numeric version of at least three segments,
+    /// e.g. "1.0.898.10235" inside "\psoftw\piryon2.exe.1.0.898.10235".
+    /// </summary>
+    private static readonly Regex VersionTailPattern =
+        new(@"(\d+(?:\.\d+){2,})\s*$", RegexOptions.Compiled);
 
     public YarpaVersionCollector(YarpaDetectionOptions? options = null)
     {
@@ -45,219 +55,221 @@ public sealed class YarpaVersionCollector : ICollector
 
     private static YarpaVersionData Detect(YarpaDetectionOptions options)
     {
-        // 1. Registry
-        if (TryDetectFromRegistry(options.RegistryKeys, out var regResult))
-            return regResult!;
+        foreach (string psoftwDir in EnumeratePsoftwDirectories(options))
+        {
+            // 1. piryons.ini → pexe= line
+            string iniPath = Path.Combine(psoftwDir, options.IniFileName);
+            if (TryDetectFromIni(iniPath, out var iniResult))
+                return iniResult!;
 
-        // 2. FileVersionInfo on executable/DLL
-        if (TryDetectFromFile(options.ExecutablePaths, out var fileResult))
-            return fileResult!;
-
-        // 3. Config / version text file
-        if (TryDetectFromConfigFile(options.ConfigFilePaths, out var configResult))
-            return configResult!;
+            // 2. FileVersionInfo fallback on the executable candidates
+            if (TryDetectFromExecutables(psoftwDir, options.ExecutableCandidates, out var fileResult))
+                return fileResult!;
+        }
 
         return new YarpaVersionData
         {
+            Product = ProductName,
             DetectedBy = "notFound"
         };
     }
 
-    private static bool TryDetectFromRegistry(
-        IReadOnlyList<string> keyPaths,
-        [NotNullWhen(true)] out YarpaVersionData? result)
+    /// <summary>
+    /// Enumerates candidate "psoftw" directories: the configured explicit paths first,
+    /// then "&lt;drive&gt;\psoftw" for every fixed drive.
+    /// </summary>
+    private static IEnumerable<string> EnumeratePsoftwDirectories(YarpaDetectionOptions options)
     {
-        result = null;
-        foreach (string keyPath in keyPaths)
+        var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        foreach (string raw in options.ExplicitPsoftwPaths)
         {
+            string expanded = Environment.ExpandEnvironmentVariables(raw);
+            if (seen.Add(expanded) && SafeDirectoryExists(expanded))
+                yield return expanded;
+        }
+
+        DriveInfo[] drives;
+        try
+        {
+            drives = DriveInfo.GetDrives();
+        }
+        catch
+        {
+            yield break;
+        }
+
+        foreach (DriveInfo drive in drives)
+        {
+            bool isFixed;
             try
             {
-                (RegistryHive hive, string subKey) = SplitHiveAndSubKey(keyPath);
-                using var baseKey = RegistryKey.OpenBaseKey(hive, RegistryView.Registry64);
-                using var key = baseKey.OpenSubKey(subKey);
-                if (key == null) continue;
+                isFixed = drive.DriveType == DriveType.Fixed && drive.IsReady;
+            }
+            catch
+            {
+                isFixed = false;
+            }
 
-                string? version = key.GetValue("DisplayVersion")?.ToString()
-                    ?? key.GetValue("Version")?.ToString();
-                if (string.IsNullOrEmpty(version)) continue;
+            if (!isFixed) continue;
 
-                string? product = key.GetValue("DisplayName")?.ToString()
-                    ?? key.GetValue("ProductName")?.ToString();
-                string? installPath = key.GetValue("InstallLocation")?.ToString()
-                    ?? key.GetValue("InstallDir")?.ToString();
+            string candidate = Path.Combine(drive.RootDirectory.FullName, options.PsoftwFolderName);
+            if (seen.Add(candidate) && SafeDirectoryExists(candidate))
+                yield return candidate;
+        }
+    }
+
+    private static bool SafeDirectoryExists(string path)
+    {
+        try { return Directory.Exists(path); }
+        catch { return false; }
+    }
+
+    private static bool TryDetectFromIni(string iniPath, [NotNullWhen(true)] out YarpaVersionData? result)
+    {
+        result = null;
+        try
+        {
+            if (!File.Exists(iniPath)) return false;
+
+            foreach (string line in File.ReadLines(iniPath))
+            {
+                string trimmed = line.TrimStart();
+                if (!trimmed.StartsWith("pexe", StringComparison.OrdinalIgnoreCase))
+                    continue;
+
+                int eq = trimmed.IndexOf('=');
+                if (eq < 0) continue;
+
+                string value = trimmed[(eq + 1)..].Trim();
+                if (!TryParseVersionFromPexe(value, out string version, out int? build))
+                    continue;
 
                 result = new YarpaVersionData
                 {
-                    Product = string.IsNullOrEmpty(product) ? "Yarpa" : product,
+                    Product = ProductName,
                     Version = version,
-                    DetectedBy = "registry",
-                    InstallPath = string.IsNullOrEmpty(installPath) ? null : installPath
+                    Build = build,
+                    DetectedBy = "iniFile",
+                    InstallPath = Path.GetDirectoryName(iniPath)
                 };
                 return true;
             }
-            catch { /* try next path */ }
         }
+        catch { /* fall through to executable fallback */ }
+
         return false;
     }
 
-    private static bool TryDetectFromFile(
-        IReadOnlyList<string> filePaths,
+    /// <summary>
+    /// Parses the version out of a pexe value such as "\psoftw\piryon2.exe.1.0.898.10235".
+    /// Prefers the segment following ".exe.", otherwise falls back to the trailing dotted
+    /// numeric run. Returns false when no plausible version is present.
+    /// </summary>
+    internal static bool TryParseVersionFromPexe(string pexeValue, out string version, out int? build)
+    {
+        version = string.Empty;
+        build = null;
+
+        if (string.IsNullOrWhiteSpace(pexeValue))
+            return false;
+
+        string candidate;
+        int exeIdx = pexeValue.IndexOf(".exe.", StringComparison.OrdinalIgnoreCase);
+        if (exeIdx >= 0)
+        {
+            candidate = pexeValue[(exeIdx + ".exe.".Length)..].Trim();
+        }
+        else
+        {
+            Match m = VersionTailPattern.Match(pexeValue);
+            if (!m.Success) return false;
+            candidate = m.Groups[1].Value;
+        }
+
+        candidate = candidate.Trim().Trim('.');
+
+        // Keep only a leading dotted-numeric run (drop any trailing garbage).
+        Match vm = Regex.Match(candidate, @"^\d+(?:\.\d+)+");
+        if (!vm.Success)
+            return false;
+
+        version = vm.Value;
+        build = ParseBuild(version);
+        return true;
+    }
+
+    /// <summary>Returns the last dotted segment of a version as an integer, or null.</summary>
+    internal static int? ParseBuild(string? version)
+    {
+        if (string.IsNullOrWhiteSpace(version))
+            return null;
+
+        string last = version.Split('.').Last();
+        return int.TryParse(last, out int b) ? b : null;
+    }
+
+    private static bool TryDetectFromExecutables(
+        string psoftwDir,
+        IReadOnlyList<string> executableCandidates,
         [NotNullWhen(true)] out YarpaVersionData? result)
     {
         result = null;
-        foreach (string rawPath in filePaths)
+        foreach (string exeName in executableCandidates)
         {
             try
             {
-                string path = Environment.ExpandEnvironmentVariables(rawPath);
+                string path = Path.Combine(psoftwDir, exeName);
                 if (!File.Exists(path)) continue;
 
-                var fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(path);
+                var fvi = FileVersionInfo.GetVersionInfo(path);
 
-                // Build 4-part numeric version from the raw file version resource,
-                // matching the behavior of the Delphi GetVer() function:
-                //   dwFileVersionMS shr 16  → FileMajorPart
-                //   dwFileVersionMS and $FFFF → FileMinorPart
-                //   dwFileVersionLS shr 16  → FileBuildPart
-                //   dwFileVersionLS and $FFFF → FilePrivatePart
-                string numericVersion = $"{fvi.FileMajorPart}.{fvi.FileMinorPart}.{fvi.FileBuildPart}.{fvi.FilePrivatePart}";
-                bool hasVersion = fvi.FileMajorPart > 0 || fvi.FileMinorPart > 0 || fvi.FileBuildPart > 0;
+                // 4-part numeric version, matching the Delphi GetVer() convention.
+                string version = $"{fvi.FileMajorPart}.{fvi.FileMinorPart}.{fvi.FileBuildPart}.{fvi.FilePrivatePart}";
+                bool hasVersion = fvi.FileMajorPart > 0 || fvi.FileMinorPart > 0
+                    || fvi.FileBuildPart > 0 || fvi.FilePrivatePart > 0;
                 if (!hasVersion) continue;
 
                 result = new YarpaVersionData
                 {
-                    Product = string.IsNullOrEmpty(fvi.ProductName) ? "Yarpa" : fvi.ProductName,
-                    Version = numericVersion,
+                    Product = ProductName,
+                    Version = version,
+                    Build = ParseBuild(version),
                     DetectedBy = "fileVersion",
-                    InstallPath = Path.GetDirectoryName(path)
+                    InstallPath = psoftwDir
                 };
                 return true;
             }
-            catch { /* try next path */ }
+            catch { /* try next candidate */ }
         }
+
         return false;
-    }
-
-    private static bool TryDetectFromConfigFile(
-        IReadOnlyList<string> configPaths,
-        [NotNullWhen(true)] out YarpaVersionData? result)
-    {
-        result = null;
-        foreach (string rawPath in configPaths)
-        {
-            try
-            {
-                string path = Environment.ExpandEnvironmentVariables(rawPath);
-                if (!File.Exists(path)) continue;
-
-                string content = File.ReadAllText(path).Trim();
-                if (string.IsNullOrEmpty(content)) continue;
-
-                // Try JSON first: {"version":"x.y.z"} or {"Version":"x.y.z"}
-                if (content.StartsWith('{'))
-                {
-                    using var doc = JsonDocument.Parse(content);
-                    string? v = null;
-                    if (doc.RootElement.TryGetProperty("version", out var vEl) ||
-                        doc.RootElement.TryGetProperty("Version", out vEl))
-                    {
-                        v = vEl.GetString();
-                    }
-
-                    if (!string.IsNullOrEmpty(v))
-                    {
-                        result = new YarpaVersionData
-                        {
-                            Version = v,
-                            DetectedBy = "configFile",
-                            InstallPath = Path.GetDirectoryName(path)
-                        };
-                        return true;
-                    }
-                }
-
-                // Plain text: first line is the version string
-                string firstLine = content.Split('\n')[0].Trim();
-                if (!string.IsNullOrEmpty(firstLine))
-                {
-                    result = new YarpaVersionData
-                    {
-                        Version = firstLine,
-                        DetectedBy = "configFile",
-                        InstallPath = Path.GetDirectoryName(path)
-                    };
-                    return true;
-                }
-            }
-            catch { /* try next path */ }
-        }
-        return false;
-    }
-
-    private static (RegistryHive Hive, string SubKey) SplitHiveAndSubKey(string fullPath)
-    {
-        int sep = fullPath.IndexOf('\\');
-        if (sep < 0) return (RegistryHive.LocalMachine, fullPath);
-
-        string hiveName = fullPath[..sep].ToUpperInvariant();
-        string subKey = fullPath[(sep + 1)..];
-
-        RegistryHive hive = hiveName switch
-        {
-            "HKLM" or "HKEY_LOCAL_MACHINE" => RegistryHive.LocalMachine,
-            "HKCU" or "HKEY_CURRENT_USER" => RegistryHive.CurrentUser,
-            "HKCR" or "HKEY_CLASSES_ROOT" => RegistryHive.ClassesRoot,
-            _ => RegistryHive.LocalMachine
-        };
-
-        return (hive, subKey);
     }
 }
 
 /// <summary>
-/// Configuration for Yarpa version detection paths. Bound from "YarpaDetection" in appsettings.json.
-/// All paths support environment variable expansion (e.g. %ProgramFiles%).
+/// Configuration for Piryon version detection. Bound from "YarpaDetection" in appsettings.json.
 /// </summary>
 public sealed class YarpaDetectionOptions
 {
     public const string SectionName = "YarpaDetection";
 
-    /// <summary>Registry key full paths to check for version info.</summary>
-    public IReadOnlyList<string> RegistryKeys { get; init; } =
+    /// <summary>Name of the Piryon folder searched in the root of each fixed drive. Default "psoftw".</summary>
+    public string PsoftwFolderName { get; init; } = "psoftw";
+
+    /// <summary>Name of the Piryon ini file inside the psoftw folder. Default "piryons.ini".</summary>
+    public string IniFileName { get; init; } = "piryons.ini";
+
+    /// <summary>Executable file names probed for FileVersionInfo when the ini is missing.</summary>
+    public IReadOnlyList<string> ExecutableCandidates { get; init; } =
     [
-        @"HKLM\SOFTWARE\Yarpa\Yarpa ERP",
-        @"HKLM\SOFTWARE\WOW6432Node\Yarpa\Yarpa ERP",
-        @"HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Yarpa ERP",
-        @"HKLM\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Yarpa ERP"
+        "piryons.exe",
+        "piryon2.exe"
     ];
 
-    /// <summary>Executable or DLL paths to check for FileVersionInfo.</summary>
-    public IReadOnlyList<string> ExecutablePaths { get; init; } =
-    [
-        // Primary Yarpa ERP executable (piryon2.exe) — common deployment paths
-        @"D:\psoftw\piryon2.exe",
-        @"C:\psoftw\piryon2.exe",
-        @"D:\psoft\piryon2.exe",
-        @"C:\psoft\piryon2.exe",
-        // Variant names used in some installations
-        @"D:\psoftw\piryon3.exe",
-        @"D:\psoftw\piryon5.exe",
-        @"D:\psoftw\piryonS.exe",
-        @"C:\psoftw\piryon3.exe",
-        @"C:\psoftw\piryon5.exe",
-        // Legacy / generic fallback paths
-        @"%ProgramFiles%\Yarpa\YarpaERP.exe",
-        @"%ProgramFiles(x86)%\Yarpa\YarpaERP.exe",
-        @"%ProgramFiles%\Yarpa\Yarpa.exe",
-        @"%ProgramFiles(x86)%\Yarpa\Yarpa.exe"
-    ];
-
-    /// <summary>Config/version text files to check for a version string.</summary>
-    public IReadOnlyList<string> ConfigFilePaths { get; init; } =
-    [
-        @"%ProgramFiles%\Yarpa\version.txt",
-        @"%ProgramFiles(x86)%\Yarpa\version.txt",
-        @"%ProgramFiles%\Yarpa\version.json",
-        @"%ProgramFiles(x86)%\Yarpa\version.json"
-    ];
+    /// <summary>
+    /// Optional explicit psoftw directory paths checked before drive scanning
+    /// (supports environment variables). Empty by default.
+    /// </summary>
+    public IReadOnlyList<string> ExplicitPsoftwPaths { get; init; } = [];
 }

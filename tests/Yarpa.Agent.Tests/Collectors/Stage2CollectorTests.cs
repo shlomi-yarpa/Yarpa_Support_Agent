@@ -138,4 +138,15 @@ public class Stage2CollectorTests
 
         Assert.Equal(expected, actual);
     }
+
+    [Theory]
+    [InlineData("\"C:\\psoftw\\Meusensrv.exe\" -service", "Meusensrv.exe")]
+    [InlineData("C:\\psoftw\\DangotService.exe", "DangotService.exe")]
+    [InlineData("C:\\Program Files\\Yarpa\\PirReplMercaz2SnifService.exe /run", "PirReplMercaz2SnifService.exe")]
+    [InlineData("", null)]
+    [InlineData(null, null)]
+    public void WindowsServicesCollector_ExtractExeName_ParsesCorrectly(string? pathName, string? expected)
+    {
+        Assert.Equal(expected, WindowsServicesCollector.ExtractExeName(pathName));
+    }
 }

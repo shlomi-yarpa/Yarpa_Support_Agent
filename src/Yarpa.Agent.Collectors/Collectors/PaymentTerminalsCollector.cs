@@ -181,29 +181,37 @@ public sealed class PaymentTerminalsCollector : ICollector
     }
 
     /// <summary>
-    /// Tries to find a COM port associated with the USB device identified by deviceId.
-    /// Heuristic: searches for overlapping registry key names or WMI friendly names.
+    /// Resolves the COM port assigned to a specific USB device. The authoritative source is the
+    /// device's own registry key: HKLM\SYSTEM\CurrentControlSet\Enum\&lt;deviceId&gt;\Device Parameters
+    /// value "PortName" (e.g. "COM3"). This is exact per-device, unlike name-based heuristics.
+    /// Falls back to a single unambiguous USB serial port from the map only when exactly one exists.
     /// </summary>
     private static string? FindComPort(string deviceId, List<(string DeviceName, string ComPort)> comPortMap)
     {
-        // The registry SERIALCOMM key value names often contain the PnP instance path segments.
-        // E.g. registry key name might be "\Device\USBSER000" while deviceId is "USB\VID_...\6"
-        // More reliably: WMI Ports names include part of the USB descriptor.
-        // We use a best-effort: if the WMI device name contains part of the USB name, associate.
-        // This is inherently approximate; the COM port is linked via driver stack which isn't
-        // easily traversable without P/Invoke.
-
-        foreach (var (devName, comPort) in comPortMap)
+        if (!string.IsNullOrEmpty(deviceId))
         {
-            // Check if the COM port device name contains "USB" – most USB serial devices do
-            if (devName.Contains("USB", StringComparison.OrdinalIgnoreCase) ||
-                devName.Contains("Serial", StringComparison.OrdinalIgnoreCase))
+            try
             {
-                return comPort;
+                string subKey = $@"SYSTEM\CurrentControlSet\Enum\{deviceId}\Device Parameters";
+                using var key = Registry.LocalMachine.OpenSubKey(subKey);
+                string? portName = key?.GetValue("PortName")?.ToString();
+                if (!string.IsNullOrEmpty(portName) &&
+                    portName.StartsWith("COM", StringComparison.OrdinalIgnoreCase))
+                    return portName;
             }
+            catch { /* fall through to the heuristic fallback */ }
         }
 
-        return null;
+        // Fallback: only associate when there is exactly one USB/serial COM port on the machine,
+        // so we never attribute an arbitrary port to the wrong terminal.
+        var usbPorts = comPortMap
+            .Where(p => p.DeviceName.Contains("USB", StringComparison.OrdinalIgnoreCase) ||
+                        p.DeviceName.Contains("Serial", StringComparison.OrdinalIgnoreCase))
+            .Select(p => p.ComPort)
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToList();
+
+        return usbPorts.Count == 1 ? usbPorts[0] : null;
     }
 
     // ── Vendor map loading ────────────────────────────────────────────────────

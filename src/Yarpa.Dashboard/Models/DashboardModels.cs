@@ -42,6 +42,7 @@ public sealed class MachineSummary
     [JsonPropertyName("paymentTerminals")] public List<PaymentTerminalSummary>?       PaymentTerminals  { get; init; }
     [JsonPropertyName("printers")]         public List<PrinterSummary>?               Printers          { get; init; }
     [JsonPropertyName("usbDevices")]       public List<UsbDeviceSummary>?             UsbDevices        { get; init; }
+    [JsonPropertyName("scanners")]         public List<ScannerSummary>?               Scanners          { get; init; }
     [JsonPropertyName("systemInfo")]       public SystemInfoSummary?                  SystemInfo        { get; init; }
     [JsonPropertyName("network")]          public NetworkSummary?                     Network           { get; init; }
     [JsonPropertyName("comPorts")]         public List<ComPortSummary>?               ComPorts          { get; init; }
@@ -123,6 +124,14 @@ public sealed class UsbDeviceSummary
     [JsonPropertyName("pid")]          public string? Pid          { get; init; }
     [JsonPropertyName("deviceClass")]  public string? DeviceClass  { get; init; }
     [JsonPropertyName("manufacturer")] public string? Manufacturer { get; init; }
+}
+
+public sealed class ScannerSummary
+{
+    [JsonPropertyName("name")]         public string? Name         { get; init; }
+    [JsonPropertyName("manufacturer")] public string? Manufacturer { get; init; }
+    [JsonPropertyName("vid")]          public string? Vid          { get; init; }
+    [JsonPropertyName("pid")]          public string? Pid          { get; init; }
 }
 
 public sealed class SystemInfoSummary

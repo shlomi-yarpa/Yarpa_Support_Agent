@@ -16,4 +16,13 @@ public sealed class ServiceInfo
 
     [JsonPropertyName("startMode")]
     public string StartMode { get; init; } = string.Empty;
+
+    /// <summary>
+    /// Executable file name backing the service (e.g. "Meusensrv.exe"), parsed from the
+    /// service binary path. Enables matching monitored services by EXE name in addition to
+    /// the service name. Null when the path is unavailable.
+    /// </summary>
+    [JsonPropertyName("exeName")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? ExeName { get; init; }
 }

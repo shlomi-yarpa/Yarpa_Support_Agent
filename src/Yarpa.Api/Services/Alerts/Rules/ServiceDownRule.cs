@@ -29,11 +29,15 @@ public sealed class ServiceDownRule : IAlertRule
         foreach (JsonElement svc in services.EnumerateArray())
         {
             string name = SectionReader.Str(svc, "name");
-            if (string.IsNullOrEmpty(name))
+            string exeName = SectionReader.Str(svc, "exeName");
+            if (string.IsNullOrEmpty(name) && string.IsNullOrEmpty(exeName))
                 continue;
 
+            // Match against the service name OR its backing EXE name (Yarpa services are keyed
+            // by EXE name in the field, e.g. Meusensrv.exe / DangotService).
             bool isMonitored = monitored.Any(m =>
-                name.Contains(m, StringComparison.OrdinalIgnoreCase));
+                (!string.IsNullOrEmpty(name) && name.Contains(m, StringComparison.OrdinalIgnoreCase)) ||
+                (!string.IsNullOrEmpty(exeName) && exeName.Contains(m, StringComparison.OrdinalIgnoreCase)));
             if (!isMonitored)
                 continue;
 
@@ -41,7 +45,10 @@ public sealed class ServiceDownRule : IAlertRule
             if (!string.Equals(state, "Running", StringComparison.OrdinalIgnoreCase))
             {
                 string display = SectionReader.Str(svc, "displayName");
-                down.Add(string.IsNullOrEmpty(display) ? name : display);
+                string label = !string.IsNullOrEmpty(display) ? display
+                    : !string.IsNullOrEmpty(name) ? name
+                    : exeName;
+                down.Add(label);
             }
         }
 
