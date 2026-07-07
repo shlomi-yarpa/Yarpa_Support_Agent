@@ -71,6 +71,9 @@ public sealed class HardwareSummary
     [JsonPropertyName("model")]        public string? Model        { get; init; }
     [JsonPropertyName("ramTotalMb")]   public long?   RamTotalMb   { get; init; }
     [JsonPropertyName("ramModules")]   public int?    RamModules   { get; init; }
+    [JsonPropertyName("cpuName")]      public string? CpuName      { get; init; }
+    [JsonPropertyName("cpuCores")]     public int?    CpuCores     { get; init; }
+    [JsonPropertyName("cpuLogical")]   public int?    CpuLogical   { get; init; }
 }
 
 public sealed class DiskSummary

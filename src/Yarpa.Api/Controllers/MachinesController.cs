@@ -376,10 +376,20 @@ public sealed class MachinesController : ControllerBase
             };
         }
 
-        // Hardware / RAM
+        // Hardware / RAM / CPU
         HardwareSummary? hardware = null;
         if (GetSection("hardware") is { } hwEl)
         {
+            string? cpuName  = null;
+            int?    cpuCores = null;
+            int?    cpuLogical = null;
+            if (hwEl.TryGetProperty("cpu", out var cpuEl))
+            {
+                cpuName    = TryGetString(cpuEl, "name");
+                cpuCores   = cpuEl.TryGetProperty("cores",   out var c) && c.TryGetInt32(out int cv) ? cv : null;
+                cpuLogical = cpuEl.TryGetProperty("logical", out var l) && l.TryGetInt32(out int lv) ? lv : null;
+            }
+
             hardware = new HardwareSummary
             {
                 Manufacturer = TryGetString(hwEl, "manufacturer"),
@@ -387,7 +397,10 @@ public sealed class MachinesController : ControllerBase
                 RamTotalMb   = hwEl.TryGetProperty("ramTotalMb", out var ram)
                                 && ram.TryGetInt64(out long ramVal) ? ramVal : null,
                 RamModules   = hwEl.TryGetProperty("ramModules", out var mods)
-                                && mods.TryGetInt32(out int modsVal) ? modsVal : null
+                                && mods.TryGetInt32(out int modsVal) ? modsVal : null,
+                CpuName      = cpuName,
+                CpuCores     = cpuCores,
+                CpuLogical   = cpuLogical
             };
         }
 
@@ -680,6 +693,9 @@ public sealed class HardwareSummary
     public string? Model        { get; init; }
     public long?   RamTotalMb   { get; init; }
     public int?    RamModules   { get; init; }
+    public string? CpuName      { get; init; }
+    public int?    CpuCores     { get; init; }
+    public int?    CpuLogical   { get; init; }
 }
 
 public sealed class DiskSummary

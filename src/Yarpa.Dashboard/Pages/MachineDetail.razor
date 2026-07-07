@@ -146,10 +146,18 @@
                                 {
                                     <SummaryRow Label="יצרן" Value="@_summary.Hardware.Manufacturer" />
                                     <SummaryRow Label="דגם"  Value="@_summary.Hardware.Model" />
+                                    @if (!string.IsNullOrEmpty(_summary.Hardware.CpuName))
+                                    {
+                                        <SummaryRow Label="מעבד" Value="@_summary.Hardware.CpuName" Bold="true" />
+                                    }
+                                    @if (_summary.Hardware.CpuCores.HasValue)
+                                    {
+                                        <SummaryRow Label="ליבות" Value="@($"{_summary.Hardware.CpuCores} פיזיות / {_summary.Hardware.CpuLogical} לוגיות")" />
+                                    }
                                     <SummaryRow Label="RAM"  Value="@FormatRam(_summary.Hardware.RamTotalMb)" Bold="true" />
                                     @if (_summary.Hardware.RamModules.HasValue)
                                     {
-                                        <SummaryRow Label="מודולים" Value="@_summary.Hardware.RamModules.Value.ToString()" />
+                                        <SummaryRow Label="מודולי RAM" Value="@_summary.Hardware.RamModules.Value.ToString()" />
                                     }
                                 }
                                 else
