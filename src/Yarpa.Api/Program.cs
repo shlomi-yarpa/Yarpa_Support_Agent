@@ -37,8 +37,13 @@ try
     // ── FluentValidation ─────────────────────────────────────────────────────
     builder.Services.AddScoped<IValidator<DiagnosticsSnapshot>, DiagnosticsSnapshotValidator>();
 
+    // ── Comparison options (configurable thresholds) ──────────────────────────
+    builder.Services.Configure<ComparisonOptions>(
+        builder.Configuration.GetSection("Comparison"));
+
     // ── Application services ──────────────────────────────────────────────────
     builder.Services.AddScoped<IClientResolver, ClientResolver>();
+    builder.Services.AddScoped<ISnapshotComparer, SnapshotComparer>();
     builder.Services.AddScoped<ISnapshotStore, SnapshotStore>();
 
     WebApplication app = builder.Build();

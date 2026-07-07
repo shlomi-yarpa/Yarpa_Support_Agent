@@ -24,4 +24,5 @@ public sealed class MachineEntity
     // Navigation
     public CustomerEntity Customer { get; set; } = null!;
     public ICollection<SnapshotEntity> Snapshots { get; set; } = new List<SnapshotEntity>();
+    public ICollection<ChangeEntity> Changes { get; set; } = new List<ChangeEntity>();
 }

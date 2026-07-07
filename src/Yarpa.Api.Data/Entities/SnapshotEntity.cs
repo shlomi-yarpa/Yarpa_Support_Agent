@@ -47,4 +47,5 @@ public sealed class SnapshotEntity
 
     // Navigation
     public MachineEntity Machine { get; set; } = null!;
+    public ICollection<ChangeEntity> Changes { get; set; } = new List<ChangeEntity>();
 }

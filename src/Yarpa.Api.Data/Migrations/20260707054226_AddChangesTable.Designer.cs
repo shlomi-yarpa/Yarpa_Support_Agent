@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Yarpa.Api.Data;
 
@@ -11,9 +12,11 @@ using Yarpa.Api.Data;
 namespace Yarpa.Api.Data.Migrations
 {
     [DbContext(typeof(YarpaDbContext))]
-    partial class YarpaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260707054226_AddChangesTable")]
+    partial class AddChangesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

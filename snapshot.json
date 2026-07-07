@@ -1,0 +1,2275 @@
+{
+  "snapshotId": "e2005fa2-271a-4770-8a3c-2a78c5018f7e",
+  "schemaVersion": "1.0",
+  "agentVersion": "1.0.0",
+  "machineId": "fb1bb1f3afa64a42a439be36701bbb21",
+  "collectedAtUtc": "2026-07-06T15:26:44.0578786+00:00",
+  "sections": {
+    "system": {
+      "status": "ok",
+      "data": {
+        "computerName": "TAL-GILAT",
+        "userName": "tal",
+        "domainOrWorkgroup": "yarpacomputers.local",
+        "uptimeSeconds": 120867
+      }
+    },
+    "os": {
+      "status": "ok",
+      "data": {
+        "caption": "\u200F\u200FMicrosoft Windows 11 Pro",
+        "version": "10.0.22000",
+        "build": "22000",
+        "edition": "Professional",
+        "architecture": "64-bit",
+        "language": "he-IL"
+      }
+    },
+    "hardware": {
+      "status": "ok",
+      "data": {
+        "manufacturer": "Gigabyte Technology Co., Ltd.",
+        "model": "B560M H",
+        "serialNumber": "Default string",
+        "bios": {
+          "manufacturer": "American Megatrends International, LLC.",
+          "version": "F6",
+          "releaseDate": "2021-11-03"
+        },
+        "cpu": {
+          "name": "11th Gen Intel(R) Core(TM) i5-11400 @ 2.60GHz",
+          "cores": 6,
+          "logical": 12
+        },
+        "ramTotalMb": 16384,
+        "ramModules": 2
+      }
+    },
+    "disks": {
+      "status": "partial",
+      "data": [
+        {
+          "drive": "C:",
+          "sizeGb": 263,
+          "freeGb": 143.8,
+          "freePercent": 54.7
+        },
+        {
+          "drive": "D:",
+          "sizeGb": 667.8,
+          "freeGb": 653.8,
+          "freePercent": 97.9
+        }
+      ],
+      "error": "media type unavailable (MSFT_PhysicalDisk query failed)"
+    },
+    "network": {
+      "status": "ok",
+      "data": {
+        "adapters": [
+          {
+            "name": "\u200F\u200FEthernet 2",
+            "mac": "D8:5E:D3:5C:9D:75",
+            "ipv4": "10.10.10.95",
+            "gateway": "10.10.10.1",
+            "dns": [
+              "10.10.10.200",
+              "10.10.10.202"
+            ]
+          }
+        ]
+      }
+    },
+    "printers": {
+      "status": "ok",
+      "data": [
+        {
+          "name": "OneNote (Desktop)",
+          "isDefault": false,
+          "status": "Idle",
+          "portName": "nul:",
+          "driver": "Send to Microsoft OneNote 16 Driver"
+        },
+        {
+          "name": "Microsoft XPS Document Writer",
+          "isDefault": false,
+          "status": "Idle",
+          "portName": "PORTPROMPT:",
+          "driver": "Microsoft XPS Document Writer v4"
+        },
+        {
+          "name": "Microsoft Print to PDF",
+          "isDefault": false,
+          "status": "Idle",
+          "portName": "PORTPROMPT:",
+          "driver": "Microsoft Print To PDF"
+        },
+        {
+          "name": "Kyocera ECOSYS M3645idn v4 KX (XPS)",
+          "isDefault": true,
+          "status": "Idle",
+          "portName": "10.10.10.169",
+          "driver": "Kyocera ECOSYS M3645idn v4 KX (XPS)"
+        },
+        {
+          "name": "Fax",
+          "isDefault": false,
+          "status": "Idle",
+          "portName": "SHRFAX:",
+          "driver": "Microsoft Shared Fax Driver"
+        }
+      ]
+    },
+    "usbDevices": {
+      "status": "ok",
+      "data": [
+        {
+          "name": "USB Input Device",
+          "vid": "046D",
+          "pid": "C534",
+          "deviceClass": "HIDClass",
+          "manufacturer": "(Standard system devices)"
+        },
+        {
+          "name": "USB Root Hub (USB 3.0)",
+          "vid": null,
+          "pid": null,
+          "deviceClass": "USB",
+          "manufacturer": "(Standard USB HUBs)"
+        },
+        {
+          "name": "USB Composite Device",
+          "vid": "1BCF",
+          "pid": "DC17",
+          "deviceClass": "USB",
+          "manufacturer": "(Standard USB Host Controller)"
+        },
+        {
+          "name": "Verbatim 49580 UHD 4K Webcam",
+          "vid": "1BCF",
+          "pid": "DC17",
+          "deviceClass": "Camera",
+          "manufacturer": "Microsoft"
+        },
+        {
+          "name": "USB Composite Device",
+          "vid": "046D",
+          "pid": "C534",
+          "deviceClass": "USB",
+          "manufacturer": "(Standard USB Host Controller)"
+        },
+        {
+          "name": "Verbatim 49580 UHD 4K Webcam",
+          "vid": "1BCF",
+          "pid": "DC17",
+          "deviceClass": "MEDIA",
+          "manufacturer": "(Generic USB Audio)"
+        },
+        {
+          "name": "Generic USB Hub",
+          "vid": "05E3",
+          "pid": "0608",
+          "deviceClass": "USB",
+          "manufacturer": "(Standard USB HUBs)"
+        },
+        {
+          "name": "USB Input Device",
+          "vid": "046D",
+          "pid": "C534",
+          "deviceClass": "HIDClass",
+          "manufacturer": "(Standard system devices)"
+        },
+        {
+          "name": "USB Input Device",
+          "vid": "048D",
+          "pid": "5702",
+          "deviceClass": "HIDClass",
+          "manufacturer": "(Standard system devices)"
+        }
+      ]
+    },
+    "comPorts": {
+      "status": "ok",
+      "data": [
+        {
+          "port": "COM1",
+          "deviceName": "Communications Port\u200F (COM1)"
+        },
+        {
+          "port": "COM3",
+          "deviceName": "Exar\u0027s Communications Port (COM3)"
+        },
+        {
+          "port": "COM4",
+          "deviceName": "Exar\u0027s Communications Port (COM4)"
+        }
+      ]
+    },
+    "paymentTerminals": {
+      "status": "ok",
+      "data": []
+    },
+    "services": {
+      "status": "ok",
+      "data": [
+        {
+          "name": "MSSQL$SQLEXPRESS",
+          "displayName": "SQL Server (SQLEXPRESS)",
+          "state": "Running",
+          "startMode": "Auto"
+        },
+        {
+          "name": "MSSQLFDLauncher$SQLEXPRESS",
+          "displayName": "SQL Full-text Filter Daemon Launcher (SQLEXPRESS)",
+          "state": "Running",
+          "startMode": "Manual"
+        },
+        {
+          "name": "SQLAgent$SQLEXPRESS",
+          "displayName": "SQL Server Agent (SQLEXPRESS)",
+          "state": "Stopped",
+          "startMode": "Disabled"
+        }
+      ]
+    },
+    "sqlServer": {
+      "status": "ok",
+      "data": {
+        "installed": true,
+        "instances": [
+          {
+            "name": "SQLEXPRESS",
+            "version": "14.0.1000.169",
+            "serviceState": "Running"
+          }
+        ]
+      }
+    },
+    "installedSoftware": {
+      "status": "ok",
+      "data": [
+        {
+          "name": "Active Directory Authentication Library for SQL Server",
+          "version": "15.0.1300.359",
+          "publisher": "Microsoft Corporation",
+          "installDate": "2022-02-13"
+        },
+        {
+          "name": "Browser for SQL Server 2017",
+          "version": "14.0.1000.169",
+          "publisher": "Microsoft Corporation",
+          "installDate": "2022-02-13"
+        },
+        {
+          "name": "Microsoft .NET 10.0 Templates 10.0.300 x64",
+          "version": "40.11.2206",
+          "publisher": "Microsoft Corporation",
+          "installDate": "2026-05-25"
+        },
+        {
+          "name": "Microsoft .NET 8.0 Templates 8.0.421 (x64)",
+          "version": "32.15.51258",
+          "publisher": "Microsoft Corporation",
+          "installDate": "2026-05-25"
+        },
+        {
+          "name": "Microsoft .NET AppHost Pack - 10.0.8 (x64)",
+          "version": "80.32.52183",
+          "publisher": "Microsoft Corporation",
+          "installDate": "2026-05-25"
+        },
+        {
+          "name": "Microsoft .NET AppHost Pack - 8.0.27 (x64)",
+          "version": "64.108.52182",
+          "publisher": "Microsoft Corporation",
+          "installDate": "2026-05-25"
+        },
+        {
+          "name": "Microsoft .NET AppHost Pack - 8.0.27 (x64_arm64)",
+          "version": "64.108.52182",
+          "publisher": "Microsoft Corporation",
+          "installDate": "2026-05-25"
+        },
+        {
+          "name": "Microsoft .NET AppHost Pack - 8.0.27 (x64_x86)",
+          "version": "64.108.52182",
+          "publisher": "Microsoft Corporation",
+          "installDate": "2026-05-25"
+        },
+        {
+          "name": "Microsoft .NET Host - 10.0.8 (x64)",
+          "version": "80.32.52183",
+          "publisher": "Microsoft Corporation",
+          "installDate": "2026-05-25"
+        },
+        {
+          "name": "Microsoft .NET Host - 8.0.27 (x64)",
+          "version": "64.108.52182",
+          "publisher": "Microsoft Corporation",
+          "installDate": "2026-05-25"
+        },
+        {
+          "name": "Microsoft .NET Host FX Resolver - 10.0.8 (x64)",
+          "version": "80.32.52183",
+          "publisher": "Microsoft Corporation",
+          "installDate": "2026-05-25"
+        },
+        {
+          "name": "Microsoft .NET Host FX Resolver - 8.0.27 (x64)",
+          "version": "64.108.52182",
+          "publisher": "Microsoft Corporation",
+          "installDate": "2026-05-25"
+        },
+        {
+          "name": "Microsoft .NET Runtime - 10.0.8 (x64)",
+          "version": "80.32.52183",
+          "publisher": "Microsoft Corporation",
+          "installDate": "2026-05-25"
+        },
+        {
+          "name": "Microsoft .NET Runtime - 8.0.27 (x64)",
+          "version": "64.108.52182",
+          "publisher": "Microsoft Corporation",
+          "installDate": "2026-05-25"
+        },
+        {
+          "name": "Microsoft .NET SDK 10.0.300 (x64)",
+          "version": "10.3.26.23102",
+          "publisher": "Microsoft Corporation",
+          "installDate": "2026-05-25"
+        },
+        {
+          "name": "Microsoft .NET SDK 8.0.421 (x64)",
+          "version": "8.4.2126.23002",
+          "publisher": "Microsoft Corporation",
+          "installDate": null
+        },
+        {
+          "name": "Microsoft .NET Standard Targeting Pack - 2.1.0 (x64)",
+          "version": "24.0.28113",
+          "publisher": "Microsoft Corporation",
+          "installDate": "2026-05-25"
+        },
+        {
+          "name": "Microsoft .NET Targeting Pack - 10.0.8 (x64)",
+          "version": "80.32.52183",
+          "publisher": "Microsoft Corporation",
+          "installDate": "2026-05-25"
+        },
+        {
+          "name": "Microsoft .NET Targeting Pack - 8.0.27 (x64)",
+          "version": "64.108.52182",
+          "publisher": "Microsoft Corporation",
+          "installDate": "2026-05-25"
+        },
+        {
+          "name": "Microsoft .NET Toolset 10.0.300 (x64)",
+          "version": "40.11.2206",
+          "publisher": "Microsoft Corporation",
+          "installDate": "2026-05-25"
+        },
+        {
+          "name": "Microsoft .NET Toolset 8.0.421 (x64)",
+          "version": "32.15.18490",
+          "publisher": "Microsoft Corporation",
+          "installDate": "2026-05-25"
+        },
+        {
+          "name": "Microsoft ODBC Driver 13 for SQL Server",
+          "version": "14.0.1000.169",
+          "publisher": "Microsoft Corporation",
+          "installDate": "2022-02-13"
+        },
+        {
+          "name": "Microsoft ODBC Driver 17 for SQL Server",
+          "version": "17.3.1.1",
+          "publisher": "Microsoft Corporation",
+          "installDate": "2022-02-13"
+        },
+        {
+          "name": "Microsoft OLE DB Driver for SQL Server",
+          "version": "18.2.1.0",
+          "publisher": "Microsoft Corporation",
+          "installDate": "2022-02-13"
+        },
+        {
+          "name": "Microsoft SQL Server 2005 Backward compatibility",
+          "version": "8.05.1054",
+          "publisher": "Microsoft Corporation",
+          "installDate": "2022-02-13"
+        },
+        {
+          "name": "Microsoft SQL Server 2012 Native Client ",
+          "version": "11.4.7462.6",
+          "publisher": "Microsoft Corporation",
+          "installDate": "2022-02-13"
+        },
+        {
+          "name": "Microsoft SQL Server 2017 (64-bit)",
+          "version": null,
+          "publisher": null,
+          "installDate": null
+        },
+        {
+          "name": "Microsoft SQL Server 2017 RsFx Driver",
+          "version": "14.0.1000.169",
+          "publisher": "Microsoft Corporation",
+          "installDate": "2022-02-13"
+        },
+        {
+          "name": "Microsoft SQL Server 2017 Setup (English)",
+          "version": "14.0.1000.169",
+          "publisher": "Microsoft Corporation",
+          "installDate": "2022-02-13"
+        },
+        {
+          "name": "Microsoft SQL Server 2017 T-SQL Language Service ",
+          "version": "14.0.1000.169",
+          "publisher": "Microsoft Corporation",
+          "installDate": "2022-02-13"
+        },
+        {
+          "name": "Microsoft SQL Server Management Studio - 18.2",
+          "version": "15.0.18142.0",
+          "publisher": "Microsoft Corporation",
+          "installDate": null
+        },
+        {
+          "name": "Microsoft VSS Writer for SQL Server 2017",
+          "version": "14.0.1000.169",
+          "publisher": "Microsoft Corporation",
+          "installDate": "2022-02-13"
+        },
+        {
+          "name": "SQL Server 2017 Batch Parser",
+          "version": "14.0.1000.169",
+          "publisher": "Microsoft Corporation",
+          "installDate": "2022-02-13"
+        },
+        {
+          "name": "SQL Server 2017 Client Tools",
+          "version": "14.0.1000.169",
+          "publisher": "Microsoft Corporation",
+          "installDate": "2022-02-13"
+        },
+        {
+          "name": "SQL Server 2017 Client Tools Extensions",
+          "version": "14.0.1000.169",
+          "publisher": "Microsoft Corporation",
+          "installDate": "2022-02-13"
+        },
+        {
+          "name": "SQL Server 2017 Common Files",
+          "version": "14.0.1000.169",
+          "publisher": "Microsoft Corporation",
+          "installDate": "2022-02-13"
+        },
+        {
+          "name": "SQL Server 2017 Connection Info",
+          "version": "14.0.1000.169",
+          "publisher": "Microsoft Corporation",
+          "installDate": "2022-02-13"
+        },
+        {
+          "name": "SQL Server 2017 Database Engine Services",
+          "version": "14.0.1000.169",
+          "publisher": "Microsoft Corporation",
+          "installDate": "2022-02-13"
+        },
+        {
+          "name": "SQL Server 2017 Database Engine Shared",
+          "version": "14.0.1000.169",
+          "publisher": "Microsoft Corporation",
+          "installDate": "2022-02-13"
+        },
+        {
+          "name": "SQL Server 2017 DMF",
+          "version": "14.0.1000.169",
+          "publisher": "Microsoft Corporation",
+          "installDate": "2022-02-13"
+        },
+        {
+          "name": "SQL Server 2017 Full text search",
+          "version": "14.0.1000.169",
+          "publisher": "Microsoft Corporation",
+          "installDate": "2022-02-13"
+        },
+        {
+          "name": "SQL Server 2017 Shared Management Objects",
+          "version": "14.0.1000.169",
+          "publisher": "Microsoft Corporation",
+          "installDate": "2022-02-13"
+        },
+        {
+          "name": "SQL Server 2017 Shared Management Objects Extensions",
+          "version": "14.0.1000.169",
+          "publisher": "Microsoft Corporation",
+          "installDate": "2022-02-13"
+        },
+        {
+          "name": "SQL Server 2017 SQL Diagnostics",
+          "version": "14.0.1000.169",
+          "publisher": "Microsoft Corporation",
+          "installDate": "2022-02-13"
+        },
+        {
+          "name": "SQL Server 2017 XEvent",
+          "version": "14.0.1000.169",
+          "publisher": "Microsoft Corporation",
+          "installDate": "2022-02-13"
+        },
+        {
+          "name": "SQL Server Management Studio",
+          "version": "15.0.18142.0",
+          "publisher": "Microsoft Corporation",
+          "installDate": "2022-02-13"
+        },
+        {
+          "name": "SQL Server Management Studio for Analysis Services",
+          "version": "15.0.18142.0",
+          "publisher": "Microsoft Corporation",
+          "installDate": "2022-02-13"
+        },
+        {
+          "name": "SQL Server Management Studio for Reporting Services",
+          "version": "15.0.18142.0",
+          "publisher": "Microsoft Corporation",
+          "installDate": "2022-02-13"
+        }
+      ]
+    },
+    "eventLogs": {
+      "status": "ok",
+      "data": [
+        {
+          "log": "Application",
+          "source": ".NET Runtime",
+          "eventId": 1026,
+          "level": "Error",
+          "timeUtc": "2026-07-05T14:42:43.2052084+00:00",
+          "message": "Application: CRM.API.exe\nCoreCLR Version: 8.0.2726.22922\n.NET Version: 8.0.27\nDescription: The process was terminated due to an unhandled exception.\nException Info: System.IO.IOException: Failed to bind to address http://127.0.0.1:5282: address already in use.\r\n ---\u003E Microsoft.AspNetCore.Connections.AddressInUseException: Only one usage of each socket address (protocol/network address/port) is normally permitted.\r\n ---\u003E System.Net.Sockets.SocketException (10048): Only one usage of each socket address (proto\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T13:11:17.5125416+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-1044434275-11955433-2507738542-2997195565-3980596026-990981663-2517485111). This security permission can \u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T13:11:17.5125416+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-1044434275-11955433-2507738542-2997195565-3980596026-990981663-2517485111). This security permission can \u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T13:11:17.5125416+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-1044434275-11955433-2507738542-2997195565-3980596026-990981663-2517485111). This security permission can \u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T13:11:17.5125416+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-1044434275-11955433-2507738542-2997195565-3980596026-990981663-2517485111). This security permission can \u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T13:11:17.5125416+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-1044434275-11955433-2507738542-2997195565-3980596026-990981663-2517485111). This security permission can \u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T13:11:17.4969204+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-1044434275-11955433-2507738542-2997195565-3980596026-990981663-2517485111). This security permission can \u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T13:11:17.4969204+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-1044434275-11955433-2507738542-2997195565-3980596026-990981663-2517485111). This security permission can \u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T13:11:17.4969204+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-1044434275-11955433-2507738542-2997195565-3980596026-990981663-2517485111). This security permission can \u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T13:11:17.4969204+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-1044434275-11955433-2507738542-2997195565-3980596026-990981663-2517485111). This security permission can \u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T13:11:17.4969204+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-1044434275-11955433-2507738542-2997195565-3980596026-990981663-2517485111). This security permission can \u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T13:11:17.4969204+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-1044434275-11955433-2507738542-2997195565-3980596026-990981663-2517485111). This security permission can \u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T13:11:17.4969204+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-1044434275-11955433-2507738542-2997195565-3980596026-990981663-2517485111). This security permission can \u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T13:11:17.4969204+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-1044434275-11955433-2507738542-2997195565-3980596026-990981663-2517485111). This security permission can \u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T13:11:17.4812576+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-1044434275-11955433-2507738542-2997195565-3980596026-990981663-2517485111). This security permission can \u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T13:11:17.4812576+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-1044434275-11955433-2507738542-2997195565-3980596026-990981663-2517485111). This security permission can \u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T13:11:17.4812576+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-1044434275-11955433-2507738542-2997195565-3980596026-990981663-2517485111). This security permission can \u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T13:11:17.4812576+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-1044434275-11955433-2507738542-2997195565-3980596026-990981663-2517485111). This security permission can \u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T13:11:17.4812576+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-1044434275-11955433-2507738542-2997195565-3980596026-990981663-2517485111). This security permission can \u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T13:11:17.4812576+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-1044434275-11955433-2507738542-2997195565-3980596026-990981663-2517485111). This security permission can \u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T13:11:17.4812576+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{8BC3F05E-D86B-11D0-A075-00C04FB68820}\r\n and APPID \r\n{8BC3F05E-D86B-11D0-A075-00C04FB68820}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-1044434275-11955433-2507738542-2997195565-3980596026-990981663-2517485111). This security permission can \u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:38:14.9772897+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{A47979D2-C419-11D9-A5B4-001185AD2B89}\r\n and APPID \r\n{C96887DA-A652-4426-905E-4A37546F847C}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:38:10.4514434+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:38:10.4514434+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:38:10.4514434+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:38:10.4514434+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:38:10.4514434+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:38:10.4514434+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:38:10.4514434+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:38:10.4358296+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:38:10.4358296+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:38:10.4358296+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:38:10.4358296+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:38:10.4202246+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:38:10.4202246+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:38:10.4202246+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:59.3624619+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:59.3624619+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:59.3624619+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:59.3624619+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:59.3468525+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:59.3468525+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:59.3468525+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:59.3468525+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:59.3468525+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:59.3468525+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:59.3312543+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:59.3312543+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:59.3312543+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:59.3312543+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:54.718251+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:54.718251+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:54.718251+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:54.718251+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:54.718251+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:54.718251+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:54.7026257+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:54.7026257+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:54.7026257+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:54.7026257+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:54.7026257+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:54.7026257+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:54.7026257+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:54.7026257+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:54.7026257+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:54.7026257+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:54.6870335+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:54.6870335+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:54.6870335+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:54.6870335+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:54.6870335+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:54.6870335+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:54.6714075+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:54.6401568+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{A47979D2-C419-11D9-A5B4-001185AD2B89}\r\n and APPID \r\n{C96887DA-A652-4426-905E-4A37546F847C}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:54.6401568+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{A47979D2-C419-11D9-A5B4-001185AD2B89}\r\n and APPID \r\n{C96887DA-A652-4426-905E-4A37546F847C}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:54.6401568+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{A47979D2-C419-11D9-A5B4-001185AD2B89}\r\n and APPID \r\n{C96887DA-A652-4426-905E-4A37546F847C}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:54.6401568+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{A47979D2-C419-11D9-A5B4-001185AD2B89}\r\n and APPID \r\n{C96887DA-A652-4426-905E-4A37546F847C}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:49.6688269+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:49.6688269+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:49.6688269+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:49.6532018+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{A47979D2-C419-11D9-A5B4-001185AD2B89}\r\n and APPID \r\n{C96887DA-A652-4426-905E-4A37546F847C}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:49.6532018+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:49.6532018+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{A47979D2-C419-11D9-A5B4-001185AD2B89}\r\n and APPID \r\n{C96887DA-A652-4426-905E-4A37546F847C}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:49.6532018+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{A47979D2-C419-11D9-A5B4-001185AD2B89}\r\n and APPID \r\n{C96887DA-A652-4426-905E-4A37546F847C}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:49.6532018+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:49.6532018+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:49.6532018+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{A47979D2-C419-11D9-A5B4-001185AD2B89}\r\n and APPID \r\n{C96887DA-A652-4426-905E-4A37546F847C}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:49.6532018+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{A47979D2-C419-11D9-A5B4-001185AD2B89}\r\n and APPID \r\n{C96887DA-A652-4426-905E-4A37546F847C}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:49.6532018+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:49.6532018+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:49.6532018+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:49.6532018+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:49.6376091+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:49.6376091+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:49.6376091+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:49.6376091+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:49.6376091+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:49.6376091+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{A47979D2-C419-11D9-A5B4-001185AD2B89}\r\n and APPID \r\n{C96887DA-A652-4426-905E-4A37546F847C}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:49.6376091+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:49.6376091+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:49.6376091+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:49.6376091+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:49.6219503+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:49.6219503+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:49.6219503+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:49.6219503+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:49.6219503+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:49.6219503+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:49.6219503+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:49.6219503+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:49.6219503+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:49.6063264+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:49.6063264+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:49.6063264+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T12:37:49.6063264+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{8BC3F05E-D86B-11D0-A075-00C04FB68820}\r\n and APPID \r\n{8BC3F05E-D86B-11D0-A075-00C04FB68820}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2069752313-2250735546-2020063662-3934545495-1559097839-4157354771-3079620836). This security permission c\u2026"
+        },
+        {
+          "log": "Application",
+          "source": ".NET Runtime",
+          "eventId": 1022,
+          "level": "Error",
+          "timeUtc": "2026-07-05T11:07:38.5646813+00:00",
+          "message": ".NET Runtime version 4.0.30319.0 - \u05D0\u05D9\u05E8\u05E2 \u05DB\u05E9\u05DC \u05D1\u05E2\u05EA \u05D0\u05EA\u05D7\u05D5\u05DC \u05EA\u05E9\u05EA\u05D9\u05EA \u05E6\u05D9\u05E8\u05D5\u05E3 API \u05E9\u05DC \u05D9\u05E6\u05D9\u05E8\u05EA \u05E4\u05E8\u05D5\u05E4\u05D9\u05DC\u05D9\u05DD.  \u05EA\u05D4\u05DC\u05D9\u05DA \u05D6\u05D4 \u05DC\u05D0 \u05D9\u05D0\u05E4\u05E9\u05E8 \u05DC\u05D9\u05D5\u05E6\u05E8 \u05D4\u05E4\u05E8\u05D5\u05E4\u05D9\u05DC\u05D9\u05DD \u05DC\u05E6\u05E8\u05E3.  HRESULT: 0x80004005.  \u05DE\u05D6\u05D4\u05D4 \u05EA\u05D4\u05DC\u05D9\u05DA (\u05E2\u05E9\u05E8\u05D5\u05E0\u05D9): 9080. \u05DE\u05D6\u05D4\u05D4 \u05D4\u05D5\u05D3\u05E2\u05D4: [0x2509]."
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T10:23:45.0487379+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{2593F8B9-4EAF-457C-B68A-50F6B8EA6B54}\r\n and APPID \r\n{15C20B67-12E7-4BB6-92BB-7AFF07997402}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (Unavailable). This security permission can be modified using the Component Services administrative tool."
+        },
+        {
+          "log": "System",
+          "source": "Tcpip",
+          "eventId": 4266,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T08:01:15.6171194+00:00",
+          "message": "A request to allocate an ephemeral port number from the global UDP port space has failed due to all such ports being in use."
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-Time-Service",
+          "eventId": 24,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T06:43:15.5139336+00:00",
+          "message": "Time Provider NtpClient: No valid response has been received from domain controller DC01.yarpacomputers.local after 8 attempts to contact it. This domain controller will be discarded as a time source and NtpClient will attempt to discover a new domain controller from which to synchronize. The error was: The peer is unreachable. "
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10006,
+          "level": "Error",
+          "timeUtc": "2026-07-05T05:58:29.4183677+00:00",
+          "message": "DCOM got error \u00222147944122\u0022 from the computer SQLSERVER when attempting to activate the server:\r\n{8BC3F05E-D86B-11D0-A075-00C04FB68820}"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10006,
+          "level": "Error",
+          "timeUtc": "2026-07-05T05:58:29.1995358+00:00",
+          "message": "DCOM got error \u00222147944122\u0022 from the computer SQLSERVER when attempting to activate the server:\r\n{8BC3F05E-D86B-11D0-A075-00C04FB68820}"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T05:54:26.7267363+00:00",
+          "message": "The application-specific permission settings do not grant Local Launch permission for the COM Server application with CLSID \r\nWindows.SecurityCenter.SecurityAppBroker\r\n and APPID \r\nUnavailable\r\n to the user NT AUTHORITY\\SYSTEM SID (S-1-5-18) from address LocalHost (Using LRPC) running in the application container Unavailable SID (Unavailable). This security permission can be modified using the Component Services administrative tool."
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T05:54:26.7267363+00:00",
+          "message": "The application-specific permission settings do not grant Local Launch permission for the COM Server application with CLSID \r\nWindows.SecurityCenter.WscBrokerManager\r\n and APPID \r\nUnavailable\r\n to the user NT AUTHORITY\\SYSTEM SID (S-1-5-18) from address LocalHost (Using LRPC) running in the application container Unavailable SID (Unavailable). This security permission can be modified using the Component Services administrative tool."
+        },
+        {
+          "log": "System",
+          "source": "Service Control Manager",
+          "eventId": 7000,
+          "level": "Error",
+          "timeUtc": "2026-07-05T05:54:26.2410647+00:00",
+          "message": "\u200F\u200F\u05D4\u05E4\u05E2\u05DC\u05EA \u05D4\u05E9\u05D9\u05E8\u05D5\u05EA \u05E9\u05D9\u05E8\u05D5\u05EA \u200F\u05E2\u05D3\u05DB\u05D5\u05DF Google (gupdate) \u05E0\u05DB\u05E9\u05DC\u05D4 \u05D1\u05E9\u05DC \u05D4\u05E9\u05D2\u05D9\u05D0\u05D4 \u05D4\u05D1\u05D0\u05D4: \r\nThe service did not respond to the start or control request in a timely fashion."
+        },
+        {
+          "log": "System",
+          "source": "Service Control Manager",
+          "eventId": 7009,
+          "level": "Error",
+          "timeUtc": "2026-07-05T05:54:26.2410647+00:00",
+          "message": "\u200F\u200F\u05D4\u05DE\u05E2\u05E8\u05DB\u05EA \u05D4\u05D2\u05D9\u05E2\u05D4 \u05DC\u05E4\u05E8\u05E7 \u05D6\u05DE\u05DF \u05E7\u05E6\u05D5\u05D1 (30000 \u05D0\u05DC\u05E4\u05D9\u05D5\u05EA \u05E9\u05E0\u05D9\u05D4) \u05D1\u05DE\u05D4\u05DC\u05DA \u05D4\u05DE\u05EA\u05E0\u05D4 \u05DC\u05D7\u05D9\u05D1\u05D5\u05E8 \u05E9\u05DC \u05E9\u05D9\u05E8\u05D5\u05EA \u05E9\u05D9\u05E8\u05D5\u05EA \u200F\u05E2\u05D3\u05DB\u05D5\u05DF Google (gupdate)."
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10010,
+          "level": "Error",
+          "timeUtc": "2026-07-05T05:54:12.52162+00:00",
+          "message": "The server {583C0B7A-E536-4020-9F62-002DA58A5B81} did not register with DCOM within the required timeout."
+        },
+        {
+          "log": "System",
+          "source": "BROWSER",
+          "eventId": 8021,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T05:54:04.7549768+00:00",
+          "message": "The browser service was unable to retrieve a list of servers from the browser master \\\\DC01 on the network \\Device\\NetBT_Tcpip_{08012C48-0E4F-4E39-A694-676D7AC8EFD5}.\r\n \r\n Browser master: \\\\DC01\r\n Network: \\Device\\NetBT_Tcpip_{08012C48-0E4F-4E39-A694-676D7AC8EFD5}\r\n \r\n This event may be caused by a temporary loss of network connectivity. If this message appears again, verify that the server is still connected to the network. The return code is in the Data text box."
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T05:53:31.2507172+00:00",
+          "message": "The application-specific permission settings do not grant Local Launch permission for the COM Server application with CLSID \r\nWindows.SecurityCenter.WscCloudBackupProvider\r\n and APPID \r\nUnavailable\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (Unavailable). This security permission can be modified using the Component Services administrative tool."
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T05:53:29.2706222+00:00",
+          "message": "The application-specific permission settings do not grant Local Launch permission for the COM Server application with CLSID \r\nWindows.SecurityCenter.WscCloudBackupProvider\r\n and APPID \r\nUnavailable\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (Unavailable). This security permission can be modified using the Component Services administrative tool."
+        },
+        {
+          "log": "System",
+          "source": "e1i68x64",
+          "eventId": 27,
+          "level": "Warning",
+          "timeUtc": "2026-07-05T05:52:26.6427736+00:00",
+          "message": "Intel(R) Gigabit CT Desktop Adapter\r\n Network link is disconnected.\r\n"
+        },
+        {
+          "log": "System",
+          "source": "EventLog",
+          "eventId": 6008,
+          "level": "Error",
+          "timeUtc": "2026-07-05T05:52:24.6064001+00:00",
+          "message": "The previous system shutdown at 16:26:30 on \u200E04/\u200E07/\u200E2026 was unexpected."
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-Kernel-Power",
+          "eventId": 41,
+          "level": "Critical",
+          "timeUtc": "2026-07-05T05:52:19.7364835+00:00",
+          "message": "The system has rebooted without cleanly shutting down first. This error could be caused if the system stopped responding, crashed, or lost power unexpectedly."
+        },
+        {
+          "log": "System",
+          "source": "Application Popup",
+          "eventId": 56,
+          "level": "Error",
+          "timeUtc": "2026-07-05T05:52:18.294556+00:00",
+          "message": "; ACPI; 2; System.Byte[]"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-WindowsUpdateClient",
+          "eventId": 20,
+          "level": "Error",
+          "timeUtc": "2026-07-04T09:52:10.3830498+00:00",
+          "message": "\u200F\u200F\u05D4\u05D4\u05EA\u05E7\u05E0\u05D4 \u05E0\u05DB\u05E9\u05DC\u05D4: Windows \u05E0\u05DB\u05E9\u05DC \u05D1\u05D4\u05EA\u05E7\u05E0\u05EA \u05D4\u05E2\u05D3\u05DB\u05D5\u05DF \u05D4\u05D1\u05D0 \u05E2\u05DD \u05E9\u05D2\u05D9\u05D0\u05D4 0x80073D02: 9MZ95KL8MR0L-Microsoft.ScreenSketch."
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-Time-Service",
+          "eventId": 36,
+          "level": "Warning",
+          "timeUtc": "2026-07-04T06:46:39.8575498+00:00",
+          "message": "The time service has not synchronized the system time for the last 86400 seconds because none of the time service providers provided a usable time stamp. The time service will not update the local system time until it is able to synchronize with a time source. If the local system is configured to act as a time server for clients, it will stop advertising as a time source to clients after 0 seconds. The time service will continue to retry and sync time with its time sources. Check system event log for other \u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-Time-Service",
+          "eventId": 36,
+          "level": "Warning",
+          "timeUtc": "2026-07-03T06:46:39.8529497+00:00",
+          "message": "The time service has not synchronized the system time for the last 86400 seconds because none of the time service providers provided a usable time stamp. The time service will not update the local system time until it is able to synchronize with a time source. If the local system is configured to act as a time server for clients, it will stop advertising as a time source to clients after 0 seconds. The time service will continue to retry and sync time with its time sources. Check system event log for other \u2026"
+        },
+        {
+          "log": "System",
+          "source": "Tcpip",
+          "eventId": 4266,
+          "level": "Warning",
+          "timeUtc": "2026-07-02T23:43:21.2312634+00:00",
+          "message": "A request to allocate an ephemeral port number from the global UDP port space has failed due to all such ports being in use."
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-WindowsUpdateClient",
+          "eventId": 20,
+          "level": "Error",
+          "timeUtc": "2026-07-02T18:24:06.7736711+00:00",
+          "message": "\u200F\u200F\u05D4\u05D4\u05EA\u05E7\u05E0\u05D4 \u05E0\u05DB\u05E9\u05DC\u05D4: Windows \u05E0\u05DB\u05E9\u05DC \u05D1\u05D4\u05EA\u05E7\u05E0\u05EA \u05D4\u05E2\u05D3\u05DB\u05D5\u05DF \u05D4\u05D1\u05D0 \u05E2\u05DD \u05E9\u05D2\u05D9\u05D0\u05D4 0x80073D02: 9MZ95KL8MR0L-Microsoft.ScreenSketch."
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-WindowsUpdateClient",
+          "eventId": 20,
+          "level": "Error",
+          "timeUtc": "2026-07-02T16:21:45.0612054+00:00",
+          "message": "\u200F\u200F\u05D4\u05D4\u05EA\u05E7\u05E0\u05D4 \u05E0\u05DB\u05E9\u05DC\u05D4: Windows \u05E0\u05DB\u05E9\u05DC \u05D1\u05D4\u05EA\u05E7\u05E0\u05EA \u05D4\u05E2\u05D3\u05DB\u05D5\u05DF \u05D4\u05D1\u05D0 \u05E2\u05DD \u05E9\u05D2\u05D9\u05D0\u05D4 0x80073D02: 9MZ95KL8MR0L-Microsoft.ScreenSketch."
+        },
+        {
+          "log": "Application",
+          "source": "Application Error",
+          "eventId": 1000,
+          "level": "Error",
+          "timeUtc": "2026-07-02T12:08:10.087449+00:00",
+          "message": "\u200F\u200F\u05E9\u05DD \u05D9\u05D9\u05E9\u05D5\u05DD \u05E9\u05D7\u05DC\u05D5\u05EA \u05D1\u05D5 \u05EA\u05E7\u05DC\u05D5\u05EA: CRM.API.exe, \u05D2\u05D9\u05E8\u05E1\u05D4: 1.0.0.0, \u05D7\u05D5\u05EA\u05DE\u05EA \u05D6\u05DE\u05DF: 0x69f20000\r\n\u05E9\u05DD \u05DE\u05D5\u05D3\u05D5\u05DC \u05E9\u05D7\u05DC\u05D5\u05EA \u05D1\u05D5 \u05EA\u05E7\u05DC\u05D5\u05EA: KERNELBASE.dll, \u05D2\u05D9\u05E8\u05E1\u05D4: 10.0.22000.2538, \u05D7\u05D5\u05EA\u05DE\u05EA \u05D6\u05DE\u05DF: 0x06aca232\r\n\u05E7\u05D5\u05D3 \u05D7\u05E8\u05D9\u05D2\u05D4: 0xe0434352\r\n\u05D4\u05D9\u05E1\u05D8 \u05EA\u05E7\u05DC\u05D4: 0x0000000000052bdc\r\n\u05DE\u05D6\u05D4\u05D4 \u05EA\u05D4\u05DC\u05D9\u05DA \u05E9\u05D7\u05DC\u05D5\u05EA \u05D1\u05D5 \u05EA\u05E7\u05DC\u05D5\u05EA: 0x62bc\r\n\u05E9\u05E2\u05EA \u05D4\u05D4\u05E4\u05E2\u05DC\u05D4 \u05E9\u05DC \u05D4\u05D9\u05D9\u05E9\u05D5\u05DD \u05E9\u05D7\u05DC\u05D5\u05EA \u05D1\u05D5 \u05EA\u05E7\u05DC\u05D5\u05EA: 0x01dd0a1b6dd8e947\r\n\u05E0\u05EA\u05D9\u05D1 \u05D4\u05D9\u05D9\u05E9\u05D5\u05DD \u05E9\u05D7\u05DC\u05D5\u05EA \u05D1\u05D5 \u05EA\u05E7\u05DC\u05D5\u05EA: d:\\crm_yarpa-main\\src\\CRM.API\\bin\\Debug\\net8.0\\CRM.API.exe\r\n\u05E0\u05EA\u05D9\u05D1 \u05D4\u05DE\u05D5\u05D3\u05D5\u05DC \u05E9\u05D7\u05DC\u05D5\u05EA \u05D1\u05D5 \u05EA\u05E7\u05DC\u05D5\u05EA: C:\\Windows\\System32\\KERNELBASE.dll\r\n\u05DE\u05D6\u05D4\u05D4 \u05D3\u05D5\u05D7: df862d0f-c050-4141-97aa-b9ecdd03ea22\r\u2026"
+        },
+        {
+          "log": "Application",
+          "source": ".NET Runtime",
+          "eventId": 1026,
+          "level": "Error",
+          "timeUtc": "2026-07-02T12:08:09.8903474+00:00",
+          "message": "Application: CRM.API.exe\nCoreCLR Version: 8.0.2726.22922\n.NET Version: 8.0.27\nDescription: The process was terminated due to an unhandled exception.\nException Info: System.IO.IOException: Failed to bind to address http://127.0.0.1:5282: address already in use.\r\n ---\u003E Microsoft.AspNetCore.Connections.AddressInUseException: Only one usage of each socket address (protocol/network address/port) is normally permitted.\r\n ---\u003E System.Net.Sockets.SocketException (10048): Only one usage of each socket address (proto\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-Time-Service",
+          "eventId": 36,
+          "level": "Warning",
+          "timeUtc": "2026-07-02T06:46:39.840759+00:00",
+          "message": "The time service has not synchronized the system time for the last 86400 seconds because none of the time service providers provided a usable time stamp. The time service will not update the local system time until it is able to synchronize with a time source. If the local system is configured to act as a time server for clients, it will stop advertising as a time source to clients after 0 seconds. The time service will continue to retry and sync time with its time sources. Check system event log for other \u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-WindowsUpdateClient",
+          "eventId": 20,
+          "level": "Error",
+          "timeUtc": "2026-07-01T16:47:17.6903359+00:00",
+          "message": "\u200F\u200F\u05D4\u05D4\u05EA\u05E7\u05E0\u05D4 \u05E0\u05DB\u05E9\u05DC\u05D4: Windows \u05E0\u05DB\u05E9\u05DC \u05D1\u05D4\u05EA\u05E7\u05E0\u05EA \u05D4\u05E2\u05D3\u05DB\u05D5\u05DF \u05D4\u05D1\u05D0 \u05E2\u05DD \u05E9\u05D2\u05D9\u05D0\u05D4 0x80073D02: 9WZDNCRD29V9-MICROSOFT.MICROSOFTOFFICEHUB."
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-WindowsUpdateClient",
+          "eventId": 20,
+          "level": "Error",
+          "timeUtc": "2026-07-01T16:47:00.4174881+00:00",
+          "message": "\u200F\u200F\u05D4\u05D4\u05EA\u05E7\u05E0\u05D4 \u05E0\u05DB\u05E9\u05DC\u05D4: Windows \u05E0\u05DB\u05E9\u05DC \u05D1\u05D4\u05EA\u05E7\u05E0\u05EA \u05D4\u05E2\u05D3\u05DB\u05D5\u05DF \u05D4\u05D1\u05D0 \u05E2\u05DD \u05E9\u05D2\u05D9\u05D0\u05D4 0x80073D02: 9MZ95KL8MR0L-Microsoft.ScreenSketch."
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-01T10:23:52.4128276+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2729266236-2044522018-1656602234-1509789131-1949989928-865001053-2180591121). This security permission ca\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-01T10:23:52.4128276+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2729266236-2044522018-1656602234-1509789131-1949989928-865001053-2180591121). This security permission ca\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-01T10:23:52.4128276+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2729266236-2044522018-1656602234-1509789131-1949989928-865001053-2180591121). This security permission ca\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-01T10:23:52.4121519+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2729266236-2044522018-1656602234-1509789131-1949989928-865001053-2180591121). This security permission ca\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-01T10:23:52.3960174+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2729266236-2044522018-1656602234-1509789131-1949989928-865001053-2180591121). This security permission ca\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-01T10:23:52.3960174+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2729266236-2044522018-1656602234-1509789131-1949989928-865001053-2180591121). This security permission ca\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-01T10:23:52.3960174+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2729266236-2044522018-1656602234-1509789131-1949989928-865001053-2180591121). This security permission ca\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-01T10:23:52.3960174+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2729266236-2044522018-1656602234-1509789131-1949989928-865001053-2180591121). This security permission ca\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-01T10:23:52.3960174+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2729266236-2044522018-1656602234-1509789131-1949989928-865001053-2180591121). This security permission ca\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-01T10:23:52.3960174+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2729266236-2044522018-1656602234-1509789131-1949989928-865001053-2180591121). This security permission ca\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-01T10:23:52.3960174+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2729266236-2044522018-1656602234-1509789131-1949989928-865001053-2180591121). This security permission ca\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-01T10:23:52.3960174+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2729266236-2044522018-1656602234-1509789131-1949989928-865001053-2180591121). This security permission ca\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-01T10:23:52.3960174+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2729266236-2044522018-1656602234-1509789131-1949989928-865001053-2180591121). This security permission ca\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-01T10:23:52.3794693+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2729266236-2044522018-1656602234-1509789131-1949989928-865001053-2180591121). This security permission ca\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-01T10:23:52.3794693+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2729266236-2044522018-1656602234-1509789131-1949989928-865001053-2180591121). This security permission ca\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-01T10:23:52.3794693+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2729266236-2044522018-1656602234-1509789131-1949989928-865001053-2180591121). This security permission ca\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-01T10:23:52.3794693+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2729266236-2044522018-1656602234-1509789131-1949989928-865001053-2180591121). This security permission ca\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-01T10:23:52.3794693+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2729266236-2044522018-1656602234-1509789131-1949989928-865001053-2180591121). This security permission ca\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-01T10:23:52.3794693+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2729266236-2044522018-1656602234-1509789131-1949989928-865001053-2180591121). This security permission ca\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-01T10:23:52.3794693+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2729266236-2044522018-1656602234-1509789131-1949989928-865001053-2180591121). This security permission ca\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-01T10:23:52.3794693+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2729266236-2044522018-1656602234-1509789131-1949989928-865001053-2180591121). This security permission ca\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-01T10:23:52.3794693+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2729266236-2044522018-1656602234-1509789131-1949989928-865001053-2180591121). This security permission ca\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-01T10:23:52.3632012+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2729266236-2044522018-1656602234-1509789131-1949989928-865001053-2180591121). This security permission ca\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-01T10:23:52.3632012+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2729266236-2044522018-1656602234-1509789131-1949989928-865001053-2180591121). This security permission ca\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-01T10:23:52.3632012+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2729266236-2044522018-1656602234-1509789131-1949989928-865001053-2180591121). This security permission ca\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-01T10:23:52.3632012+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2729266236-2044522018-1656602234-1509789131-1949989928-865001053-2180591121). This security permission ca\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-01T10:23:52.3632012+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2729266236-2044522018-1656602234-1509789131-1949989928-865001053-2180591121). This security permission ca\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-01T10:23:52.3632012+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2729266236-2044522018-1656602234-1509789131-1949989928-865001053-2180591121). This security permission ca\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-01T10:23:52.3632012+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2729266236-2044522018-1656602234-1509789131-1949989928-865001053-2180591121). This security permission ca\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-01T10:23:52.3632012+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2729266236-2044522018-1656602234-1509789131-1949989928-865001053-2180591121). This security permission ca\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-01T10:23:52.2629664+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{C39EE728-D419-4BD4-A3EF-EDA059DBD935}\r\n and APPID \r\n{F9717507-6651-4EDB-BFF7-AE615179BCCF}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2729266236-2044522018-1656602234-1509789131-1949989928-865001053-2180591121). This security permission ca\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-07-01T10:23:52.2629664+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{8BC3F05E-D86B-11D0-A075-00C04FB68820}\r\n and APPID \r\n{8BC3F05E-D86B-11D0-A075-00C04FB68820}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (S-1-15-2-2729266236-2044522018-1656602234-1509789131-1949989928-865001053-2180591121). This security permission ca\u2026"
+        },
+        {
+          "log": "Application",
+          "source": "Application Error",
+          "eventId": 1000,
+          "level": "Error",
+          "timeUtc": "2026-07-01T09:39:05.6837897+00:00",
+          "message": "\u200F\u200F\u05E9\u05DD \u05D9\u05D9\u05E9\u05D5\u05DD \u05E9\u05D7\u05DC\u05D5\u05EA \u05D1\u05D5 \u05EA\u05E7\u05DC\u05D5\u05EA: CRM.API.exe, \u05D2\u05D9\u05E8\u05E1\u05D4: 1.0.0.0, \u05D7\u05D5\u05EA\u05DE\u05EA \u05D6\u05DE\u05DF: 0x69f20000\r\n\u05E9\u05DD \u05DE\u05D5\u05D3\u05D5\u05DC \u05E9\u05D7\u05DC\u05D5\u05EA \u05D1\u05D5 \u05EA\u05E7\u05DC\u05D5\u05EA: KERNELBASE.dll, \u05D2\u05D9\u05E8\u05E1\u05D4: 10.0.22000.2538, \u05D7\u05D5\u05EA\u05DE\u05EA \u05D6\u05DE\u05DF: 0x06aca232\r\n\u05E7\u05D5\u05D3 \u05D7\u05E8\u05D9\u05D2\u05D4: 0xe0434352\r\n\u05D4\u05D9\u05E1\u05D8 \u05EA\u05E7\u05DC\u05D4: 0x0000000000052bdc\r\n\u05DE\u05D6\u05D4\u05D4 \u05EA\u05D4\u05DC\u05D9\u05DA \u05E9\u05D7\u05DC\u05D5\u05EA \u05D1\u05D5 \u05EA\u05E7\u05DC\u05D5\u05EA: 0x5714\r\n\u05E9\u05E2\u05EA \u05D4\u05D4\u05E4\u05E2\u05DC\u05D4 \u05E9\u05DC \u05D4\u05D9\u05D9\u05E9\u05D5\u05DD \u05E9\u05D7\u05DC\u05D5\u05EA \u05D1\u05D5 \u05EA\u05E7\u05DC\u05D5\u05EA: 0x01dd093d71fe177c\r\n\u05E0\u05EA\u05D9\u05D1 \u05D4\u05D9\u05D9\u05E9\u05D5\u05DD \u05E9\u05D7\u05DC\u05D5\u05EA \u05D1\u05D5 \u05EA\u05E7\u05DC\u05D5\u05EA: D:\\crm_yarpa-main\\src\\CRM.API\\bin\\Debug\\net8.0\\CRM.API.exe\r\n\u05E0\u05EA\u05D9\u05D1 \u05D4\u05DE\u05D5\u05D3\u05D5\u05DC \u05E9\u05D7\u05DC\u05D5\u05EA \u05D1\u05D5 \u05EA\u05E7\u05DC\u05D5\u05EA: C:\\Windows\\System32\\KERNELBASE.dll\r\n\u05DE\u05D6\u05D4\u05D4 \u05D3\u05D5\u05D7: 64616077-5b2e-43e8-9407-3ba93bde2336\r\u2026"
+        },
+        {
+          "log": "Application",
+          "source": ".NET Runtime",
+          "eventId": 1026,
+          "level": "Error",
+          "timeUtc": "2026-07-01T09:39:05.5707866+00:00",
+          "message": "Application: CRM.API.exe\nCoreCLR Version: 8.0.2726.22922\n.NET Version: 8.0.27\nDescription: The process was terminated due to an unhandled exception.\nException Info: System.IO.IOException: Failed to bind to address http://127.0.0.1:5000: address already in use.\r\n ---\u003E Microsoft.AspNetCore.Connections.AddressInUseException: Only one usage of each socket address (protocol/network address/port) is normally permitted.\r\n ---\u003E System.Net.Sockets.SocketException (10048): Only one usage of each socket address (proto\u2026"
+        },
+        {
+          "log": "Application",
+          "source": "Application Error",
+          "eventId": 1000,
+          "level": "Error",
+          "timeUtc": "2026-07-01T09:37:47.942425+00:00",
+          "message": "\u200F\u200F\u05E9\u05DD \u05D9\u05D9\u05E9\u05D5\u05DD \u05E9\u05D7\u05DC\u05D5\u05EA \u05D1\u05D5 \u05EA\u05E7\u05DC\u05D5\u05EA: CRM.API.exe, \u05D2\u05D9\u05E8\u05E1\u05D4: 1.0.0.0, \u05D7\u05D5\u05EA\u05DE\u05EA \u05D6\u05DE\u05DF: 0x69f20000\r\n\u05E9\u05DD \u05DE\u05D5\u05D3\u05D5\u05DC \u05E9\u05D7\u05DC\u05D5\u05EA \u05D1\u05D5 \u05EA\u05E7\u05DC\u05D5\u05EA: KERNELBASE.dll, \u05D2\u05D9\u05E8\u05E1\u05D4: 10.0.22000.2538, \u05D7\u05D5\u05EA\u05DE\u05EA \u05D6\u05DE\u05DF: 0x06aca232\r\n\u05E7\u05D5\u05D3 \u05D7\u05E8\u05D9\u05D2\u05D4: 0xe0434352\r\n\u05D4\u05D9\u05E1\u05D8 \u05EA\u05E7\u05DC\u05D4: 0x0000000000052bdc\r\n\u05DE\u05D6\u05D4\u05D4 \u05EA\u05D4\u05DC\u05D9\u05DA \u05E9\u05D7\u05DC\u05D5\u05EA \u05D1\u05D5 \u05EA\u05E7\u05DC\u05D5\u05EA: 0x5214\r\n\u05E9\u05E2\u05EA \u05D4\u05D4\u05E4\u05E2\u05DC\u05D4 \u05E9\u05DC \u05D4\u05D9\u05D9\u05E9\u05D5\u05DD \u05E9\u05D7\u05DC\u05D5\u05EA \u05D1\u05D5 \u05EA\u05E7\u05DC\u05D5\u05EA: 0x01dd093d4452157f\r\n\u05E0\u05EA\u05D9\u05D1 \u05D4\u05D9\u05D9\u05E9\u05D5\u05DD \u05E9\u05D7\u05DC\u05D5\u05EA \u05D1\u05D5 \u05EA\u05E7\u05DC\u05D5\u05EA: D:\\crm_yarpa-main\\src\\CRM.API\\bin\\Debug\\net8.0\\CRM.API.exe\r\n\u05E0\u05EA\u05D9\u05D1 \u05D4\u05DE\u05D5\u05D3\u05D5\u05DC \u05E9\u05D7\u05DC\u05D5\u05EA \u05D1\u05D5 \u05EA\u05E7\u05DC\u05D5\u05EA: C:\\Windows\\System32\\KERNELBASE.dll\r\n\u05DE\u05D6\u05D4\u05D4 \u05D3\u05D5\u05D7: c1cc8049-d465-4097-8aac-1782a380b416\r\u2026"
+        },
+        {
+          "log": "Application",
+          "source": ".NET Runtime",
+          "eventId": 1026,
+          "level": "Error",
+          "timeUtc": "2026-07-01T09:37:47.7347933+00:00",
+          "message": "Application: CRM.API.exe\nCoreCLR Version: 8.0.2726.22922\n.NET Version: 8.0.27\nDescription: The process was terminated due to an unhandled exception.\nException Info: System.IO.IOException: Failed to bind to address http://127.0.0.1:5000: address already in use.\r\n ---\u003E Microsoft.AspNetCore.Connections.AddressInUseException: Only one usage of each socket address (protocol/network address/port) is normally permitted.\r\n ---\u003E System.Net.Sockets.SocketException (10048): Only one usage of each socket address (proto\u2026"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-Time-Service",
+          "eventId": 36,
+          "level": "Warning",
+          "timeUtc": "2026-07-01T06:46:39.8155419+00:00",
+          "message": "The time service has not synchronized the system time for the last 86400 seconds because none of the time service providers provided a usable time stamp. The time service will not update the local system time until it is able to synchronize with a time source. If the local system is configured to act as a time server for clients, it will stop advertising as a time source to clients after 0 seconds. The time service will continue to retry and sync time with its time sources. Check system event log for other \u2026"
+        },
+        {
+          "log": "System",
+          "source": "Tcpip",
+          "eventId": 4266,
+          "level": "Warning",
+          "timeUtc": "2026-07-01T01:18:08.892442+00:00",
+          "message": "A request to allocate an ephemeral port number from the global UDP port space has failed due to all such ports being in use."
+        },
+        {
+          "log": "Application",
+          "source": "MSSQL$SQLEXPRESS",
+          "eventId": 3041,
+          "level": "Error",
+          "timeUtc": "2026-06-30T15:08:31.8403243+00:00",
+          "message": "BACKUP failed to complete the command BACKUP DATABASE crm_yarpa. Check the backup application log for detailed messages."
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10006,
+          "level": "Error",
+          "timeUtc": "2026-06-30T11:41:06.028096+00:00",
+          "message": "DCOM got error \u00222147944122\u0022 from the computer SQLSERVER when attempting to activate the server:\r\n{8BC3F05E-D86B-11D0-A075-00C04FB68820}"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10006,
+          "level": "Error",
+          "timeUtc": "2026-06-30T11:41:05.8703383+00:00",
+          "message": "DCOM got error \u00222147944122\u0022 from the computer SQLSERVER when attempting to activate the server:\r\n{8BC3F05E-D86B-11D0-A075-00C04FB68820}"
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10028,
+          "level": "Error",
+          "timeUtc": "2026-06-30T11:36:34.6146397+00:00",
+          "message": "DCOM was unable to communicate with the computer SQL2008-SRV-PC using any of the configured protocols; requested by PID     2b58 (C:\\Program Files (x86)\\Microsoft SQL Server Management Studio 18\\Common7\\IDE\\Ssms.exe), while activating CLSID {8BC3F05E-D86B-11D0-A075-00C04FB68820}."
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-WindowsUpdateClient",
+          "eventId": 20,
+          "level": "Error",
+          "timeUtc": "2026-06-30T08:54:43.0968631+00:00",
+          "message": "\u200F\u200F\u05D4\u05D4\u05EA\u05E7\u05E0\u05D4 \u05E0\u05DB\u05E9\u05DC\u05D4: Windows \u05E0\u05DB\u05E9\u05DC \u05D1\u05D4\u05EA\u05E7\u05E0\u05EA \u05D4\u05E2\u05D3\u05DB\u05D5\u05DF \u05D4\u05D1\u05D0 \u05E2\u05DD \u05E9\u05D2\u05D9\u05D0\u05D4 0x80073D02: 9WZDNCRD29V9-MICROSOFT.MICROSOFTOFFICEHUB."
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-WindowsUpdateClient",
+          "eventId": 20,
+          "level": "Error",
+          "timeUtc": "2026-06-30T08:54:42.2937117+00:00",
+          "message": "\u200F\u200F\u05D4\u05D4\u05EA\u05E7\u05E0\u05D4 \u05E0\u05DB\u05E9\u05DC\u05D4: Windows \u05E0\u05DB\u05E9\u05DC \u05D1\u05D4\u05EA\u05E7\u05E0\u05EA \u05D4\u05E2\u05D3\u05DB\u05D5\u05DF \u05D4\u05D1\u05D0 \u05E2\u05DD \u05E9\u05D2\u05D9\u05D0\u05D4 0x80073D02: 9NBLGGH4LS1F-Microsoft.StorePurchaseApp."
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-WindowsUpdateClient",
+          "eventId": 20,
+          "level": "Error",
+          "timeUtc": "2026-06-30T08:50:09.0604516+00:00",
+          "message": "\u200F\u200F\u05D4\u05D4\u05EA\u05E7\u05E0\u05D4 \u05E0\u05DB\u05E9\u05DC\u05D4: Windows \u05E0\u05DB\u05E9\u05DC \u05D1\u05D4\u05EA\u05E7\u05E0\u05EA \u05D4\u05E2\u05D3\u05DB\u05D5\u05DF \u05D4\u05D1\u05D0 \u05E2\u05DD \u05E9\u05D2\u05D9\u05D0\u05D4 0x80073D02: 9MSMLRH6LZF3-Microsoft.WindowsNotepad."
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-Time-Service",
+          "eventId": 24,
+          "level": "Warning",
+          "timeUtc": "2026-06-30T07:37:20.4648208+00:00",
+          "message": "Time Provider NtpClient: No valid response has been received from domain controller DC01.yarpacomputers.local after 8 attempts to contact it. This domain controller will be discarded as a time source and NtpClient will attempt to discover a new domain controller from which to synchronize. The error was: The peer is unreachable. "
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-06-30T06:51:59.8033123+00:00",
+          "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID \r\n{2593F8B9-4EAF-457C-B68A-50F6B8EA6B54}\r\n and APPID \r\n{15C20B67-12E7-4BB6-92BB-7AFF07997402}\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (Unavailable). This security permission can be modified using the Component Services administrative tool."
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-06-30T06:48:31.1095635+00:00",
+          "message": "The application-specific permission settings do not grant Local Launch permission for the COM Server application with CLSID \r\nWindows.SecurityCenter.WscBrokerManager\r\n and APPID \r\nUnavailable\r\n to the user NT AUTHORITY\\SYSTEM SID (S-1-5-18) from address LocalHost (Using LRPC) running in the application container Unavailable SID (Unavailable). This security permission can be modified using the Component Services administrative tool."
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-06-30T06:48:31.1095635+00:00",
+          "message": "The application-specific permission settings do not grant Local Launch permission for the COM Server application with CLSID \r\nWindows.SecurityCenter.SecurityAppBroker\r\n and APPID \r\nUnavailable\r\n to the user NT AUTHORITY\\SYSTEM SID (S-1-5-18) from address LocalHost (Using LRPC) running in the application container Unavailable SID (Unavailable). This security permission can be modified using the Component Services administrative tool."
+        },
+        {
+          "log": "System",
+          "source": "Service Control Manager",
+          "eventId": 7000,
+          "level": "Error",
+          "timeUtc": "2026-06-30T06:48:30.609486+00:00",
+          "message": "\u200F\u200F\u05D4\u05E4\u05E2\u05DC\u05EA \u05D4\u05E9\u05D9\u05E8\u05D5\u05EA \u05E9\u05D9\u05E8\u05D5\u05EA \u200F\u05E2\u05D3\u05DB\u05D5\u05DF Google (gupdate) \u05E0\u05DB\u05E9\u05DC\u05D4 \u05D1\u05E9\u05DC \u05D4\u05E9\u05D2\u05D9\u05D0\u05D4 \u05D4\u05D1\u05D0\u05D4: \r\nThe service did not respond to the start or control request in a timely fashion."
+        },
+        {
+          "log": "System",
+          "source": "Service Control Manager",
+          "eventId": 7009,
+          "level": "Error",
+          "timeUtc": "2026-06-30T06:48:30.609486+00:00",
+          "message": "\u200F\u200F\u05D4\u05DE\u05E2\u05E8\u05DB\u05EA \u05D4\u05D2\u05D9\u05E2\u05D4 \u05DC\u05E4\u05E8\u05E7 \u05D6\u05DE\u05DF \u05E7\u05E6\u05D5\u05D1 (30000 \u05D0\u05DC\u05E4\u05D9\u05D5\u05EA \u05E9\u05E0\u05D9\u05D4) \u05D1\u05DE\u05D4\u05DC\u05DA \u05D4\u05DE\u05EA\u05E0\u05D4 \u05DC\u05D7\u05D9\u05D1\u05D5\u05E8 \u05E9\u05DC \u05E9\u05D9\u05E8\u05D5\u05EA \u05E9\u05D9\u05E8\u05D5\u05EA \u200F\u05E2\u05D3\u05DB\u05D5\u05DF Google (gupdate)."
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10010,
+          "level": "Error",
+          "timeUtc": "2026-06-30T06:48:03.0612321+00:00",
+          "message": "The server {583C0B7A-E536-4020-9F62-002DA58A5B81} did not register with DCOM within the required timeout."
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-06-30T06:47:28.0360071+00:00",
+          "message": "The application-specific permission settings do not grant Local Launch permission for the COM Server application with CLSID \r\nWindows.SecurityCenter.WscCloudBackupProvider\r\n and APPID \r\nUnavailable\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (Unavailable). This security permission can be modified using the Component Services administrative tool."
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-DistributedCOM",
+          "eventId": 10016,
+          "level": "Warning",
+          "timeUtc": "2026-06-30T06:47:26.145323+00:00",
+          "message": "The application-specific permission settings do not grant Local Launch permission for the COM Server application with CLSID \r\nWindows.SecurityCenter.WscCloudBackupProvider\r\n and APPID \r\nUnavailable\r\n to the user YARPACOMPUTERS\\tal SID (S-1-5-21-3296070115-2341266454-2687083052-2130) from address LocalHost (Using LRPC) running in the application container Unavailable SID (Unavailable). This security permission can be modified using the Component Services administrative tool."
+        },
+        {
+          "log": "System",
+          "source": "e1i68x64",
+          "eventId": 27,
+          "level": "Warning",
+          "timeUtc": "2026-06-30T06:46:32.0517918+00:00",
+          "message": "Intel(R) Gigabit CT Desktop Adapter\r\n Network link is disconnected.\r\n"
+        },
+        {
+          "log": "System",
+          "source": "EventLog",
+          "eventId": 6008,
+          "level": "Error",
+          "timeUtc": "2026-06-30T06:46:29.5991596+00:00",
+          "message": "The previous system shutdown at 09:27:10 on \u200E30/\u200E06/\u200E2026 was unexpected."
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-Kernel-Power",
+          "eventId": 41,
+          "level": "Critical",
+          "timeUtc": "2026-06-30T06:46:24.6100749+00:00",
+          "message": "The system has rebooted without cleanly shutting down first. This error could be caused if the system stopped responding, crashed, or lost power unexpectedly."
+        },
+        {
+          "log": "System",
+          "source": "Application Popup",
+          "eventId": 56,
+          "level": "Error",
+          "timeUtc": "2026-06-30T06:46:23.0757413+00:00",
+          "message": "; ACPI; 2; System.Byte[]"
+        },
+        {
+          "log": "System",
+          "source": "Service Control Manager",
+          "eventId": 7009,
+          "level": "Error",
+          "timeUtc": "2026-06-30T06:29:12.3420952+00:00",
+          "message": "\u200F\u200F\u05D4\u05DE\u05E2\u05E8\u05DB\u05EA \u05D4\u05D2\u05D9\u05E2\u05D4 \u05DC\u05E4\u05E8\u05E7 \u05D6\u05DE\u05DF \u05E7\u05E6\u05D5\u05D1 (30000 \u05D0\u05DC\u05E4\u05D9\u05D5\u05EA \u05E9\u05E0\u05D9\u05D4) \u05D1\u05DE\u05D4\u05DC\u05DA \u05D4\u05DE\u05EA\u05E0\u05D4 \u05DC\u05D7\u05D9\u05D1\u05D5\u05E8 \u05E9\u05DC \u05E9\u05D9\u05E8\u05D5\u05EA \u05E9\u05D9\u05E8\u05D5\u05EA \u200F\u05E2\u05D3\u05DB\u05D5\u05DF Google (gupdate)."
+        },
+        {
+          "log": "System",
+          "source": "Service Control Manager",
+          "eventId": 7000,
+          "level": "Error",
+          "timeUtc": "2026-06-30T06:29:12.3420952+00:00",
+          "message": "\u200F\u200F\u05D4\u05E4\u05E2\u05DC\u05EA \u05D4\u05E9\u05D9\u05E8\u05D5\u05EA \u05E9\u05D9\u05E8\u05D5\u05EA \u200F\u05E2\u05D3\u05DB\u05D5\u05DF Google (gupdate) \u05E0\u05DB\u05E9\u05DC\u05D4 \u05D1\u05E9\u05DC \u05D4\u05E9\u05D2\u05D9\u05D0\u05D4 \u05D4\u05D1\u05D0\u05D4: \r\nThe service did not respond to the start or control request in a timely fashion."
+        },
+        {
+          "log": "System",
+          "source": "e1i68x64",
+          "eventId": 27,
+          "level": "Warning",
+          "timeUtc": "2026-06-30T06:27:12.0047476+00:00",
+          "message": "Intel(R) Gigabit CT Desktop Adapter\r\n Network link is disconnected.\r\n"
+        },
+        {
+          "log": "System",
+          "source": "EventLog",
+          "eventId": 6008,
+          "level": "Error",
+          "timeUtc": "2026-06-30T06:27:10.5385788+00:00",
+          "message": "The previous system shutdown at 09:23:52 on \u200E30/\u200E06/\u200E2026 was unexpected."
+        },
+        {
+          "log": "System",
+          "source": "Microsoft-Windows-Kernel-Power",
+          "eventId": 41,
+          "level": "Critical",
+          "timeUtc": "2026-06-30T06:27:05.16887+00:00",
+          "message": "The system has rebooted without cleanly shutting down first. This error could be caused if the system stopped responding, crashed, or lost power unexpectedly."
+        },
+        {
+          "log": "System",
+          "source": "Application Popup",
+          "eventId": 56,
+          "level": "Error",
+          "timeUtc": "2026-06-30T06:27:03.0913042+00:00",
+          "message": "; ACPI; 2; System.Byte[]"
+        },
+        {
+          "log": "Application",
+          "source": "Microsoft-Windows-RestartManager",
+          "eventId": 10010,
+          "level": "Warning",
+          "timeUtc": "2026-06-30T06:22:02.7874348+00:00",
+          "message": "Application \u0027C:\\Program Files\\Microsoft Office\\root\\Office16\\SDXHelper.exe\u0027 (pid 6732) cannot be restarted - Application SID does not match Conductor SID.."
+        },
+        {
+          "log": "Application",
+          "source": "Microsoft-Windows-RestartManager",
+          "eventId": 10010,
+          "level": "Warning",
+          "timeUtc": "2026-06-30T06:22:02.7787124+00:00",
+          "message": "Application \u0027C:\\Program Files\\Microsoft Office\\root\\Office16\\ONENOTEM.EXE\u0027 (pid 15288) cannot be restarted - Application SID does not match Conductor SID.."
+        },
+        {
+          "log": "Application",
+          "source": "Microsoft-Windows-RestartManager",
+          "eventId": 10010,
+          "level": "Warning",
+          "timeUtc": "2026-06-30T06:22:02.7701028+00:00",
+          "message": "Application \u0027C:\\Program Files\\Microsoft Office\\root\\Office16\\ONENOTE.EXE\u0027 (pid 15320) cannot be restarted - Application SID does not match Conductor SID.."
+        },
+        {
+          "log": "Application",
+          "source": "Microsoft-Windows-RestartManager",
+          "eventId": 10010,
+          "level": "Warning",
+          "timeUtc": "2026-06-30T06:10:49.4802409+00:00",
+          "message": "Application \u0027C:\\Program Files\\Microsoft Office\\root\\Office16\\SDXHelper.exe\u0027 (pid 6732) cannot be restarted - Application SID does not match Conductor SID.."
+        },
+        {
+          "log": "Application",
+          "source": "Microsoft-Windows-RestartManager",
+          "eventId": 10010,
+          "level": "Warning",
+          "timeUtc": "2026-06-30T06:10:49.4656891+00:00",
+          "message": "Application \u0027C:\\Program Files\\Microsoft Office\\root\\Office16\\ONENOTEM.EXE\u0027 (pid 15288) cannot be restarted - Application SID does not match Conductor SID.."
+        },
+        {
+          "log": "Application",
+          "source": "Microsoft-Windows-RestartManager",
+          "eventId": 10010,
+          "level": "Warning",
+          "timeUtc": "2026-06-30T06:10:49.442313+00:00",
+          "message": "Application \u0027C:\\Program Files\\Microsoft Office\\root\\Office16\\ONENOTE.EXE\u0027 (pid 15320) cannot be restarted - Application SID does not match Conductor SID.."
+        },
+        {
+          "log": "System",
+          "source": "Tcpip",
+          "eventId": 4266,
+          "level": "Warning",
+          "timeUtc": "2026-06-30T02:12:43.4956213+00:00",
+          "message": "A request to allocate an ephemeral port number from the global UDP port space has failed due to all such ports being in use."
+        }
+      ]
+    },
+    "yarpaVersion": {
+      "status": "ok",
+      "data": {
+        "product": null,
+        "version": null,
+        "detectedBy": "notFound"
+      }
+    }
+  }
+}

@@ -34,6 +34,7 @@ public class YarpaDbContext : DbContext
     public DbSet<ApiKeyEntity> ApiKeys => Set<ApiKeyEntity>();
     public DbSet<MachineEntity> Machines => Set<MachineEntity>();
     public DbSet<SnapshotEntity> Snapshots => Set<SnapshotEntity>();
+    public DbSet<ChangeEntity> Changes => Set<ChangeEntity>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -103,6 +104,31 @@ public class YarpaDbContext : DbContext
             e.HasOne(s => s.Machine)
              .WithMany(m => m.Snapshots)
              .HasForeignKey(s => s.MachineId)
+             .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        // ── ChangeEntity ─────────────────────────────────────────────────────
+        modelBuilder.Entity<ChangeEntity>(e =>
+        {
+            e.ToTable("Changes");
+            e.HasKey(c => c.ChangeId);
+            e.Property(c => c.MachineId).HasMaxLength(128).IsRequired();
+            e.Property(c => c.ChangeType).HasMaxLength(64).IsRequired();
+            e.Property(c => c.SectionName).HasMaxLength(64).IsRequired();
+            e.Property(c => c.OldValue).HasColumnType("nvarchar(max)");
+            e.Property(c => c.NewValue).HasColumnType("nvarchar(max)");
+            e.Property(c => c.DetectedAtUtc).IsRequired();
+
+            e.HasIndex(c => new { c.MachineId, c.DetectedAtUtc });
+
+            e.HasOne(c => c.Machine)
+             .WithMany(m => m.Changes)
+             .HasForeignKey(c => c.MachineId)
+             .OnDelete(DeleteBehavior.Restrict);
+
+            e.HasOne(c => c.Snapshot)
+             .WithMany(s => s.Changes)
+             .HasForeignKey(c => c.SnapshotId)
              .OnDelete(DeleteBehavior.Restrict);
         });
 

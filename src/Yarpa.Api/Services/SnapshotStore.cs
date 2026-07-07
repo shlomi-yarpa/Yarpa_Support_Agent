@@ -10,15 +10,22 @@ namespace Yarpa.Api.Services;
 /// <summary>
 /// Stores a snapshot append-only and extracts decoded columns for fast querying.
 /// A snapshot that already exists (same SnapshotId) is silently ignored (idempotency).
+/// After storing a new snapshot the comparer runs and detected changes are persisted
+/// in the same database transaction.
 /// </summary>
 public sealed class SnapshotStore : ISnapshotStore
 {
     private readonly YarpaDbContext _db;
+    private readonly ISnapshotComparer _comparer;
     private readonly ILogger<SnapshotStore> _logger;
 
-    public SnapshotStore(YarpaDbContext db, ILogger<SnapshotStore> logger)
+    public SnapshotStore(
+        YarpaDbContext db,
+        ISnapshotComparer comparer,
+        ILogger<SnapshotStore> logger)
     {
         _db = db;
+        _comparer = comparer;
         _logger = logger;
     }
 
@@ -38,12 +45,27 @@ public sealed class SnapshotStore : ISnapshotStore
                 "snapshot {SnapshotId} already stored; skipping (idempotent re-send)",
                 snapshot.SnapshotId);
 
+            // Return existing change count for this snapshot so callers get accurate data
+            int existingChanges = await _db.Changes
+                .CountAsync(c => c.SnapshotId == snapshot.SnapshotId, ct);
+
             return new SnapshotStoreResult
             {
                 SnapshotId = snapshot.SnapshotId,
                 MachineId = machine.MachineId,
+                Changes = existingChanges,
                 IsNew = false
             };
+        }
+
+        // ── Load previous snapshot raw JSON for comparison ───────────────────
+        string? previousRawJson = null;
+        if (machine.LastSnapshotId.HasValue)
+        {
+            previousRawJson = await _db.Snapshots
+                .Where(s => s.SnapshotId == machine.LastSnapshotId.Value)
+                .Select(s => s.RawJson)
+                .FirstOrDefaultAsync(ct);
         }
 
         // ── Extract decoded columns ──────────────────────────────────────────
@@ -68,11 +90,15 @@ public sealed class SnapshotStore : ISnapshotStore
 
         _db.Snapshots.Add(entity);
 
-        // Update machine metadata — always track the latest snapshot
+        // ── Run comparison ───────────────────────────────────────────────────
+        IReadOnlyList<ChangeEntity> changes = _comparer.Compare(snapshot, previousRawJson);
+        if (changes.Count > 0)
+            _db.Changes.AddRange(changes);
+
+        // ── Update machine metadata ──────────────────────────────────────────
         machine.LastSeenUtc = DateTime.UtcNow;
         machine.LastSnapshotId = snapshot.SnapshotId;
 
-        // Refresh computer name if it changed
         if (snapshot.Sections.TryGetValue("system", out var sysSection)
             && sysSection.Data is JsonElement sysEl
             && sysEl.TryGetProperty("computerName", out var cnProp))
@@ -85,13 +111,14 @@ public sealed class SnapshotStore : ISnapshotStore
         await _db.SaveChangesAsync(ct);
 
         _logger.LogInformation(
-            "stored snapshot {SnapshotId} for machine {MachineId}",
-            snapshot.SnapshotId, machine.MachineId);
+            "stored snapshot {SnapshotId} for machine {MachineId} with {Changes} change(s)",
+            snapshot.SnapshotId, machine.MachineId, changes.Count);
 
         return new SnapshotStoreResult
         {
             SnapshotId = snapshot.SnapshotId,
             MachineId = machine.MachineId,
+            Changes = changes.Count,
             IsNew = true
         };
     }
