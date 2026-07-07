@@ -1,0 +1,15 @@
+@* Severity badge: critical / warning / info *@
+@{
+    (string cssClass, string label) = Severity?.ToLowerInvariant() switch
+    {
+        "critical" => ("bg-danger",  "קריטי"),
+        "warning"  => ("bg-warning text-dark", "אזהרה"),
+        "info"     => ("bg-info text-dark",    "מידע"),
+        _          => ("bg-secondary",          Severity ?? "—")
+    };
+}
+<span class="badge @cssClass">@label</span>
+
+@code {
+    [Parameter] public string? Severity { get; set; }
+}

@@ -1,0 +1,98 @@
+/* ── Global RTL fixes ─────────────────────────────────────────── */
+html, body {
+    direction: rtl;
+    text-align: right;
+}
+
+/* ── Navbar ──────────────────────────────────────────────────── */
+.navbar-brand {
+    font-size: 1.1rem;
+    letter-spacing: 0.02em;
+}
+
+/* ── Summary cards ────────────────────────────────────────────── */
+.summary-card {
+    border: none;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 4px rgba(0,0,0,.08);
+    transition: box-shadow .15s;
+}
+.summary-card:hover {
+    box-shadow: 0 3px 10px rgba(0,0,0,.12);
+}
+.summary-card .card-header {
+    border-radius: 0.75rem 0.75rem 0 0;
+    font-weight: 600;
+    font-size: .9rem;
+}
+
+/* ── Timeline ─────────────────────────────────────────────────── */
+.timeline {
+    position: relative;
+    padding-right: 1.5rem;
+}
+.timeline::before {
+    content: '';
+    position: absolute;
+    right: 0.45rem;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #dee2e6;
+}
+.timeline-item {
+    position: relative;
+    margin-bottom: 1rem;
+}
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    right: -1.1rem;
+    top: 0.45rem;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #0d6efd;
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 2px #0d6efd;
+}
+
+/* ── Alert severity badges ────────────────────────────────────── */
+.badge-critical { background-color: #dc3545; }
+.badge-warning  { background-color: #fd7e14; }
+.badge-info     { background-color: #0dcaf0; color: #000; }
+
+/* ── Blazor error UI ──────────────────────────────────────────── */
+#blazor-error-ui {
+    background: #fef3cd;
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0,0,0,.2);
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+#blazor-error-ui .dismiss { cursor: pointer; float: left; }
+
+/* ── Loading skeleton ─────────────────────────────────────────── */
+.skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
+    border-radius: 4px;
+}
+@keyframes shimmer {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* ── Machine list ─────────────────────────────────────────────── */
+.machine-row {
+    cursor: pointer;
+    transition: background-color .1s;
+}
+.machine-row:hover {
+    background-color: #f8f9fa;
+}

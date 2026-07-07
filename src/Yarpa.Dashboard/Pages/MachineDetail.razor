@@ -1,0 +1,558 @@
+@page "/machines/{MachineId}"
+
+<PageTitle>@(_summary?.ComputerName ?? MachineId) – Yarpa Support</PageTitle>
+
+<div class="container-fluid py-4">
+
+    <!-- Back + header -->
+    <div class="d-flex align-items-center gap-3 mb-4">
+        <button class="btn btn-sm btn-outline-secondary" @onclick='() => Nav.NavigateTo("/machines")'>
+            <i class="bi bi-chevron-right me-1"></i>חזרה
+        </button>
+        <div>
+            <h1 class="h3 mb-0 fw-bold">
+                <i class="bi bi-pc-display text-primary me-2"></i>
+                @(_summary?.ComputerName ?? MachineId)
+            </h1>
+            <small class="text-muted"><code>@MachineId</code></small>
+        </div>
+        @if (_summary != null && _summary.OpenAlertCount > 0)
+        {
+            <span class="badge bg-danger fs-6 ms-auto">
+                <i class="bi bi-bell-fill me-1"></i>@_summary.OpenAlertCount התראות פתוחות
+            </span>
+        }
+    </div>
+
+    <!-- Tabs -->
+    <ul class="nav nav-tabs mb-4" role="tablist">
+        <li class="nav-item">
+            <button class="@SummaryTabCss" @onclick='() => SetTab("summary")'>
+                <i class="bi bi-clipboard-data me-1"></i>סיכום
+            </button>
+        </li>
+        <li class="nav-item">
+            <button class="@TimelineTabCss" @onclick='() => SetTab("timeline")'>
+                <i class="bi bi-clock-history me-1"></i>ציר זמן
+                @if (_changesPage != null && _changesPage.TotalCount > 0)
+                {
+                    <span class="badge bg-secondary rounded-pill ms-1">@_changesPage.TotalCount</span>
+                }
+            </button>
+        </li>
+        <li class="nav-item">
+            <button class="@AlertsTabCss" @onclick='() => SetTab("alerts")'>
+                <i class="bi bi-exclamation-triangle me-1"></i>התראות
+                @if (_summary != null && _summary.OpenAlertCount > 0)
+                {
+                    <span class="badge bg-danger rounded-pill ms-1">@_summary.OpenAlertCount</span>
+                }
+            </button>
+        </li>
+    </ul>
+
+    <!-- Error banner -->
+    @if (_error != null)
+    {
+        <div class="alert alert-danger d-flex align-items-center gap-2">
+            <i class="bi bi-exclamation-triangle-fill fs-5"></i>
+            <div><strong>שגיאה</strong><br /><small>@_error</small></div>
+        </div>
+    }
+
+    <!-- Loading spinner -->
+    @if (_loading)
+    {
+        <div class="text-center py-5 text-muted">
+            <div class="spinner-border text-primary mb-3" role="status"></div>
+            <div>טוען...</div>
+        </div>
+    }
+
+    @if (!_loading)
+    {
+        <!-- ── SUMMARY TAB ── -->
+        @if (_activeTab == "summary")
+        {
+            @if (_summary == null)
+            {
+                <div class="alert alert-info">לא נמצא מידע עבור מחשב זה.</div>
+            }
+            else
+            {
+                <div class="row g-4">
+
+                    <!-- OS -->
+                    <div class="col-md-6 col-xl-4">
+                        <div class="card summary-card h-100">
+                            <div class="card-header bg-primary text-white">
+                                <i class="bi bi-windows me-2"></i>מערכת הפעלה
+                            </div>
+                            <div class="card-body">
+                                @if (_summary.Os != null)
+                                {
+                                    <SummaryRow Label="מערכת"      Value="@_summary.Os.Caption" />
+                                    <SummaryRow Label="גרסה"       Value="@_summary.Os.Version" />
+                                    <SummaryRow Label="Build"       Value="@_summary.Os.Build" />
+                                    <SummaryRow Label="Edition"     Value="@_summary.Os.Edition" />
+                                    <SummaryRow Label="ארכיטקטורה" Value="@_summary.Os.Architecture" />
+                                }
+                                else
+                                {
+                                    <span class="text-muted small">מידע לא זמין</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Yarpa version -->
+                    <div class="col-md-6 col-xl-4">
+                        <div class="card summary-card h-100">
+                            <div class="card-header bg-success text-white">
+                                <i class="bi bi-box-seam me-2"></i>תוכנת Yarpa
+                            </div>
+                            <div class="card-body">
+                                @if (_summary.YarpaVersion != null)
+                                {
+                                    <SummaryRow Label="מוצר"     Value="@_summary.YarpaVersion.Product" />
+                                    <SummaryRow Label="גרסה"     Value="@_summary.YarpaVersion.Version" Bold="true" />
+                                    <SummaryRow Label="זוהה דרך" Value="@_summary.YarpaVersion.DetectedBy" />
+                                }
+                                else
+                                {
+                                    <span class="text-muted small">לא זוהתה גרסת Yarpa</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hardware / RAM -->
+                    <div class="col-md-6 col-xl-4">
+                        <div class="card summary-card h-100">
+                            <div class="card-header bg-secondary text-white">
+                                <i class="bi bi-cpu me-2"></i>חומרה
+                            </div>
+                            <div class="card-body">
+                                @if (_summary.Hardware != null)
+                                {
+                                    <SummaryRow Label="יצרן" Value="@_summary.Hardware.Manufacturer" />
+                                    <SummaryRow Label="דגם"  Value="@_summary.Hardware.Model" />
+                                    <SummaryRow Label="RAM"  Value="@FormatRam(_summary.Hardware.RamTotalMb)" Bold="true" />
+                                    @if (_summary.Hardware.RamModules.HasValue)
+                                    {
+                                        <SummaryRow Label="מודולים" Value="@_summary.Hardware.RamModules.Value.ToString()" />
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="text-muted small">מידע לא זמין</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Disks -->
+                    <div class="col-md-6 col-xl-4">
+                        <div class="card summary-card h-100">
+                            <div class="card-header bg-info text-dark">
+                                <i class="bi bi-hdd me-2"></i>אחסון
+                            </div>
+                            <div class="card-body">
+                                @if (_summary.Disks != null && _summary.Disks.Count > 0)
+                                {
+                                    @foreach (var disk in _summary.Disks)
+                                    {
+                                        <div class="mb-3">
+                                            <div class="d-flex justify-content-between mb-1">
+                                                <strong>@disk.Drive</strong>
+                                                <span class="small text-muted">@disk.MediaType</span>
+                                            </div>
+                                            @if (disk.FreePercent.HasValue)
+                                            {
+                                                <div class="progress mb-1" style="height:8px">
+                                                    <div class="progress-bar @DiskBarColor(disk.FreePercent.Value)"
+                                                         style="@DiskUsedWidthStyle(disk.FreePercent.Value)"
+                                                         role="progressbar"></div>
+                                                </div>
+                                                <small class="text-muted">
+                                                    פנוי: @FormatGb(disk.FreeGb) מתוך @FormatGb(disk.SizeGb)
+                                                    (@disk.FreePercent.Value.ToString("F1")%)
+                                                </small>
+                                            }
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="text-muted small">מידע לא זמין</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SQL Server -->
+                    <div class="col-md-6 col-xl-4">
+                        <div class="card summary-card h-100">
+                            <div class="card-header bg-dark text-white">
+                                <i class="bi bi-database me-2"></i>SQL Server
+                            </div>
+                            <div class="card-body">
+                                @if (_summary.SqlServer != null)
+                                {
+                                    <SummaryRow Label="מותקן" Value="@(_summary.SqlServer.Installed ? "כן" : "לא")" Bold="true" />
+                                    @foreach (var inst in _summary.SqlServer.Instances)
+                                    {
+                                        <div class="mt-2 p-2 bg-light rounded small">
+                                            <div><strong>@(inst.Name ?? "Instance")</strong></div>
+                                            <div>גרסה: @(inst.Version ?? "—")</div>
+                                            <div>סטטוס: <ServiceStateBadge State="@inst.ServiceState" /></div>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="text-muted small">מידע לא זמין</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment terminals -->
+                    <div class="col-md-6 col-xl-4">
+                        <div class="card summary-card h-100">
+                            <div class="card-header bg-warning text-dark">
+                                <i class="bi bi-credit-card me-2"></i>מסופי סליקה
+                            </div>
+                            <div class="card-body">
+                                @if (_summary.PaymentTerminals != null && _summary.PaymentTerminals.Count > 0)
+                                {
+                                    @foreach (var t in _summary.PaymentTerminals)
+                                    {
+                                        <div class="mb-2 p-2 bg-light rounded small">
+                                            <div><strong>@(t.Vendor ?? "—") @(t.Model ?? string.Empty)</strong></div>
+                                            <div>פורט: @(t.ComPort ?? "—")</div>
+                                            @if (!string.IsNullOrEmpty(t.Vid))
+                                            {
+                                                <div class="text-muted">VID: @t.Vid  PID: @t.Pid</div>
+                                            }
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="d-flex align-items-center gap-2 text-muted small">
+                                        <i class="bi bi-dash-circle"></i>
+                                        לא זוהה מסוף סליקה
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Printers -->
+                    <div class="col-md-6 col-xl-4">
+                        <div class="card summary-card h-100">
+                            <div class="card-header bg-light border-bottom">
+                                <i class="bi bi-printer me-2"></i>מדפסות
+                            </div>
+                            <div class="card-body">
+                                @if (_summary.Printers != null && _summary.Printers.Count > 0)
+                                {
+                                    @foreach (var p in _summary.Printers)
+                                    {
+                                        <div class="d-flex align-items-center gap-2 mb-1 small">
+                                            @if (p.IsDefault)
+                                            {
+                                                <i class="bi bi-star-fill text-warning" title="ברירת מחדל"></i>
+                                            }
+                                            else
+                                            {
+                                                <i class="bi bi-printer text-muted"></i>
+                                            }
+                                            <span>@p.Name</span>
+                                            <span class="text-muted">(@(p.Status ?? "—"))</span>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="text-muted small">לא נמצאו מדפסות</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- USB / Scanners -->
+                    <div class="col-md-6 col-xl-4">
+                        <div class="card summary-card h-100">
+                            <div class="card-header bg-light border-bottom">
+                                <i class="bi bi-usb-symbol me-2"></i>מכשירי USB / סורקים
+                            </div>
+                            <div class="card-body">
+                                @if (_summary.UsbDevices != null && _summary.UsbDevices.Count > 0)
+                                {
+                                    @foreach (var u in _summary.UsbDevices)
+                                    {
+                                        <div class="mb-1 small">
+                                            <i class="bi bi-usb-plug text-secondary me-1"></i>
+                                            <span>@(u.Name ?? "מכשיר USB")</span>
+                                            @if (!string.IsNullOrEmpty(u.Manufacturer))
+                                            {
+                                                <span class="text-muted ms-1">(@u.Manufacturer)</span>
+                                            }
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="text-muted small">לא נמצאו מכשירי USB</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Last update bar -->
+                    <div class="col-12">
+                        <div class="card border-0 bg-white">
+                            <div class="card-body py-2 d-flex gap-4 small text-muted flex-wrap">
+                                <span>
+                                    <i class="bi bi-clock me-1"></i>
+                                    עדכון אחרון: <strong>@CollectedAtText(_summary)</strong>
+                                </span>
+                                <span>
+                                    <i class="bi bi-calendar-check me-1"></i>
+                                    נרשם: <strong>@_summary.FirstSeenUtc.ToString("dd/MM/yyyy")</strong>
+                                </span>
+                                @if (_summary.LastSnapshotId.HasValue)
+                                {
+                                    <span>Snapshot: <code class="small">@_summary.LastSnapshotId.Value.ToString()[..8]…</code></span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            }
+        }
+
+        <!-- ── TIMELINE TAB ── -->
+        @if (_activeTab == "timeline")
+        {
+            @if (_changesLoading)
+            {
+                <div class="text-center py-4 text-muted">
+                    <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+                    טוען שינויים...
+                </div>
+            }
+            else if (_changesPage == null || _changesPage.Items.Count == 0)
+            {
+                <div class="text-center py-5 text-muted">
+                    <i class="bi bi-clock-history fs-1 d-block mb-2"></i>
+                    לא נמצאו שינויים רשומים עבור מחשב זה.
+                </div>
+            }
+            else
+            {
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <span class="text-muted small">סה"כ @_changesPage.TotalCount שינויים</span>
+                </div>
+                <div class="timeline">
+                    @foreach (var change in _changesPage.Items)
+                    {
+                        <div class="timeline-item">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-body py-2 px-3">
+                                    <div class="d-flex align-items-start justify-content-between">
+                                        <div>
+                                            <span class="badge bg-primary-subtle text-primary-emphasis border border-primary-subtle me-2">
+                                                @ChangeTypeLabel(change.ChangeType)
+                                            </span>
+                                            <span class="text-muted small">@change.SectionName</span>
+                                        </div>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <small class="text-muted">@change.DetectedAtUtc.ToString("dd/MM/yyyy HH:mm")</small>
+                                            <button class="btn btn-sm btn-outline-secondary py-0 px-1"
+                                                    title="צפה ב-Snapshot"
+                                                    @onclick="() => OpenSnapshot(change.SnapshotId)">
+                                                <i class="bi bi-eye"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    @if (!string.IsNullOrEmpty(change.OldValue) || !string.IsNullOrEmpty(change.NewValue))
+                                    {
+                                        <div class="mt-1 small font-monospace">
+                                            @if (!string.IsNullOrEmpty(change.OldValue))
+                                            {
+                                                <span class="text-danger me-2">
+                                                    <i class="bi bi-dash-circle me-1"></i>@Truncate(change.OldValue)
+                                                </span>
+                                            }
+                                            @if (!string.IsNullOrEmpty(change.NewValue))
+                                            {
+                                                <span class="text-success">
+                                                    <i class="bi bi-plus-circle me-1"></i>@Truncate(change.NewValue)
+                                                </span>
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                @if (_changesPage.TotalCount > ChangesPageSize)
+                {
+                    <div class="d-flex align-items-center justify-content-between mt-3">
+                        <small class="text-muted">עמוד @_changesCurrentPage</small>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-sm btn-outline-secondary"
+                                    disabled="@(_changesCurrentPage <= 1)"
+                                    @onclick="() => ChangeChangesPage(_changesCurrentPage - 1)">
+                                <i class="bi bi-chevron-right"></i> הקודם
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary"
+                                    disabled="@(_changesCurrentPage * ChangesPageSize >= _changesPage.TotalCount)"
+                                    @onclick="() => ChangeChangesPage(_changesCurrentPage + 1)">
+                                הבא <i class="bi bi-chevron-left"></i>
+                            </button>
+                        </div>
+                    </div>
+                }
+            }
+        }
+
+        <!-- ── ALERTS TAB ── -->
+        @if (_activeTab == "alerts")
+        {
+            <div class="d-flex align-items-center gap-2 mb-3">
+                <span class="text-muted small">הצג:</span>
+                <button class="@OpenBtnCss"     @onclick='() => SetAlertState("open")'>פתוחות</button>
+                <button class="@ResolvedBtnCss" @onclick='() => SetAlertState("resolved")'>סגורות</button>
+                <button class="@AllBtnCss"      @onclick='() => SetAlertState("all")'>הכל</button>
+            </div>
+
+            @if (_alertsLoading)
+            {
+                <div class="text-center py-4 text-muted">
+                    <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+                    טוען התראות...
+                </div>
+            }
+            else if (_alertsPage == null || _alertsPage.Items.Count == 0)
+            {
+                <div class="text-center py-5 text-muted">
+                    <i class="bi bi-check-circle fs-1 d-block mb-2 text-success"></i>
+                    @(_alertState == "open" ? "אין התראות פתוחות – הכל תקין!" : "לא נמצאו התראות.")
+                </div>
+            }
+            else
+            {
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-0">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>חומרה</th>
+                                    <th>סוג</th>
+                                    <th>הודעה</th>
+                                    <th>מצב</th>
+                                    <th>נוצרה</th>
+                                    <th>נסגרה</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var alert in _alertsPage.Items)
+                                {
+                                    <tr>
+                                        <td><SeverityBadge Severity="@alert.Severity" /></td>
+                                        <td class="small fw-semibold">@AlertTypeLabel(alert.AlertType)</td>
+                                        <td class="small">@alert.Message</td>
+                                        <td>
+                                            @if (alert.State == "open")
+                                            {
+                                                <span class="badge bg-danger">פתוחה</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-success">נסגרה</span>
+                                            }
+                                        </td>
+                                        <td class="small text-muted">@alert.CreatedAtUtc.ToString("dd/MM/yyyy HH:mm")</td>
+                                        <td class="small text-muted">@ResolvedAtText(alert)</td>
+                                        <td>
+                                            @if (alert.SourceSnapshotId.HasValue)
+                                            {
+                                                <button class="btn btn-sm btn-outline-secondary py-0 px-1"
+                                                        title="צפה ב-Snapshot"
+                                                        @onclick="() => OpenSnapshot(alert.SourceSnapshotId.Value)">
+                                                    <i class="bi bi-eye"></i>
+                                                </button>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                @if (_alertsPage.TotalCount > AlertsPageSize)
+                {
+                    <div class="d-flex align-items-center justify-content-between mt-3">
+                        <small class="text-muted">עמוד @_alertsCurrentPage</small>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-sm btn-outline-secondary"
+                                    disabled="@(_alertsCurrentPage <= 1)"
+                                    @onclick="() => ChangeAlertsPage(_alertsCurrentPage - 1)">
+                                <i class="bi bi-chevron-right"></i> הקודם
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary"
+                                    disabled="@(_alertsCurrentPage * AlertsPageSize >= _alertsPage.TotalCount)"
+                                    @onclick="() => ChangeAlertsPage(_alertsCurrentPage + 1)">
+                                הבא <i class="bi bi-chevron-left"></i>
+                            </button>
+                        </div>
+                    </div>
+                }
+            }
+        }
+    }
+
+</div>
+
+<!-- Raw Snapshot Modal -->
+@if (_rawSnapshotVisible)
+{
+    <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="bi bi-filetype-json me-2"></i>Snapshot מלא
+                    </h5>
+                    <button type="button" class="btn-close" @onclick="CloseSnapshot"></button>
+                </div>
+                <div class="modal-body">
+                    @if (_rawSnapshotLoading)
+                    {
+                        <div class="text-center py-4">
+                            <div class="spinner-border text-primary" role="status"></div>
+                        </div>
+                    }
+                    else if (_rawSnapshot != null)
+                    {
+                        <pre class="small bg-dark text-light p-3 rounded" style="max-height:70vh;overflow:auto;direction:ltr;text-align:left">@_rawSnapshot</pre>
+                    }
+                    else
+                    {
+                        <div class="alert alert-warning">לא נמצא snapshot.</div>
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" @onclick="CloseSnapshot">סגור</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}

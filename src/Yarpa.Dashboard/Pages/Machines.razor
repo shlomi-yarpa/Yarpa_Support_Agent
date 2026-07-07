@@ -1,0 +1,219 @@
+@page "/"
+@page "/machines"
+@inject ApiClient Api
+@inject NavigationManager Nav
+
+<PageTitle>Yarpa Support – מחשבים</PageTitle>
+
+<div class="container-fluid py-4">
+
+    <!-- Header -->
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 fw-bold text-primary">
+            <i class="bi bi-pc-display me-2"></i>מחשבי לקוחות
+        </h1>
+        <button class="btn btn-sm btn-outline-secondary" @onclick="LoadMachines">
+            <i class="bi bi-arrow-clockwise me-1"></i>רענן
+        </button>
+    </div>
+
+    <!-- Search -->
+    <div class="row mb-4">
+        <div class="col-md-5">
+            <div class="input-group">
+                <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                <input type="text"
+                       class="form-control"
+                       placeholder="חיפוש לפי שם מחשב או מזהה..."
+                       @bind="_search"
+                       @bind:event="oninput"
+                       @onkeyup="OnSearchKeyUp" />
+                @if (!string.IsNullOrEmpty(_search))
+                {
+                    <button class="btn btn-outline-secondary" @onclick="ClearSearch">
+                        <i class="bi bi-x"></i>
+                    </button>
+                }
+                <button class="btn btn-primary" @onclick="() => LoadMachines()">חפש</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading -->
+    @if (_loading)
+    {
+        <div class="text-center py-5 text-muted">
+            <div class="spinner-border text-primary mb-3" role="status"></div>
+            <div>טוען מחשבים...</div>
+        </div>
+    }
+    else if (_error != null)
+    {
+        <div class="alert alert-danger d-flex align-items-center gap-2">
+            <i class="bi bi-exclamation-triangle-fill fs-5"></i>
+            <div>
+                <strong>שגיאה בטעינת הנתונים</strong><br />
+                <small>@_error</small>
+            </div>
+        </div>
+    }
+    else if (_page == null || _page.Items.Count == 0)
+    {
+        <div class="text-center py-5 text-muted">
+            <i class="bi bi-pc-display fs-1 d-block mb-2"></i>
+            @if (string.IsNullOrEmpty(_search))
+            {
+                <span>לא נמצאו מחשבים רשומים.</span>
+            }
+            else
+            {
+                <span>לא נמצאו תוצאות עבור "<strong>@_search</strong>"</span>
+            }
+        </div>
+    }
+    else
+    {
+        <!-- Table -->
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-0">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>שם מחשב</th>
+                            <th>מזהה מחשב</th>
+                            <th>נראה לאחרונה</th>
+                            <th>נרשם</th>
+                            <th class="text-center">התראות פתוחות</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var m in _page.Items)
+                        {
+                            <tr class="machine-row" @onclick="() => GoToMachine(m.MachineId)">
+                                <td>
+                                    <i class="bi bi-pc-display text-primary me-2"></i>
+                                    <strong>@(string.IsNullOrEmpty(m.ComputerName) ? m.MachineId : m.ComputerName)</strong>
+                                </td>
+                                <td><code class="small text-muted">@m.MachineId</code></td>
+                                <td>
+                                    <span title="@m.LastSeenUtc.ToString("u")">
+                                        @FormatRelativeTime(m.LastSeenUtc)
+                                    </span>
+                                </td>
+                                <td class="text-muted small">@m.FirstSeenUtc.ToString("dd/MM/yyyy")</td>
+                                <td class="text-center">
+                                    @if (m.OpenAlertCount > 0)
+                                    {
+                                        <span class="badge bg-danger rounded-pill">@m.OpenAlertCount</span>
+                                    }
+                                    else
+                                    {
+                                        <i class="bi bi-check-circle-fill text-success" title="אין התראות פתוחות"></i>
+                                    }
+                                </td>
+                                <td class="text-center">
+                                    <i class="bi bi-chevron-left text-muted"></i>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        @if (_page.TotalCount > _pageSize)
+        {
+            <div class="d-flex align-items-center justify-content-between mt-3">
+                <small class="text-muted">
+                    מציג @((_currentPage - 1) * _pageSize + 1)–@(Math.Min(_currentPage * _pageSize, _page.TotalCount))
+                    מתוך @_page.TotalCount מחשבים
+                </small>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-sm btn-outline-secondary"
+                            disabled="@(_currentPage <= 1)"
+                            @onclick="() => ChangePage(_currentPage - 1)">
+                        <i class="bi bi-chevron-right"></i> הקודם
+                    </button>
+                    <button class="btn btn-sm btn-outline-secondary"
+                            disabled="@(_currentPage * _pageSize >= _page.TotalCount)"
+                            @onclick="() => ChangePage(_currentPage + 1)">
+                        הבא <i class="bi bi-chevron-left"></i>
+                    </button>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+@code {
+    private MachinesPage? _page;
+    private bool   _loading = true;
+    private string? _error;
+    private string  _search = string.Empty;
+    private int     _currentPage = 1;
+    private const int _pageSize = 50;
+
+    protected override async Task OnInitializedAsync()
+        => await LoadMachines();
+
+    private async Task LoadMachines()
+    {
+        _loading = true;
+        _error   = null;
+        StateHasChanged();
+
+        try
+        {
+            _page = await Api.GetMachinesAsync(_search, _currentPage, _pageSize);
+        }
+        catch (ApiException ex)
+        {
+            _error = $"שגיאת API ({ex.StatusCode}): {ex.Message}";
+        }
+        catch (Exception ex)
+        {
+            _error = $"שגיאת תקשורת: {ex.Message}";
+        }
+        finally
+        {
+            _loading = false;
+        }
+    }
+
+    private async Task OnSearchKeyUp(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            _currentPage = 1;
+            await LoadMachines();
+        }
+    }
+
+    private async Task ClearSearch()
+    {
+        _search      = string.Empty;
+        _currentPage = 1;
+        await LoadMachines();
+    }
+
+    private async Task ChangePage(int page)
+    {
+        _currentPage = page;
+        await LoadMachines();
+    }
+
+    private void GoToMachine(string machineId)
+        => Nav.NavigateTo($"/machines/{Uri.EscapeDataString(machineId)}");
+
+    private static string FormatRelativeTime(DateTime utc)
+    {
+        TimeSpan diff = DateTime.UtcNow - utc;
+        if      (diff.TotalMinutes < 2)  return "כרגע";
+        else if (diff.TotalMinutes < 60) return $"לפני {(int)diff.TotalMinutes} דקות";
+        else if (diff.TotalHours   < 24) return $"לפני {(int)diff.TotalHours} שעות";
+        else if (diff.TotalDays    < 30) return $"לפני {(int)diff.TotalDays} ימים";
+        else                             return utc.ToString("dd/MM/yyyy");
+    }
+}

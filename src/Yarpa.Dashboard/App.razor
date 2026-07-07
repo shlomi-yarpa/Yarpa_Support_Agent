@@ -1,0 +1,15 @@
+<Router AppAssembly="@typeof(App).Assembly">
+    <Found Context="routeData">
+        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+    </Found>
+    <NotFound>
+        <PageTitle>לא נמצא</PageTitle>
+        <LayoutView Layout="@typeof(MainLayout)">
+            <div class="container mt-4 text-center">
+                <h2>דף לא נמצא (404)</h2>
+                <a href="/" class="btn btn-primary mt-2">חזרה לדף הבית</a>
+            </div>
+        </LayoutView>
+    </NotFound>
+</Router>

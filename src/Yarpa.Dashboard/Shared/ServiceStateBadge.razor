@@ -1,0 +1,15 @@
+@* Windows service state badge *@
+@{
+    (string cssClass, string label) = State?.ToLowerInvariant() switch
+    {
+        "running"   => ("text-success fw-semibold", "פעיל ✓"),
+        "stopped"   => ("text-danger fw-semibold",  "עצור ✗"),
+        "paused"    => ("text-warning fw-semibold",  "מושהה"),
+        _           => ("text-muted",               State ?? "—")
+    };
+}
+<span class="@cssClass small">@label</span>
+
+@code {
+    [Parameter] public string? State { get; set; }
+}

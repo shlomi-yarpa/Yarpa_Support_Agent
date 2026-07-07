@@ -1,0 +1,21 @@
+@inherits LayoutComponentBase
+
+<div class="d-flex flex-column min-vh-100">
+    <!-- Navbar -->
+    <nav class="navbar navbar-dark bg-primary px-3">
+        <a class="navbar-brand fw-bold" href="/">
+            <i class="bi bi-headset me-2"></i>Yarpa Support
+        </a>
+        <span class="text-white-50 small">לוח בקרה תמיכה</span>
+    </nav>
+
+    <!-- Page content -->
+    <main class="flex-grow-1 bg-light">
+        @Body
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center text-muted py-2 small border-top bg-white">
+        &copy; Yarpa – מערכת ניטור לקוחות
+    </footer>
+</div>

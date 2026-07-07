@@ -1,6 +1,9 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
+using Yarpa.Api.Data;
+
 using Yarpa.Api.Data.Entities;
 using Yarpa.Api.Services;
 using Yarpa.Contracts;
@@ -8,13 +11,46 @@ using Yarpa.Contracts;
 namespace Yarpa.Api.Controllers;
 
 /// <summary>
-/// Handles inbound diagnostic snapshots from the Yarpa Agent.
-/// POST /api/v1/snapshots – accepts and persists a snapshot.
+/// Handles inbound diagnostic snapshots from the Yarpa Agent (POST)
+/// and retrieval of stored snapshots for the CRM Dashboard (GET).
 /// </summary>
 [ApiController]
 [Route("api/v1/[controller]")]
 public sealed class SnapshotsController : ControllerBase
 {
+    private readonly YarpaDbContext _db;
+
+    public SnapshotsController(YarpaDbContext db)
+    {
+        _db = db;
+    }
+
+    /// <summary>
+    /// Returns the full raw JSON of a stored snapshot.
+    /// Authorization: the snapshot's machine must belong to the authenticated customer.
+    /// GET /api/v1/snapshots/{snapshotId}
+    /// </summary>
+    [HttpGet("{snapshotId:guid}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetSnapshot(
+        Guid snapshotId,
+        CancellationToken ct)
+    {
+        var customer = (CustomerEntity)HttpContext.Items["Customer"]!;
+
+        // Verify ownership: snapshot → machine → customer
+        SnapshotEntity? snapshot = await _db.Snapshots
+            .Include(s => s.Machine)
+            .FirstOrDefaultAsync(s => s.SnapshotId == snapshotId, ct);
+
+        if (snapshot == null || snapshot.Machine.CustomerId != customer.CustomerId)
+            return NotFound(new { error = $"snapshot '{snapshotId}' not found" });
+
+        // Return the stored raw JSON verbatim — no re-serialisation, no dispose issue.
+        return Content(snapshot.RawJson, "application/json");
+    }
+
     private static readonly JsonSerializerOptions DeserializeOptions = new()
     {
         PropertyNameCaseInsensitive = true
