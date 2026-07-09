@@ -74,7 +74,7 @@ namespace Yarpa.Api.Data.Migrations
 
                     b.HasIndex("MachineId", "AlertType", "State");
 
-                    b.ToTable("Alerts", (string)null);
+                    b.ToTable("YarpaAgent_Alerts", (string)null);
                 });
 
             modelBuilder.Entity("Yarpa.Api.Data.Entities.ApiKeyEntity", b =>
@@ -106,7 +106,7 @@ namespace Yarpa.Api.Data.Migrations
 
                     b.HasIndex("KeyHash");
 
-                    b.ToTable("ApiKeys", (string)null);
+                    b.ToTable("YarpaAgent_ApiKeys", (string)null);
 
                     b.HasData(
                         new
@@ -160,7 +160,7 @@ namespace Yarpa.Api.Data.Migrations
 
                     b.HasIndex("MachineId", "DetectedAtUtc");
 
-                    b.ToTable("Changes", (string)null);
+                    b.ToTable("YarpaAgent_Changes", (string)null);
                 });
 
             modelBuilder.Entity("Yarpa.Api.Data.Entities.CustomerEntity", b =>
@@ -179,7 +179,7 @@ namespace Yarpa.Api.Data.Migrations
 
                     b.HasKey("CustomerId");
 
-                    b.ToTable("Customers", (string)null);
+                    b.ToTable("YarpaAgent_Customers", (string)null);
 
                     b.HasData(
                         new
@@ -217,7 +217,7 @@ namespace Yarpa.Api.Data.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("Machines", (string)null);
+                    b.ToTable("YarpaAgent_Machines", (string)null);
                 });
 
             modelBuilder.Entity("Yarpa.Api.Data.Entities.SnapshotEntity", b =>
@@ -276,7 +276,7 @@ namespace Yarpa.Api.Data.Migrations
 
                     b.HasIndex("MachineId", "CollectedAtUtc");
 
-                    b.ToTable("Snapshots", (string)null);
+                    b.ToTable("YarpaAgent_Snapshots", (string)null);
                 });
 
             modelBuilder.Entity("Yarpa.Api.Data.Entities.AlertEntity", b =>

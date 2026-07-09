@@ -34,12 +34,37 @@ public sealed class AgentOptions
 /// <summary>
 /// Scheduling configuration for the Agent when it runs as a long-lived Windows Service.
 /// Ignored by the one-shot CLI modes (--once / --dry-run / --output).
+///
+/// Default cadence: one collection per week, during a quiet night-time window on the
+/// client machine's local clock. A random time inside the window is chosen for each run
+/// so that many machines do not hit the API simultaneously.
+/// On-demand collection (technician-initiated) and the first collection at install time
+/// are handled separately (--once and <see cref="RunImmediatelyOnStart"/>).
 /// </summary>
 public sealed class ServiceOptions
 {
-    /// <summary>Interval in hours between collection cycles (default 6).</summary>
-    public double IntervalHours { get; init; } = 6;
+    /// <summary>Number of days between scheduled collections (default 7 = weekly).</summary>
+    public int IntervalDays { get; init; } = 7;
 
-    /// <summary>Collect once immediately when the service starts (default true).</summary>
+    /// <summary>
+    /// Start hour (inclusive, local time, 0-23) of the preferred night-time window.
+    /// Default 2 (02:00).
+    /// </summary>
+    public int PreferredHourStart { get; init; } = 2;
+
+    /// <summary>
+    /// End hour (exclusive, local time, 0-23) of the preferred night-time window.
+    /// Default 4 (up to 03:59).
+    /// </summary>
+    public int PreferredHourEnd { get; init; } = 4;
+
+    /// <summary>
+    /// Optional fixed-interval override in hours. When greater than 0, the day/window
+    /// schedule is ignored and the Agent simply collects every N hours. Intended for
+    /// testing or special deployments (default 0 = disabled, use the weekly night schedule).
+    /// </summary>
+    public double IntervalHours { get; init; }
+
+    /// <summary>Collect once immediately when the service starts, e.g. at install (default true).</summary>
     public bool RunImmediatelyOnStart { get; init; } = true;
 }

@@ -44,7 +44,7 @@ public class YarpaDbContext : DbContext
         // ── CustomerEntity ───────────────────────────────────────────────────
         modelBuilder.Entity<CustomerEntity>(e =>
         {
-            e.ToTable("Customers");
+            e.ToTable("YarpaAgent_Customers");
             e.HasKey(c => c.CustomerId);
             e.Property(c => c.Name).IsRequired().HasMaxLength(200);
             e.Property(c => c.CreatedAtUtc).IsRequired();
@@ -53,7 +53,7 @@ public class YarpaDbContext : DbContext
         // ── ApiKeyEntity ─────────────────────────────────────────────────────
         modelBuilder.Entity<ApiKeyEntity>(e =>
         {
-            e.ToTable("ApiKeys");
+            e.ToTable("YarpaAgent_ApiKeys");
             e.HasKey(k => k.ApiKeyId);
             e.Property(k => k.KeyHash).IsRequired().HasMaxLength(64);
             e.HasIndex(k => k.KeyHash); // fast lookup per incoming request
@@ -69,7 +69,7 @@ public class YarpaDbContext : DbContext
         // ── MachineEntity ────────────────────────────────────────────────────
         modelBuilder.Entity<MachineEntity>(e =>
         {
-            e.ToTable("Machines");
+            e.ToTable("YarpaAgent_Machines");
             e.HasKey(m => m.MachineId);
             e.Property(m => m.MachineId).HasMaxLength(128).IsRequired();
             e.Property(m => m.ComputerName).HasMaxLength(200);
@@ -88,7 +88,7 @@ public class YarpaDbContext : DbContext
         // ── SnapshotEntity ───────────────────────────────────────────────────
         modelBuilder.Entity<SnapshotEntity>(e =>
         {
-            e.ToTable("Snapshots");
+            e.ToTable("YarpaAgent_Snapshots");
             e.HasKey(s => s.SnapshotId);
             e.Property(s => s.MachineId).HasMaxLength(128).IsRequired();
             e.Property(s => s.AgentVersion).HasMaxLength(50);
@@ -111,7 +111,7 @@ public class YarpaDbContext : DbContext
         // ── ChangeEntity ─────────────────────────────────────────────────────
         modelBuilder.Entity<ChangeEntity>(e =>
         {
-            e.ToTable("Changes");
+            e.ToTable("YarpaAgent_Changes");
             e.HasKey(c => c.ChangeId);
             e.Property(c => c.MachineId).HasMaxLength(128).IsRequired();
             e.Property(c => c.ChangeType).HasMaxLength(64).IsRequired();
@@ -136,7 +136,7 @@ public class YarpaDbContext : DbContext
         // ── AlertEntity ──────────────────────────────────────────────────────
         modelBuilder.Entity<AlertEntity>(e =>
         {
-            e.ToTable("Alerts");
+            e.ToTable("YarpaAgent_Alerts");
             e.HasKey(a => a.AlertId);
             e.Property(a => a.MachineId).HasMaxLength(128).IsRequired();
             e.Property(a => a.AlertType).HasMaxLength(64).IsRequired();

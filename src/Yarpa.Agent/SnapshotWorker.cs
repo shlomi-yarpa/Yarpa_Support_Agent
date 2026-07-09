@@ -32,26 +32,34 @@ public sealed class SnapshotWorker : BackgroundService
         _logger = logger;
     }
 
+    private readonly Random _random = new();
+
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        TimeSpan interval = ResolveInterval();
+        if (_serviceOptions.IntervalHours > 0)
+            _logger.LogInformation(
+                "Yarpa Agent service started (fixed interval={IntervalHours}h, runOnStart={RunOnStart})",
+                _serviceOptions.IntervalHours, _serviceOptions.RunImmediatelyOnStart);
+        else
+            _logger.LogInformation(
+                "Yarpa Agent service started (every {IntervalDays} day(s), night window {Start:00}:00-{End:00}:00 local, runOnStart={RunOnStart})",
+                _serviceOptions.IntervalDays, _serviceOptions.PreferredHourStart,
+                _serviceOptions.PreferredHourEnd, _serviceOptions.RunImmediatelyOnStart);
 
-        _logger.LogInformation(
-            "Yarpa Agent service started (intervalHours={IntervalHours}, runOnStart={RunOnStart})",
-            interval.TotalHours, _serviceOptions.RunImmediatelyOnStart);
-
-        if (!_serviceOptions.RunImmediatelyOnStart)
-        {
-            if (!await DelayAsync(interval, stoppingToken))
-                return;
-        }
+        if (_serviceOptions.RunImmediatelyOnStart)
+            await RunCycleAsync(stoppingToken);
 
         while (!stoppingToken.IsCancellationRequested)
         {
-            await RunCycleAsync(stoppingToken);
+            TimeSpan delay = ComputeDelayUntilNextRun(DateTime.Now);
+            _logger.LogInformation(
+                "next collection scheduled in {Hours:F1}h (at {NextRun:yyyy-MM-dd HH:mm} local)",
+                delay.TotalHours, DateTime.Now.Add(delay));
 
-            if (!await DelayAsync(interval, stoppingToken))
+            if (!await DelayAsync(delay, stoppingToken))
                 return;
+
+            await RunCycleAsync(stoppingToken);
         }
     }
 
@@ -79,10 +87,36 @@ public sealed class SnapshotWorker : BackgroundService
         }
     }
 
-    private TimeSpan ResolveInterval()
+    /// <summary>
+    /// Computes how long to wait before the next collection.
+    /// Fixed-interval override (IntervalHours &gt; 0) takes precedence; otherwise the next run
+    /// is scheduled IntervalDays ahead, at a random time inside the preferred night window
+    /// (local time) to spread load across machines.
+    /// </summary>
+    private TimeSpan ComputeDelayUntilNextRun(DateTime nowLocal)
     {
-        double hours = _serviceOptions.IntervalHours > 0 ? _serviceOptions.IntervalHours : 6;
-        return TimeSpan.FromHours(hours);
+        if (_serviceOptions.IntervalHours > 0)
+            return TimeSpan.FromHours(_serviceOptions.IntervalHours);
+
+        int intervalDays = _serviceOptions.IntervalDays > 0 ? _serviceOptions.IntervalDays : 7;
+
+        // Normalise the night window to a valid [start, end) range within 0-23.
+        int startHour = Math.Clamp(_serviceOptions.PreferredHourStart, 0, 23);
+        int endHour = Math.Clamp(_serviceOptions.PreferredHourEnd, 0, 24);
+        if (endHour <= startHour)
+            endHour = startHour + 1;
+
+        int windowMinutes = (endHour - startHour) * 60;
+        int offsetMinutes = _random.Next(windowMinutes);
+
+        DateTime targetDay = nowLocal.Date.AddDays(intervalDays);
+        DateTime nextRun = targetDay.AddHours(startHour).AddMinutes(offsetMinutes);
+
+        // Safety: never schedule in the past.
+        if (nextRun <= nowLocal)
+            nextRun = nowLocal.AddDays(intervalDays);
+
+        return nextRun - nowLocal;
     }
 
     /// <summary>

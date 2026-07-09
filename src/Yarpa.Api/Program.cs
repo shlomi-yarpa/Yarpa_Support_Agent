@@ -21,13 +21,38 @@ try
 {
     WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
+    // Allow running under the Windows Service Control Manager. No-op when the process
+    // is launched as a normal console application (e.g. from the command line).
+    builder.Host.UseWindowsService();
+
     builder.Host.UseSerilog((context, services, configuration) => configuration
         .ReadFrom.Configuration(context.Configuration)
         .ReadFrom.Services(services));
 
     // ── EF Core ──────────────────────────────────────────────────────────────
+    // Uses SQL Server when a connection string is configured. When none is set
+    // (local first-run without a database), falls back to a non-persistent
+    // In-Memory database so the API runs out of the box for development/demo.
+    // Production must always supply ConnectionStrings:Default.
+    string? connectionString = builder.Configuration.GetConnectionString("Default");
+    bool useInMemory = string.IsNullOrWhiteSpace(connectionString);
+
     builder.Services.AddDbContext<YarpaDbContext>(opts =>
-        opts.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+    {
+        if (useInMemory)
+            opts.UseInMemoryDatabase("YarpaDiagnostics");
+        else
+            // The migrations history table is prefixed so the application's tables stay
+            // isolated when the schema is hosted inside a shared database (e.g. crm_yarpa)
+            // alongside other tables. All application tables use the YarpaAgent_ prefix.
+            opts.UseSqlServer(connectionString, sql =>
+                sql.MigrationsHistoryTable("__YarpaAgentMigrationsHistory"));
+    });
+
+    if (useInMemory)
+        Log.Warning(
+            "No ConnectionStrings:Default configured — using a non-persistent In-Memory " +
+            "database. Data is lost on restart. Set a SQL Server connection string for real use.");
 
     // ── MVC ──────────────────────────────────────────────────────────────────
     builder.Services.AddControllers()
@@ -111,11 +136,13 @@ try
 
     WebApplication app = builder.Build();
 
-    // HTTPS only in real deployments. Skipped under Testing (TestServer has no HTTPS port).
-    if (!app.Environment.IsEnvironment("Testing"))
+    // HTTPS enforced in real deployments only. Skipped under Testing (TestServer has
+    // no HTTPS port), under Development (plain HTTP on loopback keeps first-run simple),
+    // and when Security:RequireHttps is false (e.g. a trusted closed network on plain HTTP).
+    bool requireHttps = app.Configuration.GetValue("Security:RequireHttps", true);
+    if (!app.Environment.IsEnvironment("Testing") && !app.Environment.IsDevelopment() && requireHttps)
     {
-        if (!app.Environment.IsDevelopment())
-            app.UseHsts();
+        app.UseHsts();
         app.UseHttpsRedirection();
     }
 
@@ -152,14 +179,18 @@ try
 
     app.MapControllers().RequireRateLimiting("per-key");
 
-    // ── Apply migrations on startup (dev/local convenience) ──────────────────
-    // Skipped for InMemory (tests) or non-Development environments.
-    if (app.Environment.IsDevelopment())
+    // ── Initialise the database on startup (dev/local convenience) ───────────
+    // Relational: apply migrations. In-Memory fallback: EnsureCreated so the dev
+    // seed data (customer + API key) is populated. Skipped under Testing (the test
+    // host seeds its own isolated database).
+    if (app.Environment.IsDevelopment() && !app.Environment.IsEnvironment("Testing"))
     {
         using IServiceScope scope = app.Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<YarpaDbContext>();
         if (db.Database.IsRelational())
             await db.Database.MigrateAsync();
+        else
+            await db.Database.EnsureCreatedAsync();
     }
 
     app.Run();

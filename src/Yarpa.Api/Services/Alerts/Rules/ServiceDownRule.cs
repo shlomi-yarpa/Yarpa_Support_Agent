@@ -45,9 +45,10 @@ public sealed class ServiceDownRule : IAlertRule
             if (!string.Equals(state, "Running", StringComparison.OrdinalIgnoreCase))
             {
                 string display = SectionReader.Str(svc, "displayName");
-                string label = !string.IsNullOrEmpty(display) ? display
-                    : !string.IsNullOrEmpty(name) ? name
-                    : exeName;
+                string label = ResolveFriendlyName(context.Options, name, exeName)
+                    ?? (!string.IsNullOrEmpty(display) ? display
+                        : !string.IsNullOrEmpty(name) ? name
+                        : exeName);
                 down.Add(label);
             }
         }
@@ -61,5 +62,25 @@ public sealed class ServiceDownRule : IAlertRule
             : $"שירותים מנוטרים אינם פעילים: {list}.";
 
         return AlertRuleResult.Raise(AlertType, AlertSeverity.Critical, message);
+    }
+
+    /// <summary>
+    /// Returns the configured Hebrew friendly label for a service when its name or backing EXE
+    /// name contains one of the <see cref="AlertOptions.ServiceFriendlyNames"/> keys; otherwise null.
+    /// </summary>
+    private static string? ResolveFriendlyName(AlertOptions options, string name, string exeName)
+    {
+        foreach (KeyValuePair<string, string> entry in options.ServiceFriendlyNames)
+        {
+            string key = entry.Key;
+            if (string.IsNullOrEmpty(key))
+                continue;
+
+            if ((!string.IsNullOrEmpty(name) && name.Contains(key, StringComparison.OrdinalIgnoreCase)) ||
+                (!string.IsNullOrEmpty(exeName) && exeName.Contains(key, StringComparison.OrdinalIgnoreCase)))
+                return entry.Value;
+        }
+
+        return null;
     }
 }

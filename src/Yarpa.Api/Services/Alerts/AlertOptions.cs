@@ -49,6 +49,20 @@ public sealed class AlertOptions
         { "MSSQLSERVER", "SQLSERVERAGENT", "Yarpa", "Meusensrv", "PirReplMercaz2SnifService", "DangotService" };
 
     /// <summary>
+    /// Human-readable Hebrew labels for monitored services, keyed by a case-insensitive substring
+    /// of the service name or its backing EXE name. When a down service matches one of these keys
+    /// the label is used in the ServiceDown alert message instead of the raw service/EXE name,
+    /// so support staff immediately see what the service is (e.g. "קופת חולים מאוחדת (Meusensrv)").
+    /// </summary>
+    public Dictionary<string, string> ServiceFriendlyNames { get; set; } =
+        new(StringComparer.OrdinalIgnoreCase)
+        {
+            ["Meusensrv"] = "קופת חולים מאוחדת (Meusensrv)",
+            ["PirReplMercaz2SnifService"] = "מרכז רשת (PirReplMercaz2SnifService)",
+            ["DangotService"] = "אשראי דגם A10 (DangotService)"
+        };
+
+    /// <summary>
     /// Sections that are considered critical for the CollectorError rule. A section listed
     /// here with status = error raises a CollectorError alert. Default: core diagnostics sections.
     /// </summary>

@@ -63,20 +63,30 @@ dotnet publish src/Yarpa.Agent -c Release -p:PublishProfile=win-x64
 ### מצב Service (BackgroundService)
 
 בהרצה עם `--service` ה-Agent עולה כ-Generic Host עם `SnapshotWorker` (BackgroundService):
-1. בהפעלה מנקז את ה-Offline Queue ואז אוסף ושולח snapshot (אם `RunImmediatelyOnStart=true`).
-2. ממתין `IntervalHours` וחוזר על המחזור.
+1. בהפעלה (למשל בהתקנה) מנקז את ה-Offline Queue ואוסף ושולח snapshot אם `RunImmediatelyOnStart=true`.
+2. מתזמן את האיסוף הבא כל `IntervalDays` (ברירת מחדל 7 = שבועי), בזמן אקראי בתוך חלון
+   הלילה `PreferredHourStart`–`PreferredHourEnd` לפי השעון המקומי של המחשב. הזמן האקראי
+   מפזר את העומס כך שלא כל המחשבים פונים ל-API באותו רגע.
 3. כל מחזור מבודד ב-try/catch — כשל אינו מפיל את השירות; ינוסה שוב במחזור הבא.
+
+איסוף מיידי יזום (טכנאי) נעשה בנפרד דרך `Yarpa.Agent.exe --once`, ואינו תלוי בשירות.
 
 קונפיגורציה ב-`appsettings.json`:
 
 ```json
 "Agent": {
   "Service": {
-    "IntervalHours": 6,
+    "IntervalDays": 7,
+    "PreferredHourStart": 2,
+    "PreferredHourEnd": 4,
+    "IntervalHours": 0,
     "RunImmediatelyOnStart": true
   }
 }
 ```
+
+`IntervalHours` הוא override אופציונלי: אם גדול מ-0, המערכת מתעלמת מלוח הימים/החלון
+ואוספת כל N שעות (שימושי לבדיקות). ברירת המחדל 0 = לוח שבועי-לילי.
 
 הערה: נתיבים יחסיים (לוגים, Offline Queue) מעוגנים לתיקיית ההתקנה
 (`AppContext.BaseDirectory`), כך שגם כשירות (שה-CWD שלו הוא `System32`) הלוגים
@@ -215,7 +225,7 @@ Serilog בשני הצדדים. כל שליחת/קליטת snapshot מעשירה 
 | נושא | מימוש |
 |------|-------|
 | אימות `X-Api-Key` | `ApiKeyMiddleware` אוכף על כל בקשה פרט ל-`/health*` ו-`/metrics`. 401 בהיעדר/מפתח לא תקין. |
-| HTTPS בלבד | `UseHttpsRedirection` + `UseHsts` (מחוץ ל-Development). ה-Agent מוגדר עם `ApiBaseUrl` ב-HTTPS. |
+| HTTPS | `UseHttpsRedirection` + `UseHsts` נאכפים מחוץ ל-Development **כאשר `Security.RequireHttps=true`** (ברירת מחדל). בפריסה ברשת סגורה פרטית על HTTP בלבד יש להגדיר `RequireHttps=false` (ראה §9). |
 | אין סודות ב-repo | `appsettings.json` מכיל placeholders בלבד; מפתחות/connection strings ב-User Secrets / env / קבצים מקומיים שאינם ב-git (ראה `.gitignore`). |
 | הגבלת גודל payload (413) | `PayloadSizeMiddleware` + מגבלת Kestrel. חריגה מ-`Security.MaxRequestBodyBytes` (ברירת מחדל 5MB) → `413`. |
 | Rate limiting (429) | Fixed-window per-API-key (`Security.RateLimit`). חריגה → `429`. חל על endpoints של ה-API (לא על probes). |
@@ -226,6 +236,7 @@ Serilog בשני הצדדים. כל שליחת/קליטת snapshot מעשירה 
 ```json
 "Security": {
   "MaxRequestBodyBytes": 5242880,
+  "RequireHttps": true,
   "RateLimit": { "PermitPerWindow": 10000, "WindowSeconds": 60, "QueueLimit": 0 }
 }
 ```
@@ -271,13 +282,131 @@ Load test: 100 requests, payload ~141.6 KB each
 dotnet build
 dotnet test
 
-# אריזת ה-Agent
+# אריזת ה-Agent (לטכנאים)
 ./scripts/publish-agent.ps1
 
-# שירות (כ-Administrator)
+# אריזת השרת (API + Dashboard)
+./scripts/publish-server.ps1                 # -> dist/server/api , dist/server/dashboard , schema.sql
+
+# שירות ה-Agent (כ-Administrator)
 ./scripts/install-service.ps1
 ./scripts/uninstall-service.ps1
 
+# שירותי השרת (כ-Administrator)
+./scripts/install-api-service.ps1       -ExePath S:\y_a\api\Yarpa.Api.exe
+./scripts/install-dashboard-service.ps1 -ExePath S:\y_a\dashboard\Yarpa.Dashboard.exe
+
+# הקצאת לקוח + מפתח API
+./scripts/new-customer-key.ps1 -CustomerName "שם הלקוח" -ConnectionString "<crm_yarpa>"
+
 # בדיקת עומס מול API רץ
-./scripts/loadtest-snapshots.ps1 -BaseUrl https://localhost:7177 -ApiKey <key>
+./scripts/loadtest-snapshots.ps1 -BaseUrl http://SERVER:8080 -ApiKey <key>
 ```
+
+---
+
+## 9. Production runbook — פריסת שרת והפצה לטכנאים
+
+פריסה על **רשת סגורה פרטית** ב-HTTP (ללא תעודת SSL). השרת יושב ב-`S:\y_a`.
+טופולוגיה: על כל מחשב לקוח (בית מרקחת) רץ **Agent**; במרכז רץ **API + Dashboard**
+מול מסד `crm_yarpa` (הטבלאות מבודדות בתחילית `YarpaAgent_`).
+
+### שלב א׳ — אריזת השרת (על מכונת הפיתוח)
+
+```powershell
+./scripts/publish-server.ps1
+```
+
+מפיק:
+- `dist/server/api\` — `Yarpa.Api.exe` self-contained (ללא צורך ב-.NET על השרת).
+- `dist/server/dashboard\` — `Yarpa.Dashboard.exe` self-contained.
+- `dist/server/schema.sql` — סקריפט DDL אידמפוטנטי ליצירת הטבלאות ב-`crm_yarpa`.
+
+### שלב ב׳ — יצירת הסכמה ב-crm_yarpa
+
+מריצים את `schema.sql` פעם אחת מול מסד `crm_yarpa` (SSMS או `sqlcmd`). הסקריפט יוצר
+רק טבלאות `YarpaAgent_*` וטבלת ההיסטוריה `__YarpaAgentMigrationsHistory` — אינו נוגע
+בטבלאות CRM קיימות, ואפשר להריצו שוב ללא נזק (idempotent).
+
+```powershell
+sqlcmd -S 10.10.10.30,3460 -d crm_yarpa -U <user> -P <password> -i S:\y_a\schema.sql
+```
+
+> הסכמה כוללת seed של לקוח "Yarpa Dev" + מפתח פיתוח. לאחר יצירת מפתחות אמיתיים (שלב ה׳)
+> מומלץ לנטרל אותו: `UPDATE YarpaAgent_ApiKeys SET IsActive=0 WHERE ApiKeyId='00000000-0000-0000-0000-000000000001';`
+
+### שלב ג׳ — העתקה והגדרה בשרת
+
+מעתיקים את שתי התיקיות ל-`S:\y_a\api` ו-`S:\y_a\dashboard`, ועורכים:
+
+`S:\y_a\api\appsettings.Production.json`:
+```json
+{
+  "Urls": "http://0.0.0.0:8080",
+  "ConnectionStrings": { "Default": "Server=10.10.10.30,3460;Database=crm_yarpa;User Id=<user>;Password=<password>;TrustServerCertificate=True;MultipleActiveResultSets=True" },
+  "Security": { "RequireHttps": false }
+}
+```
+
+`S:\y_a\dashboard\appsettings.Production.json`:
+```json
+{
+  "Urls": "http://0.0.0.0:8081",
+  "ApiSettings": { "BaseUrl": "http://localhost:8080", "ApiKey": "<support-key>" }
+}
+```
+
+> `ApiSettings.ApiKey` של ה-Dashboard יכול להיות מפתח ייעודי לצוות התמיכה (נוצר בשלב ה׳).
+
+### שלב ד׳ — התקנת השירותים (כ-Administrator על השרת)
+
+```powershell
+./scripts/install-api-service.ps1       -ExePath S:\y_a\api\Yarpa.Api.exe
+./scripts/install-dashboard-service.ps1 -ExePath S:\y_a\dashboard\Yarpa.Dashboard.exe
+```
+
+השירותים עולים אוטומטית באתחול (`start=auto`), רצים ב-Production ומאזינים ב-8080/8081.
+בדיקה: `curl http://localhost:8080/health` → `{ "status": "ok" }`, ופתיחת `http://localhost:8081`.
+פתיחת פורטים בחומת האש הפנימית: `8080` (API — לגישת ה-Agentים) ו-`8081` (Dashboard — לצוות).
+
+### שלב ה׳ — הקצאת לקוח + מפתח API (לכל בית מרקחת)
+
+```powershell
+./scripts/new-customer-key.ps1 -CustomerName "בית מרקחת X" `
+  -ConnectionString "Server=10.10.10.30,3460;Database=crm_yarpa;User Id=<user>;Password=<password>;TrustServerCertificate=True"
+```
+
+הפקודה מדפיסה **פעם אחת** מפתח (`yk-...`). המפתח נשמר ב-DB רק כ-hash. שומרים אותו
+ומעבירים לטכנאי שיציב אותו ב-`appsettings.json` של אותו בית מרקחת.
+
+### שלב ו׳ — אריזה והפצת ה-Agent לטכנאים
+
+```powershell
+./scripts/publish-agent.ps1        # -> dist/agent/win-x64/Yarpa.Agent.exe
+```
+
+מעתיקים את התיקייה למחשב הלקוח (למשל `C:\Program Files\Yarpa\Agent`), ועורכים
+`appsettings.json`:
+```json
+"Agent": {
+  "ApiBaseUrl": "http://<SERVER-LAN-IP>:8080",
+  "ApiKey": "<המפתח של אותו בית מרקחת>"
+}
+```
+
+הרצות אצל הלקוח:
+- **התקנה ראשונית / תקלה יזומה:** `Yarpa.Agent.exe --once` (איסוף ושליחה מיידיים).
+- **דגימה תקופתית:** התקנת השירות (כ-Administrator) — דוגם שבועית בחלון לילה:
+  ```powershell
+  ./scripts/install-service.ps1 -ExePath "C:\Program Files\Yarpa\Agent\Yarpa.Agent.exe"
+  ```
+  בעליית השירות מתבצע איסוף ראשוני מיידי (`RunImmediatelyOnStart=true`), ולאחר מכן שבועית.
+
+### סיכום פורטים ונתיבים
+
+| רכיב | מיקום | פורט | הרצה |
+|------|-------|------|------|
+| API | `S:\y_a\api` | 8080 (HTTP) | Windows Service `YarpaApi` |
+| Dashboard | `S:\y_a\dashboard` | 8081 (HTTP) | Windows Service `YarpaDashboard` |
+| DB | `crm_yarpa` (10.10.10.30,3460) | — | טבלאות `YarpaAgent_*` |
+| Agent | מחשב הלקוח | — | `--once` / Windows Service `YarpaSupportAgent` |

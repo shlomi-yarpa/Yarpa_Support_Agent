@@ -14,6 +14,13 @@ public sealed class SecurityOptions
     /// </summary>
     public long MaxRequestBodyBytes { get; set; } = 5 * 1024 * 1024;
 
+    /// <summary>
+    /// Enforce HTTPS (HSTS + redirection) in non-Development environments. Set to false for
+    /// deployments on a trusted, closed private network that intentionally serve plain HTTP.
+    /// Default true.
+    /// </summary>
+    public bool RequireHttps { get; set; } = true;
+
     /// <summary>Basic per-API-key rate-limiting settings.</summary>
     public RateLimitOptions RateLimit { get; set; } = new();
 }

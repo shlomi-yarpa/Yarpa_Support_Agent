@@ -1,28 +1,27 @@
 <#
 .SYNOPSIS
-    Installs the Yarpa Support Agent as a Windows Service.
+    Installs the Yarpa Support Dashboard as a Windows Service.
 
 .DESCRIPTION
-    Registers Yarpa.Agent.exe with the Service Control Manager using sc.exe, running it
-    with the --service flag so it collects and sends snapshots on the configured schedule
-    (Agent:Service in appsettings.json: weekly by default, in a night-time window).
+    Registers Yarpa.Dashboard.exe with the Service Control Manager using sc.exe, running it in
+    the Production environment so it binds to the URL defined in appsettings.Production.json
+    (e.g. http://0.0.0.0:8081) and talks to the API via ApiSettings.BaseUrl.
     Must be run as Administrator.
 
 .PARAMETER ExePath
-    Full path to the published Yarpa.Agent.exe. Defaults to dist/agent/win-x64/Yarpa.Agent.exe.
+    Full path to the published Yarpa.Dashboard.exe. Defaults to dist/server/dashboard/Yarpa.Dashboard.exe.
 
 .PARAMETER ServiceName
-    Windows service name. Defaults to YarpaSupportAgent.
+    Windows service name. Defaults to YarpaDashboard.
 
 .EXAMPLE
-    ./scripts/install-service.ps1
-    ./scripts/install-service.ps1 -ExePath "C:\Program Files\Yarpa\Agent\Yarpa.Agent.exe"
+    ./scripts/install-dashboard-service.ps1 -ExePath S:\y_a\dashboard\Yarpa.Dashboard.exe
 #>
 [CmdletBinding()]
 param(
     [string]$ExePath,
-    [string]$ServiceName = "YarpaSupportAgent",
-    [string]$DisplayName = "Yarpa Support Agent"
+    [string]$ServiceName = "YarpaDashboard",
+    [string]$DisplayName = "Yarpa Support Dashboard"
 )
 
 $ErrorActionPreference = "Stop"
@@ -35,11 +34,11 @@ if (-not $isAdmin) {
 
 if (-not $ExePath) {
     $repoRoot = Split-Path -Parent $PSScriptRoot
-    $ExePath = Join-Path $repoRoot "dist/agent/win-x64/Yarpa.Agent.exe"
+    $ExePath = Join-Path $repoRoot "dist/server/dashboard/Yarpa.Dashboard.exe"
 }
 
 if (-not (Test-Path $ExePath)) {
-    throw "Executable not found: $ExePath. Run scripts/publish-agent.ps1 first."
+    throw "Executable not found: $ExePath. Run scripts/publish-server.ps1 first."
 }
 
 $existing = Get-Service -Name $ServiceName -ErrorAction SilentlyContinue
@@ -52,12 +51,13 @@ if ($existing) {
     Start-Sleep -Seconds 2
 }
 
-# binPath must quote the exe and pass --service so the host runs the background worker.
-$binPath = "`"$ExePath`" --service"
+# binPath must quote the exe and select the Production environment so
+# appsettings.Production.json (URL, API base address, API key) is applied.
+$binPath = "`"$ExePath`" --environment Production"
 
 Write-Host "Installing service '$ServiceName'..." -ForegroundColor Cyan
 sc.exe create $ServiceName binPath= $binPath start= auto DisplayName= "$DisplayName" | Out-Null
-sc.exe description $ServiceName "Collects technical diagnostics and sends them to the Yarpa Support API." | Out-Null
+sc.exe description $ServiceName "Serves the Yarpa support dashboard UI for viewing customer diagnostics." | Out-Null
 
 Write-Host "Starting service '$ServiceName'..." -ForegroundColor Cyan
 Start-Service -Name $ServiceName
@@ -65,5 +65,6 @@ Start-Service -Name $ServiceName
 $svc = Get-Service -Name $ServiceName
 Write-Host ""
 Write-Host "Service installed and $($svc.Status)." -ForegroundColor Green
+Write-Host "  Open:      http://localhost:8081"
 Write-Host "  Manage:    sc.exe query $ServiceName / Stop-Service $ServiceName"
-Write-Host "  Uninstall: scripts/uninstall-service.ps1"
+Write-Host "  Uninstall: scripts/uninstall-dashboard-service.ps1"

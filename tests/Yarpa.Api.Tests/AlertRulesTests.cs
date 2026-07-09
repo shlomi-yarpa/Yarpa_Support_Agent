@@ -107,6 +107,21 @@ public class AlertRulesTests
         Assert.Equal(AlertRuleOutcome.Leave, result.Outcome);
     }
 
+    [Fact]
+    public void ServiceDown_YarpaServiceStoppedMatchedByExeName_UsesFriendlyLabel()
+    {
+        var snap = Build("m1", ("services", "ok", new[]
+        {
+            new { name = "Meusensrv", displayName = "", state = "Stopped", startMode = "Auto", exeName = "Meusensrv.exe" }
+        }));
+
+        AlertRuleResult result = new ServiceDownRule().Evaluate(Ctx(snap));
+
+        Assert.Equal(AlertRuleOutcome.Raise, result.Outcome);
+        Assert.Equal(AlertSeverity.Critical, result.Severity);
+        Assert.Contains("קופת חולים מאוחדת", result.Message);
+    }
+
     // ── DiskAlmostFull ──────────────────────────────────────────────────────────
 
     [Fact]

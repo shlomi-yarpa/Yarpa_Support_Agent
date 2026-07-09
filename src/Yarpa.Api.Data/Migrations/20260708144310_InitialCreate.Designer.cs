@@ -12,7 +12,7 @@ using Yarpa.Api.Data;
 namespace Yarpa.Api.Data.Migrations
 {
     [DbContext(typeof(YarpaDbContext))]
-    [Migration("20260706150526_InitialCreate")]
+    [Migration("20260708144310_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -24,6 +24,61 @@ namespace Yarpa.Api.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Yarpa.Api.Data.Entities.AlertEntity", b =>
+                {
+                    b.Property<long>("AlertId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("AlertId"));
+
+                    b.Property<string>("AlertType")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<DateTime>("CreatedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("MachineId")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ResolvedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Severity")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<long?>("SourceChangeId")
+                        .HasColumnType("bigint");
+
+                    b.Property<Guid?>("SourceSnapshotId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.HasKey("AlertId");
+
+                    b.HasIndex("SourceChangeId");
+
+                    b.HasIndex("SourceSnapshotId");
+
+                    b.HasIndex("MachineId", "AlertType", "State");
+
+                    b.ToTable("YarpaAgent_Alerts", (string)null);
+                });
 
             modelBuilder.Entity("Yarpa.Api.Data.Entities.ApiKeyEntity", b =>
                 {
@@ -54,7 +109,7 @@ namespace Yarpa.Api.Data.Migrations
 
                     b.HasIndex("KeyHash");
 
-                    b.ToTable("ApiKeys", (string)null);
+                    b.ToTable("YarpaAgent_ApiKeys", (string)null);
 
                     b.HasData(
                         new
@@ -65,6 +120,50 @@ namespace Yarpa.Api.Data.Migrations
                             IsActive = true,
                             KeyHash = "6ae2432f025fb1ccc63518e80b02ef5ff04e1b19a541cbfa4024ebeff47bdd19"
                         });
+                });
+
+            modelBuilder.Entity("Yarpa.Api.Data.Entities.ChangeEntity", b =>
+                {
+                    b.Property<long>("ChangeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("ChangeId"));
+
+                    b.Property<string>("ChangeType")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<DateTime>("DetectedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("MachineId")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("NewValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OldValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SectionName")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<Guid>("SnapshotId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("ChangeId");
+
+                    b.HasIndex("SnapshotId");
+
+                    b.HasIndex("MachineId", "DetectedAtUtc");
+
+                    b.ToTable("YarpaAgent_Changes", (string)null);
                 });
 
             modelBuilder.Entity("Yarpa.Api.Data.Entities.CustomerEntity", b =>
@@ -83,7 +182,7 @@ namespace Yarpa.Api.Data.Migrations
 
                     b.HasKey("CustomerId");
 
-                    b.ToTable("Customers", (string)null);
+                    b.ToTable("YarpaAgent_Customers", (string)null);
 
                     b.HasData(
                         new
@@ -121,7 +220,7 @@ namespace Yarpa.Api.Data.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("Machines", (string)null);
+                    b.ToTable("YarpaAgent_Machines", (string)null);
                 });
 
             modelBuilder.Entity("Yarpa.Api.Data.Entities.SnapshotEntity", b =>
@@ -180,7 +279,32 @@ namespace Yarpa.Api.Data.Migrations
 
                     b.HasIndex("MachineId", "CollectedAtUtc");
 
-                    b.ToTable("Snapshots", (string)null);
+                    b.ToTable("YarpaAgent_Snapshots", (string)null);
+                });
+
+            modelBuilder.Entity("Yarpa.Api.Data.Entities.AlertEntity", b =>
+                {
+                    b.HasOne("Yarpa.Api.Data.Entities.MachineEntity", "Machine")
+                        .WithMany("Alerts")
+                        .HasForeignKey("MachineId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Yarpa.Api.Data.Entities.ChangeEntity", "SourceChange")
+                        .WithMany()
+                        .HasForeignKey("SourceChangeId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Yarpa.Api.Data.Entities.SnapshotEntity", "SourceSnapshot")
+                        .WithMany()
+                        .HasForeignKey("SourceSnapshotId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Machine");
+
+                    b.Navigation("SourceChange");
+
+                    b.Navigation("SourceSnapshot");
                 });
 
             modelBuilder.Entity("Yarpa.Api.Data.Entities.ApiKeyEntity", b =>
@@ -192,6 +316,25 @@ namespace Yarpa.Api.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("Yarpa.Api.Data.Entities.ChangeEntity", b =>
+                {
+                    b.HasOne("Yarpa.Api.Data.Entities.MachineEntity", "Machine")
+                        .WithMany("Changes")
+                        .HasForeignKey("MachineId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Yarpa.Api.Data.Entities.SnapshotEntity", "Snapshot")
+                        .WithMany("Changes")
+                        .HasForeignKey("SnapshotId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Machine");
+
+                    b.Navigation("Snapshot");
                 });
 
             modelBuilder.Entity("Yarpa.Api.Data.Entities.MachineEntity", b =>
@@ -225,7 +368,16 @@ namespace Yarpa.Api.Data.Migrations
 
             modelBuilder.Entity("Yarpa.Api.Data.Entities.MachineEntity", b =>
                 {
+                    b.Navigation("Alerts");
+
+                    b.Navigation("Changes");
+
                     b.Navigation("Snapshots");
+                });
+
+            modelBuilder.Entity("Yarpa.Api.Data.Entities.SnapshotEntity", b =>
+                {
+                    b.Navigation("Changes");
                 });
 #pragma warning restore 612, 618
         }

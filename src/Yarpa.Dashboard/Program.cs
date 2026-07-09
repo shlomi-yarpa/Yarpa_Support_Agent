@@ -10,6 +10,10 @@ try
 {
     WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
+    // Allow running under the Windows Service Control Manager. No-op when the process
+    // is launched as a normal console application (e.g. from the command line).
+    builder.Host.UseWindowsService();
+
     builder.Host.UseSerilog((context, services, configuration) => configuration
         .ReadFrom.Configuration(context.Configuration)
         .ReadFrom.Services(services));
