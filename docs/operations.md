@@ -381,26 +381,41 @@ sqlcmd -S 10.10.10.30,3460 -d crm_yarpa -U <user> -P <password> -i S:\y_a\schema
 
 ### שלב ו׳ — אריזה והפצת ה-Agent לטכנאים
 
+שתי דרכים לבנות חבילה לטכנאי (שתיהן אופציה כללית — עם מפתח משותף לכל הלקוחות,
+ואפשרות לכל טכנאי להזין `SiteCustomerCode` בזמן ההתקנה):
+
+**אופציה 1 — קובץ exe יחיד להפעלה בלחיצה כפולה (מומלץ, הכי פשוט לטכנאי):**
 ```powershell
-./scripts/publish-agent.ps1        # -> dist/agent/win-x64/Yarpa.Agent.exe
+./scripts/build-agent-installer-exe.ps1 -ApiBaseUrl "http://10.10.10.206:8080" -ApiKey "<מפתח משותף>"
+# -> dist/YarpaAgentInstaller.exe
+```
+הטכנאי מעביר את הקובץ הבודד הזה למחשב הלקוח, מריץ בלחיצה כפולה, מקליד קוד לקוח
+(אופציונלי) ולוחץ Enter, מאשר UAC — וזהו. הסקריפט משתמש ב-`iexpress.exe`
+המובנה ב-Windows כדי לעטוף את ה-Agent, את `install-agent.ps1` ואת קובץ ההגדרות
+לכדי exe יחיד בעל חילוץ עצמי.
+
+**אופציה 2 — ZIP + PowerShell (גיבוי / לצורכי דיבוג):**
+```powershell
+./scripts/package-agent.ps1 -ApiBaseUrl "http://10.10.10.206:8080" -ApiKey "<מפתח משותף>"
+# -> dist/YarpaAgent-Setup.zip
+```
+הטכנאי מחלץ את ה-ZIP ומריץ (מ-PowerShell כמנהל):
+```powershell
+.\install-agent.ps1 -SiteCustomerCode <קוד לקוח, אופציונלי>
 ```
 
-מעתיקים את התיקייה למחשב הלקוח (למשל `C:\Program Files\Yarpa\Agent`), ועורכים
-`appsettings.json`:
-```json
-"Agent": {
-  "ApiBaseUrl": "http://<SERVER-LAN-IP>:8080",
-  "ApiKey": "<המפתח של אותו בית מרקחת>"
-}
-```
+שתי השיטות מריצות באופן פנימי את `install-agent.ps1`, שמבצע: העתקת קבצים
+ל-`C:\Program Files\Yarpa\Agent`, כתיבת `ApiKey`/`SiteCustomerCode` ל-`appsettings.json`,
+בדיקת חיבור ל-`/health`, איסוף ראשוני (`--once`), ורישום שירות רקע
+(`YarpaSupportAgent`, `New-Service`, `start=auto`) שדוגם שבועית בחלון לילה
+(`RunImmediatelyOnStart=true` מבצע איסוף מיידי גם בעליית השירות).
 
-הרצות אצל הלקוח:
-- **התקנה ראשונית / תקלה יזומה:** `Yarpa.Agent.exe --once` (איסוף ושליחה מיידיים).
-- **דגימה תקופתית:** התקנת השירות (כ-Administrator) — דוגם שבועית בחלון לילה:
-  ```powershell
-  ./scripts/install-service.ps1 -ExePath "C:\Program Files\Yarpa\Agent\Yarpa.Agent.exe"
-  ```
-  בעליית השירות מתבצע איסוף ראשוני מיידי (`RunImmediatelyOnStart=true`), ולאחר מכן שבועית.
+הוראות מלאות בעברית לטכנאים: `docs/technician-install-he.md`.
+
+**איסוף מיידי בתקלה** (אחרי שהשירות כבר מותקן, בלי להריץ התקנה מחדש):
+```powershell
+& "C:\Program Files\Yarpa\Agent\Yarpa.Agent.exe" --once
+```
 
 ### סיכום פורטים ונתיבים
 

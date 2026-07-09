@@ -71,8 +71,8 @@ if ($existing -and $existing.Status -ne 'Stopped') {
 
 New-Item -ItemType Directory -Force -Path $InstallDir | Out-Null
 
-# Copy everything in the package except this installer and the readme.
-Get-ChildItem -Path $sourceDir -Exclude "install-agent.ps1", "README*.txt" |
+# Copy everything in the package except this installer, its launcher, and the readme.
+Get-ChildItem -Path $sourceDir -Exclude "install-agent.ps1", "Run-Installer.cmd", "README*.txt" |
     Copy-Item -Destination $InstallDir -Recurse -Force
 
 # Write the API key (and optionally the base URL) into appsettings.json.
@@ -136,10 +136,15 @@ if ($existing) {
     Start-Sleep -Seconds 2
 }
 
+# New-Service (not sc.exe) so the quoted, space-containing install path
+# (e.g. "C:\Program Files\Yarpa\Agent\...") is passed through correctly.
 $binPath = "`"$installedExe`" --service"
 Write-Host "Installing service '$ServiceName'..." -ForegroundColor Cyan
-sc.exe create $ServiceName binPath= $binPath start= auto DisplayName= "$DisplayName" | Out-Null
-sc.exe description $ServiceName "Collects technical diagnostics and sends them to the Yarpa Support API." | Out-Null
+New-Service -Name $ServiceName `
+    -BinaryPathName $binPath `
+    -DisplayName $DisplayName `
+    -Description "Collects technical diagnostics and sends them to the Yarpa Support API." `
+    -StartupType Automatic | Out-Null
 Start-Service -Name $ServiceName
 
 $svc = Get-Service -Name $ServiceName

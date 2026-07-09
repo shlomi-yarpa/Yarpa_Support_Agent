@@ -53,11 +53,15 @@ if ($existing) {
 }
 
 # binPath must quote the exe and pass --service so the host runs the background worker.
+# New-Service (not sc.exe) so a quoted, space-containing path is passed through correctly.
 $binPath = "`"$ExePath`" --service"
 
 Write-Host "Installing service '$ServiceName'..." -ForegroundColor Cyan
-sc.exe create $ServiceName binPath= $binPath start= auto DisplayName= "$DisplayName" | Out-Null
-sc.exe description $ServiceName "Collects technical diagnostics and sends them to the Yarpa Support API." | Out-Null
+New-Service -Name $ServiceName `
+    -BinaryPathName $binPath `
+    -DisplayName $DisplayName `
+    -Description "Collects technical diagnostics and sends them to the Yarpa Support API." `
+    -StartupType Automatic | Out-Null
 
 Write-Host "Starting service '$ServiceName'..." -ForegroundColor Cyan
 Start-Service -Name $ServiceName

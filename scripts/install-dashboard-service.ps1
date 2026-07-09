@@ -53,11 +53,15 @@ if ($existing) {
 
 # binPath must quote the exe and select the Production environment so
 # appsettings.Production.json (URL, API base address, API key) is applied.
+# New-Service (not sc.exe) so a quoted, space-containing path is passed through correctly.
 $binPath = "`"$ExePath`" --environment Production"
 
 Write-Host "Installing service '$ServiceName'..." -ForegroundColor Cyan
-sc.exe create $ServiceName binPath= $binPath start= auto DisplayName= "$DisplayName" | Out-Null
-sc.exe description $ServiceName "Serves the Yarpa support dashboard UI for viewing customer diagnostics." | Out-Null
+New-Service -Name $ServiceName `
+    -BinaryPathName $binPath `
+    -DisplayName $DisplayName `
+    -Description "Serves the Yarpa support dashboard UI for viewing customer diagnostics." `
+    -StartupType Automatic | Out-Null
 
 Write-Host "Starting service '$ServiceName'..." -ForegroundColor Cyan
 Start-Service -Name $ServiceName

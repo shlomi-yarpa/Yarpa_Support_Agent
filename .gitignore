@@ -7,6 +7,7 @@
 
 # Published Agent artifacts (self-contained single-file output)
 dist/
+קובץ התקנה לטכנאי/
 
 # .NET
 project.lock.json
