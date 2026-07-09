@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Options;
 using Yarpa.Agent;
 using Yarpa.Agent.Collectors;
 using Yarpa.Contracts;
@@ -50,7 +51,8 @@ public class CollectorIsolationTests
     {
         var machineIdentity = new MachineIdentity();
         var logger = NullLogger<CollectionOrchestrator>.Instance;
-        return new CollectionOrchestrator(collectors, machineIdentity, logger);
+        var options = Options.Create(new AgentOptions());
+        return new CollectionOrchestrator(collectors, machineIdentity, options, logger);
     }
 
     // ── Tests ─────────────────────────────────────────────────────────────────

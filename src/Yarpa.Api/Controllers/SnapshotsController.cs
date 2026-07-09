@@ -115,7 +115,7 @@ public sealed class SnapshotsController : ControllerBase
 
             string computerName = TryGetComputerName(snapshot);
             MachineEntity machine = await clientResolver.ResolveOrRegisterAsync(
-                snapshot.MachineId, computerName, customer, ct);
+                snapshot.MachineId, computerName, snapshot.SiteCustomerCode, customer, ct);
 
             // Persist (idempotency handled inside the store)
             SnapshotStoreResult result = await snapshotStore.StoreAsync(

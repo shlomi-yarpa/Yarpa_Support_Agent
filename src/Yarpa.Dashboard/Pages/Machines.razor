@@ -24,7 +24,7 @@
                 <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
                 <input type="text"
                        class="form-control"
-                       placeholder="חיפוש לפי שם מחשב או מזהה..."
+                       placeholder="חיפוש לפי שם מחשב, מזהה לקוח או מזהה מחשב..."
                        @bind="_search"
                        @bind:event="oninput"
                        @onkeyup="OnSearchKeyUp" />
@@ -80,6 +80,7 @@
                     <thead class="table-light">
                         <tr>
                             <th>שם מחשב</th>
+                            <th>מזהה לקוח</th>
                             <th>מזהה מחשב</th>
                             <th>נראה לאחרונה</th>
                             <th>נרשם</th>
@@ -94,6 +95,16 @@
                                 <td>
                                     <i class="bi bi-pc-display text-primary me-2"></i>
                                     <strong>@(string.IsNullOrEmpty(m.ComputerName) ? m.MachineId : m.ComputerName)</strong>
+                                </td>
+                                <td>
+                                    @if (!string.IsNullOrWhiteSpace(m.SiteCustomerCode))
+                                    {
+                                        <span class="badge bg-light text-dark border">@m.SiteCustomerCode</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted small">—</span>
+                                    }
                                 </td>
                                 <td><code class="small text-muted">@m.MachineId</code></td>
                                 <td>

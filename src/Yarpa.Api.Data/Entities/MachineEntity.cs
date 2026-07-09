@@ -14,6 +14,12 @@ public sealed class MachineEntity
     /// <summary>Computer name as reported in the most recent snapshot.</summary>
     public string ComputerName { get; set; } = string.Empty;
 
+    /// <summary>
+    /// Optional site/customer code supplied by the technician (e.g. CRM customer ID).
+    /// Used to identify which pharmacy this machine belongs to.
+    /// </summary>
+    public string? SiteCustomerCode { get; set; }
+
     public DateTime FirstSeenUtc { get; set; }
 
     public DateTime LastSeenUtc { get; set; }

@@ -15,6 +15,12 @@ public sealed class AgentOptions
     /// <summary>Per-customer API key sent in the X-Api-Key header. Never commit real values.</summary>
     public string ApiKey { get; init; } = string.Empty;
 
+    /// <summary>
+    /// Optional site/customer code for this pharmacy (e.g. CRM customer ID). Sent with every
+    /// snapshot so support can identify which client the machine belongs to.
+    /// </summary>
+    public string SiteCustomerCode { get; init; } = string.Empty;
+
     /// <summary>Number of retry attempts on transient HTTP failures (default 3).</summary>
     public int RetryCount { get; init; } = 3;
 

@@ -14,7 +14,13 @@
                 <i class="bi bi-pc-display text-primary me-2"></i>
                 @(_summary?.ComputerName ?? MachineId)
             </h1>
-            <small class="text-muted"><code>@MachineId</code></small>
+            <small class="text-muted">
+                <code>@MachineId</code>
+                @if (!string.IsNullOrWhiteSpace(_summary?.SiteCustomerCode))
+                {
+                    <span class="ms-2">| מזהה לקוח: <strong>@_summary.SiteCustomerCode</strong></span>
+                }
+            </small>
         </div>
         @if (_summary != null && _summary.OpenAlertCount > 0)
         {

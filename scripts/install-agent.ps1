@@ -18,6 +18,10 @@
 .PARAMETER ApiBaseUrl
     API base URL. When omitted, the value already baked into appsettings.json is used.
 
+.PARAMETER SiteCustomerCode
+    Optional customer/site identifier (e.g. CRM customer code). Helps support identify
+    which pharmacy this machine belongs to in the dashboard.
+
 .PARAMETER InstallDir
     Target directory. Defaults to "%ProgramFiles%\Yarpa\Agent".
 
@@ -25,13 +29,15 @@
     Only copy files and run once; do not install the background service.
 
 .EXAMPLE
-    .\install-agent.ps1 -ApiKey yk-xxxxxxxx
-    .\install-agent.ps1 -ApiKey yk-xxxxxxxx -ApiBaseUrl http://10.10.10.30:8080
+    .\install-agent.ps1
+    .\install-agent.ps1 -SiteCustomerCode 12345
+    .\install-agent.ps1 -ApiKey yk-xxxxxxxx -SiteCustomerCode 12345
 #>
 [CmdletBinding()]
 param(
     [string]$ApiKey,
     [string]$ApiBaseUrl,
+    [string]$SiteCustomerCode,
     [string]$InstallDir = (Join-Path $env:ProgramFiles "Yarpa\Agent"),
     [switch]$NoService,
     [string]$ServiceName = "YarpaSupportAgent",
@@ -81,6 +87,9 @@ if ($ApiKey) {
 if ($ApiBaseUrl) {
     $json.Agent.ApiBaseUrl = $ApiBaseUrl
 }
+if ($SiteCustomerCode) {
+    $json.Agent.SiteCustomerCode = $SiteCustomerCode.Trim()
+}
 
 # Validate the effective key: either passed via -ApiKey or already baked into the package.
 $effectiveKey = $json.Agent.ApiKey
@@ -93,6 +102,9 @@ if ([string]::IsNullOrWhiteSpace($effectiveKey) -or $effectiveKey -eq "REPLACE_W
 $effectiveUrl = $json.Agent.ApiBaseUrl
 Write-Host "  API URL : $effectiveUrl"
 Write-Host "  API key : set"
+if ($json.Agent.SiteCustomerCode) {
+    Write-Host "  Site customer code : $($json.Agent.SiteCustomerCode)"
+}
 
 # Connectivity check (non-fatal: the agent queues offline and retries if unreachable).
 try {

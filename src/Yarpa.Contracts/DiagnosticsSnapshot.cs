@@ -26,6 +26,13 @@ public sealed class DiagnosticsSnapshot
     [JsonPropertyName("machineId")]
     public string MachineId { get; init; } = string.Empty;
 
+    /// <summary>
+    /// Optional site/customer code entered by the technician at install time (e.g. CRM customer ID).
+    /// Helps identify which pharmacy a machine belongs to when many sites share one API key.
+    /// </summary>
+    [JsonPropertyName("siteCustomerCode")]
+    public string? SiteCustomerCode { get; init; }
+
     [JsonPropertyName("collectedAtUtc")]
     public DateTimeOffset CollectedAtUtc { get; init; }
 

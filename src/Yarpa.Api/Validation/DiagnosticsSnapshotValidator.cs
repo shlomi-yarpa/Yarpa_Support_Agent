@@ -25,5 +25,10 @@ public sealed class DiagnosticsSnapshotValidator : AbstractValidator<Diagnostics
         RuleFor(x => x.SchemaVersion)
             .NotEmpty()
             .WithMessage("שדה schemaVersion הוא חובה");
+
+        RuleFor(x => x.SiteCustomerCode)
+            .MaximumLength(64)
+            .When(x => !string.IsNullOrWhiteSpace(x.SiteCustomerCode))
+            .WithMessage("שדה siteCustomerCode ארוך מדי (מקסימום 64 תווים)");
     }
 }

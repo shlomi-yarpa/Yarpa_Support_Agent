@@ -50,7 +50,8 @@ public sealed class MachinesController : ControllerBase
             string term = search.Trim();
             query = query.Where(m =>
                 m.ComputerName.Contains(term) ||
-                m.MachineId.Contains(term));
+                m.MachineId.Contains(term) ||
+                (m.SiteCustomerCode != null && m.SiteCustomerCode.Contains(term)));
         }
 
         int totalCount = await query.CountAsync(ct);
@@ -77,12 +78,13 @@ public sealed class MachinesController : ControllerBase
             PageSize   = pageSize,
             Items      = machines.ConvertAll(m => new MachineListItemDto
             {
-                MachineId      = m.MachineId,
-                ComputerName   = m.ComputerName,
-                FirstSeenUtc   = m.FirstSeenUtc,
-                LastSeenUtc    = m.LastSeenUtc,
-                LastSnapshotId = m.LastSnapshotId,
-                OpenAlertCount = openAlertCounts.GetValueOrDefault(m.MachineId, 0)
+                MachineId        = m.MachineId,
+                ComputerName     = m.ComputerName,
+                SiteCustomerCode = m.SiteCustomerCode,
+                FirstSeenUtc     = m.FirstSeenUtc,
+                LastSeenUtc      = m.LastSeenUtc,
+                LastSnapshotId   = m.LastSnapshotId,
+                OpenAlertCount   = openAlertCounts.GetValueOrDefault(m.MachineId, 0)
             })
         });
     }
@@ -113,10 +115,11 @@ public sealed class MachinesController : ControllerBase
             // Machine registered but no snapshot yet
             return Ok(new MachineSummaryDto
             {
-                MachineId    = machine.MachineId,
-                ComputerName = machine.ComputerName,
-                FirstSeenUtc = machine.FirstSeenUtc,
-                LastSeenUtc  = machine.LastSeenUtc
+                MachineId        = machine.MachineId,
+                ComputerName     = machine.ComputerName,
+                SiteCustomerCode = machine.SiteCustomerCode,
+                FirstSeenUtc     = machine.FirstSeenUtc,
+                LastSeenUtc      = machine.LastSeenUtc
             });
         }
 
@@ -613,6 +616,7 @@ public sealed class MachinesController : ControllerBase
         {
             MachineId         = machine.MachineId,
             ComputerName      = machine.ComputerName,
+            SiteCustomerCode  = machine.SiteCustomerCode,
             FirstSeenUtc      = machine.FirstSeenUtc,
             LastSeenUtc       = machine.LastSeenUtc,
             LastSnapshotId    = snapshot.SnapshotId,
@@ -672,20 +676,22 @@ public sealed class MachinesPageDto
 
 public sealed class MachineListItemDto
 {
-    public string    MachineId      { get; init; } = string.Empty;
-    public string    ComputerName   { get; init; } = string.Empty;
-    public DateTime  FirstSeenUtc   { get; init; }
-    public DateTime  LastSeenUtc    { get; init; }
-    public Guid?     LastSnapshotId { get; init; }
-    public int       OpenAlertCount { get; init; }
+    public string    MachineId        { get; init; } = string.Empty;
+    public string    ComputerName     { get; init; } = string.Empty;
+    public string?   SiteCustomerCode { get; init; }
+    public DateTime  FirstSeenUtc     { get; init; }
+    public DateTime  LastSeenUtc      { get; init; }
+    public Guid?     LastSnapshotId   { get; init; }
+    public int       OpenAlertCount   { get; init; }
 }
 
 // Summary
 public sealed class MachineSummaryDto
 {
-    public string    MachineId      { get; init; } = string.Empty;
-    public string    ComputerName   { get; init; } = string.Empty;
-    public DateTime  FirstSeenUtc   { get; init; }
+    public string    MachineId        { get; init; } = string.Empty;
+    public string    ComputerName     { get; init; } = string.Empty;
+    public string?   SiteCustomerCode { get; init; }
+    public DateTime  FirstSeenUtc     { get; init; }
     public DateTime  LastSeenUtc    { get; init; }
     public Guid?     LastSnapshotId { get; init; }
     public DateTime? CollectedAtUtc { get; init; }

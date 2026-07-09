@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Yarpa.Agent.Collectors;
 using Yarpa.Contracts;
 
@@ -13,6 +14,7 @@ public sealed class CollectionOrchestrator
 {
     private readonly IEnumerable<ICollector> _collectors;
     private readonly MachineIdentity _machineIdentity;
+    private readonly AgentOptions _agentOptions;
     private readonly ILogger<CollectionOrchestrator> _logger;
 
     private static readonly string AgentVersion =
@@ -22,10 +24,12 @@ public sealed class CollectionOrchestrator
     public CollectionOrchestrator(
         IEnumerable<ICollector> collectors,
         MachineIdentity machineIdentity,
+        IOptions<AgentOptions> agentOptions,
         ILogger<CollectionOrchestrator> logger)
     {
         _collectors = collectors;
         _machineIdentity = machineIdentity;
+        _agentOptions = agentOptions.Value;
         _logger = logger;
     }
 
@@ -41,11 +45,16 @@ public sealed class CollectionOrchestrator
 
         var sections = results.ToDictionary(r => r.SectionName, r => r.ToSection());
 
+        string? siteCustomerCode = string.IsNullOrWhiteSpace(_agentOptions.SiteCustomerCode)
+            ? null
+            : _agentOptions.SiteCustomerCode.Trim();
+
         var snapshot = new DiagnosticsSnapshot
         {
             SnapshotId = Guid.NewGuid(),
             AgentVersion = AgentVersion,
             MachineId = _machineIdentity.MachineId,
+            SiteCustomerCode = siteCustomerCode,
             CollectedAtUtc = DateTimeOffset.UtcNow,
             Sections = sections
         };

@@ -23,9 +23,12 @@ public sealed class ClientResolver : IClientResolver
     public async Task<MachineEntity> ResolveOrRegisterAsync(
         string machineId,
         string computerName,
+        string? siteCustomerCode,
         CustomerEntity customer,
         CancellationToken ct)
     {
+        string? normalizedSiteCode = NormalizeSiteCustomerCode(siteCustomerCode);
+
         MachineEntity? machine = await _db.Machines
             .FirstOrDefaultAsync(m => m.MachineId == machineId
                                    && m.CustomerId == customer.CustomerId, ct);
@@ -37,6 +40,7 @@ public sealed class ClientResolver : IClientResolver
                 MachineId = machineId,
                 CustomerId = customer.CustomerId,
                 ComputerName = computerName,
+                SiteCustomerCode = normalizedSiteCode,
                 FirstSeenUtc = DateTime.UtcNow,
                 LastSeenUtc = DateTime.UtcNow
             };
@@ -45,10 +49,28 @@ public sealed class ClientResolver : IClientResolver
             await _db.SaveChangesAsync(ct);
 
             _logger.LogInformation(
-                "auto-registered new machine {MachineId} (name={ComputerName}) for customer {CustomerId}",
-                machineId, computerName, customer.CustomerId);
+                "auto-registered new machine {MachineId} (name={ComputerName}, siteCode={SiteCustomerCode}) for customer {CustomerId}",
+                machineId, computerName, normalizedSiteCode ?? "(none)", customer.CustomerId);
+        }
+        else if (normalizedSiteCode != null
+                 && !string.Equals(machine.SiteCustomerCode, normalizedSiteCode, StringComparison.Ordinal))
+        {
+            machine.SiteCustomerCode = normalizedSiteCode;
+            await _db.SaveChangesAsync(ct);
+
+            _logger.LogInformation(
+                "updated site customer code for machine {MachineId} to {SiteCustomerCode}",
+                machineId, normalizedSiteCode);
         }
 
         return machine;
+    }
+
+    private static string? NormalizeSiteCustomerCode(string? siteCustomerCode)
+    {
+        if (string.IsNullOrWhiteSpace(siteCustomerCode))
+            return null;
+
+        return siteCustomerCode.Trim();
     }
 }

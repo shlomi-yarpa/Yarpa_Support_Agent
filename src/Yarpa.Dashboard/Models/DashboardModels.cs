@@ -14,9 +14,10 @@ public sealed class MachinesPage
 
 public sealed class MachineListItem
 {
-    [JsonPropertyName("machineId")]      public string   MachineId      { get; init; } = string.Empty;
-    [JsonPropertyName("computerName")]   public string   ComputerName   { get; init; } = string.Empty;
-    [JsonPropertyName("firstSeenUtc")]   public DateTime FirstSeenUtc   { get; init; }
+    [JsonPropertyName("machineId")]        public string   MachineId        { get; init; } = string.Empty;
+    [JsonPropertyName("computerName")]     public string   ComputerName     { get; init; } = string.Empty;
+    [JsonPropertyName("siteCustomerCode")] public string?  SiteCustomerCode { get; init; }
+    [JsonPropertyName("firstSeenUtc")]     public DateTime FirstSeenUtc     { get; init; }
     [JsonPropertyName("lastSeenUtc")]    public DateTime LastSeenUtc    { get; init; }
     [JsonPropertyName("lastSnapshotId")] public Guid?    LastSnapshotId { get; init; }
     [JsonPropertyName("openAlertCount")] public int      OpenAlertCount { get; init; }
@@ -26,9 +27,10 @@ public sealed class MachineListItem
 
 public sealed class MachineSummary
 {
-    [JsonPropertyName("machineId")]        public string   MachineId      { get; init; } = string.Empty;
-    [JsonPropertyName("computerName")]     public string   ComputerName   { get; init; } = string.Empty;
-    [JsonPropertyName("firstSeenUtc")]     public DateTime FirstSeenUtc   { get; init; }
+    [JsonPropertyName("machineId")]        public string   MachineId        { get; init; } = string.Empty;
+    [JsonPropertyName("computerName")]     public string   ComputerName     { get; init; } = string.Empty;
+    [JsonPropertyName("siteCustomerCode")] public string?  SiteCustomerCode { get; init; }
+    [JsonPropertyName("firstSeenUtc")]     public DateTime FirstSeenUtc     { get; init; }
     [JsonPropertyName("lastSeenUtc")]      public DateTime LastSeenUtc    { get; init; }
     [JsonPropertyName("lastSnapshotId")]   public Guid?    LastSnapshotId { get; init; }
     [JsonPropertyName("collectedAtUtc")]   public DateTime? CollectedAtUtc { get; init; }

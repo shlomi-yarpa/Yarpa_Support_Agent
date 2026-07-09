@@ -4,18 +4,21 @@
 מה זה: תוכנה שאוספת מידע טכני מהמחשב ושולחת אותו לשרת התמיכה של ירפא.
 
 מה צריך לפני התחלה:
-- מפתח לקוח (API key) שקיבלת מירפא. נראה כך: yk-xxxxxxxx...
+- קובץ ZIP שקיבלת מירפא (YarpaAgent-Setup.zip).
 - הרשאת מנהל (Administrator) על המחשב.
+- (מומלץ) מזהה לקוח מה-CRM — קוד הלקוח בבית המרקחת.
 
-שלבי התקנה:
+שלבי התקנה מומלצים:
 1. חלץ את כל תוכן קובץ ה-ZIP לתיקייה זמנית (למשל C:\Temp\YarpaAgent).
 2. לחץ קליק ימני על "Windows PowerShell" ובחר "הפעל כמנהל" (Run as administrator).
 3. נווט לתיקייה שחילצת אליה, לדוגמה:
        cd "C:\Temp\YarpaAgent"
-4. הרץ את פקודת ההתקנה עם המפתח שקיבלת:
-       .\install-agent.ps1 -ApiKey <המפתח>
+4. הרץ את פקודת ההתקנה. אם יש לך מזהה לקוח — הוסף אותו:
+       .\install-agent.ps1 -SiteCustomerCode <קוד הלקוח>
    לדוגמה:
-       .\install-agent.ps1 -ApiKey yk-1234abcd5678...
+       .\install-agent.ps1 -SiteCustomerCode 12345
+   אם אין מזהה לקוח — אפשר גם בלי:
+       .\install-agent.ps1
 
 מה קורה במהלך ההתקנה:
 - הקבצים מועתקים אל C:\Program Files\Yarpa\Agent
@@ -25,13 +28,16 @@
 איך יודעים שהצליח:
 בסיום מופיעה שורה ירוקה: "Installation complete. Service ... is Running".
 
+אפשרויות הרצה נוספות:
+- איסוף חד-פעמי יזום (כשיש תקלה ורוצים מידע עכשיו):
+       & "C:\Program Files\Yarpa\Agent\Yarpa.Agent.exe" --once
+- התקנה בלי שירות רקע (רק איסוף ראשוני):
+       .\install-agent.ps1 -SiteCustomerCode 12345 -NoService
+
 תקלות נפוצות:
 - "must be run as Administrator" — לא נפתח PowerShell כמנהל. חזור לשלב 2.
 - "API not reachable" — אין כרגע חיבור לשרת. אין צורך לדאוג: התוכנה שומרת מקומית
-  ותשלח שוב אוטומטית כשהחיבור יחזור. כדאי לוודא שהמחשב ברשת ושהכתובת נכונה.
-
-איסוף חד-פעמי יזום (כשיש תקלה ורוצים מידע עכשיו):
-       & "C:\Program Files\Yarpa\Agent\Yarpa.Agent.exe" --once
+  ותשלח שוב אוטומטית כשהחיבור יחזור. כדאי לוודא שהמחשב ברשת.
 
 הסרת התוכנה:
        Stop-Service YarpaSupportAgent

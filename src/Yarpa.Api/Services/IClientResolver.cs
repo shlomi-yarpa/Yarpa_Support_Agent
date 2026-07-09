@@ -15,6 +15,7 @@ public interface IClientResolver
     Task<MachineEntity> ResolveOrRegisterAsync(
         string machineId,
         string computerName,
+        string? siteCustomerCode,
         CustomerEntity customer,
         CancellationToken ct);
 }

@@ -73,6 +73,7 @@ public class YarpaDbContext : DbContext
             e.HasKey(m => m.MachineId);
             e.Property(m => m.MachineId).HasMaxLength(128).IsRequired();
             e.Property(m => m.ComputerName).HasMaxLength(200);
+            e.Property(m => m.SiteCustomerCode).HasMaxLength(64);
             e.Property(m => m.FirstSeenUtc).IsRequired();
             e.Property(m => m.LastSeenUtc).IsRequired();
 
